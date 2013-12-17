@@ -77,7 +77,7 @@ class CategoriasPublicacion
     /**
      * @var \DateTime
      *
-     * @ORM\Column(name="created_at", type="datetime", nullable=false)
+     * @ORM\Column(name="created_at", type="datetime", nullable=true)
      */
     private $createdAt;
 
@@ -94,16 +94,13 @@ class CategoriasPublicacion
     protected $publicaciones;
     
     static public $NOTICIAS=1;
-    static public $ARTISTAS=2;
-    static public $PRODUCTOS_ROPA=3;
-    static public $PRODUCTOS_DISCOS=4;
-    
+    static public $BLOG=2;
+    static public $BIOGRAFIA=3;
     
     static private $sCategorias=array(
         1=>'Noticias',
-        2=>'Artistas',
-        3=>'Productos: ropa',
-        4=>'Productos: discos',
+        2=>'Blog',
+        3=>'Biografia',
     );
     
     public function __construct() {

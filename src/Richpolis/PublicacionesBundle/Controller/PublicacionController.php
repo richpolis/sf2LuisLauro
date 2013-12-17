@@ -9,8 +9,7 @@ use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Template;
 use Richpolis\PublicacionesBundle\Entity\Publicacion;
 use Richpolis\PublicacionesBundle\Form\PublicacionType;
-use Richpolis\PublicacionesBundle\Form\PublicacionProductosType;
-use Richpolis\PublicacionesBundle\Form\PublicacionArtistasType;
+use Richpolis\PublicacionesBundle\Form\PublicacionBiografiaType;
 use Richpolis\PublicacionesBundle\Entity\CategoriasPublicacion;
 use Richpolis\PublicacionesBundle\Entity\PublicacionGalerias;
 use Richpolis\CategoriasGaleriaBundle\Entity\Categorias;
@@ -63,8 +62,8 @@ class PublicacionController extends Controller
     
     /**
      * Lists all Publicacion entities.
-     * @Route("/", name="publicacion")
      * 
+     * @Route("/", name="publicacion")
      * @Template()
      */
     public function indexAction()
@@ -75,7 +74,7 @@ class PublicacionController extends Controller
 
         if(!isset($filters['publicaciones']))
             return $this->redirect($this->generateUrl('publicacion_seleccionar_categoria'));
-
+        
         $query = $em->getRepository("PublicacionesBundle:Publicacion")
                     ->getQueryPublicacionPorCategoriaActivas($filters['publicaciones']);
 
@@ -177,11 +176,11 @@ class PublicacionController extends Controller
     }
     
     
-    public function publicacionesArtistasAction(){
+    public function publicacionesBlogAction(){
         $em = $this->getDoctrine()->getManager();
         $filters = $this->getFilters();
         $categoria = $em->getRepository('PublicacionesBundle:CategoriasPublicacion')
-                        ->findOneBySlug('artistas');
+                        ->findOneBySlug('blog');
         if($categoria==null){
             $categoria=$this->getCategoriaDefault();
         }                
@@ -190,11 +189,11 @@ class PublicacionController extends Controller
         return $this->redirect($this->generateUrl('publicacion'));
     }
     
-    public function publicacionesProductosDiscosAction(){
+    public function publicacionesBiografiaAction(){
         $em = $this->getDoctrine()->getManager();
         $filters = $this->getFilters();
         $categoria = $em->getRepository('PublicacionesBundle:CategoriasPublicacion')
-                        ->findOneBySlug('productos-discos');
+                        ->findOneBySlug('biografia');
         if($categoria==null){
             $categoria=$this->getCategoriaDefault();
         }                
@@ -203,21 +202,7 @@ class PublicacionController extends Controller
         return $this->redirect($this->generateUrl('publicacion'));
     }
     
-    public function publicacionesProductosRopaAction(){
-        $em = $this->getDoctrine()->getManager();
-        $filters = $this->getFilters();
-        $categoria = $em->getRepository('PublicacionesBundle:CategoriasPublicacion')
-                        ->findOneBySlug('productos-ropa');
-        if($categoria==null){
-            $categoria=$this->getCategoriaDefault();
-        }                
-        $filters['publicaciones']=$categoria->getId();
-        $this->get('session')->set('filters',$filters);
-        return $this->redirect($this->generateUrl('publicacion'));
-    }
-    
-    
-
+   
     /**
      * Displays a form to create a new Publicacion entity.
      *
@@ -499,12 +484,10 @@ class PublicacionController extends Controller
         switch($entity->getCategoria()->getTipoCategoria())
         {
             case CategoriasPublicacion::$NOTICIAS:
+            case CategoriasPublicacion::$BLOG:
                 return $this->createForm(new PublicacionType(), $entity);
-            case CategoriasPublicacion::$ARTISTAS:
-                return $this->createForm(new PublicacionArtistasType(), $entity);
-            case CategoriasPublicacion::$PRODUCTOS_DISCOS:
-            case CategoriasPublicacion::$PRODUCTOS_ROPA:
-                return $this->createForm(new PublicacionProductosType(), $entity);
+            case CategoriasPublicacion::$BIOGRAFIA:
+                return $this->createForm(new PublicacionBiografiaType(), $entity);
             default:
                 return $this->createForm(new PublicacionType(), $entity);    
         }
@@ -515,12 +498,8 @@ class PublicacionController extends Controller
         {
             case CategoriasPublicacion::$NOTICIAS:
                 return Categorias::$GALERIA_NOTICIAS;
-            case CategoriasPublicacion::$ARTISTAS:
-                return Categorias::$GALERIA_ARTISTAS;
-            case CategoriasPublicacion::$PRODUCTOS_DISCOS:
-                return Categorias::$GALERIA_PRODUCTOS_DISCOS;
-            case CategoriasPublicacion::$PRODUCTOS_ROPA:
-                return Categorias::$GALERIA_PRODUCTOS_ROPA;
+            case CategoriasPublicacion::$BLOG:
+                return Categorias::$GALERIA_NOTICIAS;
             default:
                 return Categorias::$GALERIA_NOTICIAS;
         }

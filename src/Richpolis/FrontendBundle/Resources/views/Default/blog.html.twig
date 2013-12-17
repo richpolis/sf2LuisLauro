@@ -1,0 +1,105 @@
+{% extends "FrontendBundle::layout.html.twig" %}
+
+{% block stylesheets %}
+ {{parent()}}
+<link rel="stylesheet" href="{{asset('css/paginador.css')}}"/>
+<link rel="stylesheet" type="text/css" href="{{ asset('css/fancy/jquery.fancybox.css') }}?v=2.1.5" media="screen" />
+{% endblock %}
+
+{% set locale = app.request.locale %}
+
+{% block body %}
+<article class="izquierda">
+    <header>
+        <h2>blog</h2>
+    </header>	
+    <ul class="lista-noticias">
+        {% for noticia in pagination %}
+            <li class="noticia">
+                <div>
+                    {% if noticia.archivo | length > 0 %}
+                    <figure class="imagen-noticia">
+                        {% if noticia.isImagen == true %}
+                        <a href="{{noticia.webPath}}" class="fancybox" >
+                        {% else %}
+                        <a href="{{noticia.archivo}}" class="fancybox-media iframe">
+                        {% endif %}   
+                        <img src="{{noticia.thumbnailWebPath}}" alt="{{noticia.titulo(locale)}}">
+                        </a>
+                    </figure>
+                    {% endif %}    
+                    <h3 class="titulo-noticia">{{noticia.titulo(locale)}}</h3>
+                    <time class="tiempo-noticia">{{noticia.createdAt | date('M y')}}</time>
+                    <div class="contenido-noticia">
+                                {{noticia.descripcion(locale) | raw }}
+                        </div>
+                    </div>
+                </li>
+                    {% endfor %}
+            </ul>
+    {% include 'FrontendBundle:Default:paginador.html.twig' with {'data':data,'locale':locale,'ruta':'blog'} %}
+        </article>
+        <article class="derecha">
+            <header>
+                <h2>{% trans %}twitter feed{% endtrans %}</h2>
+            </header>
+    {% render(controller("FrontendBundle:Default:lastTweets",{'username': 'luis_lauro'})) %}
+        </article>
+{% endblock %}
+{% block javascripts %}
+  {{parent()}}
+<script src="{{asset('js/fancy/jquery.fancybox.js')}}?v=2.1.5"></script>
+<script src="{{asset('js/fancy/jquery.fancybox-media.js')}}?v=2.1.5"></script>
+        <script>
+            $(document).ready(function() {
+                $("a.fancybox").fancybox();
+                
+                $("a.fancybox-media").fancybox({
+                    helpers : {
+                        media: true
+                    },
+                    youtube : {
+                        autoplay: 0
+                    }
+                });
+                
+                $.iniciarCircle();
+            });
+       
+        jQuery.iniciarCircle=function(){
+            $('ul.tweets-lista li:first-child').slideUp("slow",function(){
+                $('ul.tweets-lista').append($(this).slideDown("fast"));
+            });
+            setTimeout(function(){
+                $.iniciarCircle();
+            },4000);
+         }
+    </script>
+{% endblock %}
+
+{% block signup %}
+   {% for config in configuraciones %}
+        {% if config.slug == 'signup' %}
+        <li><a href="{{config.texto}}" target="_blank">signup</a></li>
+        {% endif %}
+   {% endfor %}
+{% endblock %}        
+        
+{% block footer %}
+        <footer>
+            <div class="datos-footer">
+                {% for config in configuraciones %}
+                    {% if config.slug == 'pie-pagina' %}
+                        {{config.texto | raw }}
+                    {% endif %}
+                {% endfor %}
+            </div>
+            <div class="datos-footer">
+                {% for config in configuraciones %}
+                    {% if config.slug == 'contacto-info' %}
+                        {{config.texto | raw }}
+                    {% endif %}
+                {% endfor %}
+            </div>
+        </footer>
+{% endblock %}        

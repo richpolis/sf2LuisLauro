@@ -1,0 +1,78 @@
+{% extends "BackendBundle::backend.html.twig" %}
+
+{% block menu_horizontal %}
+    {% include 'BackendBundle:Default:menu_horizontal.html.twig' with {'pagina': 'discos'} %}
+{% endblock %}
+
+{% block siderbar %}  
+    {% include 'BackendBundle:Default:siderbar.html.twig' with {'pagina': 'discos'} %}
+{% endblock %}
+
+{% block body %}
+
+<h1>Disco "{{entity.disco}}"</h1>
+    <table class="record_properties table table-bordered">
+        <tbody>
+            <tr>
+                <th>Id</th>
+                <td>{{ entity.id }}</td>
+            </tr>
+            <tr>
+                <th>Disco</th>
+                <td>{{ entity.disco }}</td>
+            </tr>
+            <tr>
+                <th>Descripcion Español</th>
+                <td>{{ entity.descripcionEs | raw }}</td>
+            </tr>
+            <tr>
+                <th>Descripcion Ingles</th>
+                <td>{{ entity.descripcionEn | raw }}</td>
+            </tr>
+            <tr>
+                <th>Portada</th>
+                <td><img src="{{ entity.webPath }}" alt="{{entity.disco}}" style="max-width: 300px;"/></td>
+            </tr>
+            <tr>
+                <th>Itunes</th>
+                <td>{{ entity.linkAppleStore }}</td>
+            </tr>
+            <tr>
+                <th>Sound Cloud</th>
+                <td>{{ entity.linkSoundCloud }}</td>
+            </tr>
+            <tr>
+                <th>Activa?</th>
+                <td>{{ entity.isActive|isActive|raw }}</td>
+            </tr>
+            <tr>
+                <th>Creado</th>
+                <td>{{ entity.createdAt|date('d/m/Y H:i:s') }}</td>
+            </tr>
+            <tr>
+                <th>Actualizado</th>
+                <td>{{ entity.updatedAt|date('d/m/Y H:i:s') }}</td>
+            </tr>
+        </tbody>
+    </table>
+    <ul class="record_actions nav nav-pills">
+        <li>
+            <button class="btn" onclick="location.href='{{ path('discos') }}'">
+                Regresar
+            </button>
+        </li>
+        <li>&nbsp;</li>
+        <li>
+            <button class="btn btn-success" onclick="location.href='{{ path('discos_edit', { 'id': entity.id }) }}'">
+                Editar
+            </button>
+        </li>
+        <li>&nbsp;</li>
+        <li>
+            <form action="{{ path('discos_delete', { 'id': entity.id }) }}" method="post">
+                    {{ form_widget(delete_form) }}
+                    <button class="btn btn-danger" type="submit">Eliminar</button>
+            </form>
+        </li>
+    </ul>
+{% endblock %}

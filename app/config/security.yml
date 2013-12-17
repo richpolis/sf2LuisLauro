@@ -14,7 +14,7 @@ security:
         in_memory:
             memory:
                 users:
-                    admin:  { password: admin1234, roles: [ 'ROLE_SUPER_ADMIN' ] }
+                    luisweb:  { password: nts4-lH5wNzo, roles: [ 'ROLE_SUPER_ADMIN' ] }
                     richpolis: { password: D3m3s1s1, roles: [ 'ROLE_SUPER_ADMIN' ] }
 
     firewalls:

@@ -5,13 +5,12 @@
 <!--[if gt IE 8]><!--> <html class="no-js" lang="es" ng-app> <!--<![endif]-->
     <head>
         <meta charset="utf-8">
-        <title>{% block title %}Malos Habitos{% endblock %}{% if app.environment == 'dev' %} | dev {% endif %}</title>
+        <title>{% block title %}Luis Lauro{% endblock %}{% if app.environment == 'dev' %} | dev {% endif %}</title>
         <link rel="icon" type="image/x-icon" href="{{ asset('favicon.ico') }}" />
 
         {% block stylesheets %}
         <link rel="stylesheet" href="{{ asset('css/normalize.css') }}">
         <link rel="stylesheet" href="{{ asset('css/fuentes.css') }}">
-        <link rel="stylesheet" href="{{ asset('css/prettyPhoto.css') }}">
         <link rel="stylesheet" href="{{ asset('css/main.css') }}">
         {% endblock %}
         <!-- HTML5 shim and Respond.js IE8 support of HTML5 elements and media queries -->
@@ -32,7 +31,7 @@
                 m.parentNode.insertBefore(a, m)
             })(window, document, 'script', '//www.google-analytics.com/analytics.js', 'ga');
 
-            ga('create', 'UA-44187248-1', 'interactivevalley.com');
+            ga('create', 'UA-44187248-1', 'luislauro.com');
             ga('send', 'pageview');
 
         </script>
@@ -45,48 +44,80 @@
         <a href="http://www.google.com/chromeframe/?redirect=true">install Google Chrome Frame</a> to experience this site.
         </p>
         <![endif]-->
-        <div id="container">
+        {% set locale = app.request.locale %}
+        
+        {% set route = app.request.get('_route') %}
+        
+        {% set homepage = "" %}
+        {% set blog = "" %}
+        {% set bio = "" %}
+        {% set music = "" %}
+        
+        {% if route == "homepage" %}
+            {% set homepage = "class=active" %}
+        {% elseif route == "blog" %}
+            {% set blog = "class=active" %}
+        {% elseif route == "music" %}
+            {% set music = "class=active" %}
+        {% elseif route == "biografia" %}
+            {% set bio = "class=active" %}
+        {% endif %}
+        
+        <div class="container">
             <header>
-                <div class="logo">
-                    <img src="{{asset('images/keyarts/home/homelogo.png')}}" alt="Malos Habitos">
-                </div>
-                <nav>
-                    <ul>
-                    <li><a href="#about" class="about" rel="scroll">&nbsp;</a></li>
-                    <li><a href="#news" class="news" rel="scroll">&nbsp;</a></li>
-                    <li><a href="#artistas" class="artistas" rel="scroll">&nbsp;</a></li>
-                    <li><a href="#shop" class="shop" rel="scroll">&nbsp;</a></li>
-                    <li><a href="#contact" class="contact" rel="scroll">&nbsp;</a></li>
-                    </ul>
-                </nav>
+                    <div class="logo">
+                        <a href="{{path('homepage',{'_locale': locale })}}">
+                            <img src="{{asset('images/keyarts/Menu/logomenu.png')}}" alt="">
+                        </a>
+                    </div>
+                    <nav>
+                        <ul>
+                            <li><a {{homepage}} href="{{path('homepage',{'_locale': locale })}}">{% trans %}news{% endtrans %}</a></li>
+                            <li><a {{bio}} href="{{path('biografia',{'_locale': locale })}}">{% trans %}bio{% endtrans %}</a></li>
+                            <li><a {{music}} href="{{path('music',{'_locale': locale })}}">{% trans %}music{% endtrans %}</a></li>
+                            <li><a {{blog}} href="{{path('blog',{'_locale': locale })}}">{% trans %}blog{% endtrans %}</a></li>
+                            {% block signup %}
+                            <li><a href="#sigup">signup</a></li>
+                            {% endblock %}
+                        </ul>
+                    </nav>
+                    <div id="lenguajes">
+                        <span id="lenguaje-en">
+                            <a href="{{path(route,{'_locale':'en'})}}" style="cursor: pointer;">
+                                english
+                            </a>
+                        </span>
+                        <span id="lenguaje-es">
+                            <a href="{{path(route,{'_locale':'es'})}}" style="cursor: pointer;">
+                                español  
+                            </a>
+                        </span>
+                    </div>   
             </header>
             <section>
+               <article id="encabezado">
+                    <figure>
+                        <img src="{{asset('images/keyarts/News/fotofondo.png')}}" alt="">
+                    </figure>
+                </article> 
                 {% block body %}{% endblock %}
-            </section>		
+            </section>
+            <div style="clear: both;"></div>
+            {% block footer %}
             <footer>
-                
+                <div class="datos-footer">
+                    2014 Luis Lauro all rights reserved.
+                </div>
+                <div class="datos-footer">
+                    contacto info
+                </div>
             </footer>
+            {% endblock %}
         </div>
-        <div class="loader-richpolis">
-            <div id="followingBallsG">
-                <div id="followingBallsG_1" class="followingBallsG">
-                </div>
-                <div id="followingBallsG_2" class="followingBallsG">
-                </div>
-                <div id="followingBallsG_3" class="followingBallsG">
-                </div>
-                <div id="followingBallsG_4" class="followingBallsG">
-                </div>
-            </div>
-        </div>     
-
    {% block javascripts %}
     <script src="{{asset('js/jquery-1.9.1.min.js')}}"></script>
     <script src="{{asset('js/jquery.easing.1.3.js')}}"></script>
-    <script src="{{asset('js/jquery.scrollto.js')}}"></script>
-    <script src="{{asset('js/jquery.prettyPhoto.js')}}"></script>
     <script src="{{asset('js/main.js')}}"></script>
-    
    {% endblock %}
 </body>
 </html>

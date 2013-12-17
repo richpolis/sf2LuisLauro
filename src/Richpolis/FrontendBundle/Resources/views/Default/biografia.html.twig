@@ -1,0 +1,53 @@
+{% extends "FrontendBundle::layout.html.twig" %}
+
+{% block stylesheets %}
+ {{parent()}}
+<link rel="stylesheet" href="{{asset('css/jquery.bxslider.css')}}"/>
+<link rel="stylesheet" href="{{asset('css/jquery.modal.css')}}"/>
+<style text="text/css">
+      article.centrado {
+        margin-top: 10px;
+      }
+      article.centrado {
+        border-bottom: none;
+        margin-bottom: 10px;
+      }
+</style>
+{% endblock %}
+
+{% set locale = app.request.locale %}
+
+{% block body %}
+<article class="centrado">
+    {% for registro in registros %}
+        {{ registro.descripcion(locale) | raw  }}
+    {% endfor %}
+</article>
+{% endblock %}
+
+{% block signup %}
+   {% for config in configuraciones %}
+        {% if config.slug == 'signup' %}
+        <li><a href="{{config.texto}}" target="_blank">signup</a></li>
+        {% endif %}
+   {% endfor %}
+{% endblock %}        
+        
+{% block footer %}
+        <footer>
+            <div class="datos-footer">
+                {% for config in configuraciones %}
+                    {% if config.slug == 'pie-pagina' %}
+                        {{config.texto | raw }}
+                    {% endif %}
+                {% endfor %}
+            </div>
+            <div class="datos-footer">
+                {% for config in configuraciones %}
+                    {% if config.slug == 'contacto-info' %}
+                        {{config.texto | raw }}
+                    {% endif %}
+                {% endfor %}
+            </div>
+        </footer>
+{% endblock %}        

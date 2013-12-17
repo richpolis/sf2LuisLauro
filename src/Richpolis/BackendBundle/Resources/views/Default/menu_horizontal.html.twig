@@ -2,8 +2,11 @@
     <li {% if pagina=="homepage" %} class="active" {% endif %}>
         <a href="{{path('backend_homepage')}}">Dashboard</a>
     </li>
-    <li {% if pagina=="galerias" %} class="active" {% endif %}>
-        <a href="{{path('categorias_seleccionar')}}">Publicaciones</a>
+    <li {% if pagina=="publicaciones" %} class="active" {% endif %}>
+        <a href="{{path('publicacion_seleccionar_categoria')}}">Publicaciones</a>
+    </li>
+    <li {% if pagina=="discos" %} class="active" {% endif %}>
+        <a href="{{path('discos')}}">Discos</a>
     </li>
     <li {% if pagina=="configuraciones" %} class="active" {% endif %}>
         <a href="{{path('backend_configuraciones')}}">Configuraciones</a>

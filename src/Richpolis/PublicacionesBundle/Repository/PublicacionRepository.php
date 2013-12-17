@@ -26,7 +26,7 @@ class PublicacionRepository extends EntityRepository
     
     public function getQueryPublicacionActivas($todas=false){
         $query=$this->createQueryBuilder('p')
-                    ->orderBy('p.posicion', 'ASC');
+                    ->orderBy('p.posicion', 'DESC');
         if(!$todas){
             $query->andWhere('p.isActive=:active')
                   ->setParameter('active', true);
@@ -39,11 +39,11 @@ class PublicacionRepository extends EntityRepository
         return $query->getResult();
     }
 
-    public function getQueryPublicacionPorCategoriaActivas($categoria,$todas=false){
+    public function getQueryPublicacionPorCategoriaActivas($categoria,$todas=false,$orden="DESC"){
         $query=$this->createQueryBuilder('p')
                     ->where('p.categoria=:categoria')
                     ->setParameter('categoria',$categoria)
-                    ->orderBy('p.posicion', 'ASC');
+                    ->orderBy('p.posicion', $orden);
         if(!$todas){
             $query->andWhere('p.isActive=:active')
                   ->setParameter('active', true);
@@ -51,19 +51,19 @@ class PublicacionRepository extends EntityRepository
         return $query->getQuery();
     }
     
-    public function getPublicacionPorCategoriaActivas($categoria,$todas=false){
-        $query=$this->getQueryPublicacionPorCategoriaActivas($categoria,$todas);
+    public function getPublicacionPorCategoriaActivas($categoria,$todas=false,$orden="DESC"){
+        $query=$this->getQueryPublicacionPorCategoriaActivas($categoria,$todas,$orden);
         return $query->getResult();
     }
     
-    public function getQueryPublicacionPorTipoCategoriaActivas($tipoCategoria,$todas=false){
+    public function getQueryPublicacionPorTipoCategoriaActivas($tipoCategoria,$todas=false,$orden='DESC'){
         $query=$this->getEntityManager()->createQueryBuilder();
                 $query->select('p,c')
                     ->from('Richpolis\PublicacionesBundle\Entity\Publicacion', 'p')
                     ->leftJoin('p.categoria', 'c')
                     ->where('c.tipoCategoria=:tipo')
                     ->setParameter('tipo',$tipoCategoria)
-                    ->orderBy('p.posicion', 'ASC');
+                    ->orderBy('p.posicion', $orden);
         if(!$todas){
             $query->andWhere('p.isActive=:active')
                   ->setParameter('active', true);
@@ -72,7 +72,7 @@ class PublicacionRepository extends EntityRepository
     }
     
     public function getPublicacionPorTipoCategoriaActivas($tipoCategoria,$todas=false){
-        $query=$this->getQueryPublicacionPorTipoCategoriaActivas($tipoCategoria,$todas);
+        $query=$this->getQueryPublicacionPorTipoCategoriaActivas($tipoCategoria,$todas,$orden);
         return $query->getResult();
     }
     public function getRegistroUpOrDown(Publicacion $publicacion,$up=true){

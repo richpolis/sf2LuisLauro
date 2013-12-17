@@ -1,0 +1,50 @@
+{% extends "BackendBundle::backend.html.twig" %}
+
+{% block menu_horizontal %}
+    {% include 'BackendBundle:Default:menu_horizontal.html.twig' with {'pagina': 'discos'} %}
+{% endblock %}
+
+{% block siderbar %}  
+    {% include 'BackendBundle:Default:siderbar.html.twig' with {'pagina': 'tracks'} %}
+{% endblock %}
+
+{% block body %}
+
+<h1>Track "{{entity.track}}"</h1>
+    <table class="record_properties table table-bordered">
+        <tbody>
+            <tr>
+                <th>Id</th>
+                <td>{{ entity.id }}</td>
+            </tr>
+            <tr>
+                <th>Track</th>
+                <td>{{ entity.track }}</td>
+            </tr>
+            <tr>
+                <th>Activa?</th>
+                <td>{{ entity.isActive  | isActive | raw}}</td>
+            </tr>
+        </tbody>
+    </table>
+    <ul class="record_actions nav nav-pills">
+        <li>
+            <button class="btn" onclick="location.href='{{ path('tracks') }}'">
+                Regresar
+            </button>
+        </li>
+        <li>&nbsp;</li>
+        <li>
+            <button class="btn btn-success" onclick="location.href='{{ path('tracks_edit', { 'id': entity.id }) }}'">
+                Editar
+            </button>
+        </li>
+        <li>&nbsp;</li>
+        <li>
+            <form action="{{ path('tracks_delete', { 'id': entity.id }) }}" method="post">
+                    {{ form_widget(delete_form) }}
+                    <button class="btn btn-danger" type="submit">Eliminar</button>
+            </form>
+        </li>
+    </ul>
+{% endblock %}

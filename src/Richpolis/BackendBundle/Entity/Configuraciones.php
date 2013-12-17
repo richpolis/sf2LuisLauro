@@ -196,7 +196,7 @@ class Configuraciones
     
     
     /**
-    ** @ORM\PrePersist
+    * @ORM\PrePersist
     * @ORM\PreUpdate
     */
     public function preSaveLinkVideo()

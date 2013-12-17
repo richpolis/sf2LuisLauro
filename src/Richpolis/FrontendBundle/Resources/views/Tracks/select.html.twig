@@ -1,0 +1,21 @@
+{% extends "BackendBundle::backend.html.twig" %}
+
+{% block menu_horizontal %}
+    {% include 'BackendBundle:Default:menu_horizontal.html.twig' with {'pagina': 'discos'} %}
+{% endblock %}
+
+
+{% block body %}
+<h1>Seleccionar disco</h1>
+<ul class="nav nav-list">
+    <li class="nav-header">Discos</li>
+    {% for disco in discos %}
+    <li class="disco-publicacion" disco="{{disco.id}}">
+        <a href="{{path('tracks_por_disco',{'disco': disco.id })}}">
+        	{{disco}}
+        </a>
+    </li>
+    {% endfor %}    
+</ul>
+{% endblock %}
+

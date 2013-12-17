@@ -2,369 +2,133 @@
 
 {% block stylesheets %}
  {{parent()}}
-<link rel="stylesheet" href="{{asset('css/jquery.bxslider.css')}}"/>
-<link rel="stylesheet" href="{{asset('css/jquery.modal.css')}}"/>
-<style>
-        #followingBallsG{
-            position:relative;
-            width:256px;
-            height:20px;
-            
-        }
-
-        .followingBallsG{
-            background-color:#8A8A8A;
-            position:absolute;
-            top:0;
-            left:0;
-            width:20px;
-            height:20px;
-            -moz-border-radius:10px;
-            -moz-animation-name:bounce_followingBallsG;
-            -moz-animation-duration:1.7s;
-            -moz-animation-iteration-count:infinite;
-            -moz-animation-direction:linear;
-            -webkit-border-radius:10px;
-            -webkit-animation-name:bounce_followingBallsG;
-            -webkit-animation-duration:1.7s;
-            -webkit-animation-iteration-count:infinite;
-            -webkit-animation-direction:linear;
-            -ms-border-radius:10px;
-            -ms-animation-name:bounce_followingBallsG;
-            -ms-animation-duration:1.7s;
-            -ms-animation-iteration-count:infinite;
-            -ms-animation-direction:linear;
-            -o-border-radius:10px;
-            -o-animation-name:bounce_followingBallsG;
-            -o-animation-duration:1.7s;
-            -o-animation-iteration-count:infinite;
-            -o-animation-direction:linear;
-            border-radius:10px;
-            animation-name:bounce_followingBallsG;
-            animation-duration:1.7s;
-            animation-iteration-count:infinite;
-            animation-direction:linear;
-        }
-
-        #followingBallsG_1{
-            -moz-animation-delay:0s;
-        }
-
-        #followingBallsG_1{
-            -webkit-animation-delay:0s;
-        }
-
-        #followingBallsG_1{
-            -ms-animation-delay:0s;
-        }
-
-        #followingBallsG_1{
-            -o-animation-delay:0s;
-        }
-
-        #followingBallsG_1{
-            animation-delay:0s;
-        }
-
-        #followingBallsG_2{
-            -moz-animation-delay:0.17s;
-            -webkit-animation-delay:0.17s;
-            -ms-animation-delay:0.17s;
-            -o-animation-delay:0.17s;
-            animation-delay:0.17s;
-        }
-
-        #followingBallsG_3{
-            -moz-animation-delay:0.34s;
-            -webkit-animation-delay:0.34s;
-            -ms-animation-delay:0.34s;
-            -o-animation-delay:0.34s;
-            animation-delay:0.34s;
-        }
-
-        #followingBallsG_4{
-            -moz-animation-delay:0.51s;
-            -webkit-animation-delay:0.51s;
-            -ms-animation-delay:0.51s;
-            -o-animation-delay:0.51s;
-            animation-delay:0.51s;
-        }
-
-        @-moz-keyframes bounce_followingBallsG{
-            0%{
-                left:0px;
-                background-color:#8A8A8A;
-            }
-
-            50%{
-                left:236px;
-                background-color:#FFFFFF;
-            }
-
-            100%{
-                left:0px;
-                background-color:#8A8A8A;
-            }
-
-        }
-
-        @-webkit-keyframes bounce_followingBallsG{
-            0%{
-                left:0px;
-                background-color:#8A8A8A;
-            }
-
-            50%{
-                left:236px;
-                background-color:#FFFFFF;
-            }
-
-            100%{
-                left:0px;
-                background-color:#8A8A8A;
-            }
-
-        }
-
-        @-ms-keyframes bounce_followingBallsG{
-            0%{
-                left:0px;
-                background-color:#8A8A8A;
-            }
-
-            50%{
-                left:236px;
-                background-color:#FFFFFF;
-            }
-
-            100%{
-                left:0px;
-                background-color:#8A8A8A;
-            }
-
-        }
-
-        @-o-keyframes bounce_followingBallsG{
-            0%{
-                left:0px;
-                background-color:#8A8A8A;
-            }
-
-            50%{
-                left:236px;
-                background-color:#FFFFFF;
-            }
-
-            100%{
-                left:0px;
-                background-color:#8A8A8A;
-            }
-
-        }
-
-        @keyframes bounce_followingBallsG{
-            0%{
-                left:0px;
-                background-color:#8A8A8A;
-            }
-
-            50%{
-                left:236px;
-                background-color:#FFFFFF;
-            }
-
-            100%{
-                left:0px;
-                background-color:#8A8A8A;
-            }
-
-        }
-
-    </style>
-
+<link rel="stylesheet" href="{{asset('css/paginador.css')}}"/>
+<link rel="stylesheet" type="text/css" href="{{ asset('css/fancy/jquery.fancybox.css') }}?v=2.1.5" media="screen" />
 {% endblock %}
 
+{% set locale = app.request.locale %}
+
 {% block body %}
-    <article id="twitter-feed">
-     {% render(controller("FrontendBundle:Default:lastTweets",{'username': 'maloshbitos'})) %}
-            <div class="redes-sociales-twitter-feed">
-                <a href="https://twitter.com/maloshbitos" class="red-social-twitter" target="_blank"></a>
-                <a href="https://www.facebook.com/maloshabitosdiscos" class="red-social-facebook" target="_blank"></a>
-            </div>               
+
+<article class="izquierda">
+    <header>
+        <h2>{% trans %}news{% endtrans %}</h2>
+    </header>	
+    <ul class="lista-noticias">
+	{% for noticia in pagination %}
+            <li class="noticia">
+                <div>
+                    {% if noticia.archivo | length > 0 %}
+                    <figure class="imagen-noticia">
+                        {% if noticia.isImagen == true %}
+                        <a href="{{noticia.webPath}}" class="fancybox" >
+                        {% else %}
+                        <a href="{{noticia.archivo}}" class="fancybox-media iframe">
+                        {% endif %}   
+                        <img src="{{noticia.thumbnailWebPath}}" alt="{{noticia.titulo(locale)}}">
+                        </a>
+                    </figure>
+                    {% endif %} 
+                    <h3 class="titulo-noticia">{{noticia.titulo(locale)}}</h3>
+                    <time class="tiempo-noticia">{{noticia.createdAt | date('M y')}}</time>
+                    <div class="contenido-noticia">
+			{{noticia.descripcion(locale) | raw }}
+                    </div>
+                 </div>
+             </li>
+	{% endfor %}
+     </ul>
+        {% include 'FrontendBundle:Default:paginador.html.twig' with {'data':data,'locale':locale,'ruta':'homepage'} %}
         </article>
-        <article id="about">
-            <header class="header-about">
-                <ul class="menu-about menu-seccion">
-                    <li><a href="#twitter-feed" class="home" rel="scroll">&nbsp;</a></li>
-                    <li><a href="#about" class="about active" rel="scroll">&nbsp;</a></li>
-                    <li><a href="#news" class="news" rel="scroll">&nbsp;</a></li>
-                    <li><a href="#artistas" class="artistas" rel="scroll">&nbsp;</a></li>
-                    <li><a href="#shop" class="shop" rel="scroll">&nbsp;</a></li>
-                    <li><a href="#contact" class="contact" rel="scroll">&nbsp;</a></li>
-                </ul>
+        <article class="derecha">
+            <header>
+                <h2>{% trans %}latest instangram{% endtrans %}</h2>
             </header>
-            <figure class="logo">
-                <img src="{{asset('images/keyarts/about/logo.png')}}" alt="">
+            <figure class="imagen-instagram instagram">
+                <img src="{{asset('images/keyarts/News/fotoinstagram.png')}}" alt="">
             </figure>
-    {{ about.texto | raw }}	
+                
+            {# render(controller("FrontendBundle:Default:instagramMedia",{'username': 'richpolis'})) #}
         </article>
-        <article id="news">
-            <header class="header-news">
-                <ul class="menu-news menu-seccion">
-                    <li><a href="#twitter-feed" class="home" rel="scroll">&nbsp;</a></li>
-                    <li><a href="#about" class="about" rel="scroll">&nbsp;</a></li>
-                    <li><a href="#news" class="news active" rel="scroll">&nbsp;</a></li>
-                    <li><a href="#artistas" class="artistas" rel="scroll">&nbsp;</a></li>
-                    <li><a href="#shop" class="shop" rel="scroll">&nbsp;</a></li>
-                    <li><a href="#contact" class="contact" rel="scroll">&nbsp;</a></li>
-                </ul>
+
+        <article class="derecha">
+            <header>
+                <h2>{% trans %}twitter feed{% endtrans %}</h2>
             </header>
-            <div class="contenido-news">
-        {# render(controller("FrontendBundle:Default:noticias")) #}
-
-                </div>
-            </article>
-            <article id="artistas">
-                <header class="header-artistas">
-                    <ul class="menu-artistas menu-seccion">
-                        <li><a href="#twitter-feed" class="home" rel="scroll">&nbsp;</a></li>
-                        <li><a href="#about" class="about" rel="scroll">&nbsp;</a></li>
-                        <li><a href="#news" class="news" rel="scroll">&nbsp;</a></li>
-                        <li><a href="#artistas" class="artistas active" rel="scroll">&nbsp;</a></li>
-                        <li><a href="#shop" class="shop" rel="scroll">&nbsp;</a></li>
-                        <li><a href="#contact" class="contact" rel="scroll">&nbsp;</a></li>
-                    </ul>
-                </header>
-                <div class="contenido-ajax">
-
-                </div>
-                <div class="lista-artistas">
-                </div>
-            </article>
-            <article id="shop">
-                <header class="header-shop">
-                    <ul class="menu-shop menu-seccion">
-                        <li><a href="#twitter-feed" class="home" rel="scroll">&nbsp;</a></li>
-                        <li><a href="#about" class="about" rel="scroll">&nbsp;</a></li>
-                        <li><a href="#news" class="news" rel="scroll">&nbsp;</a></li>
-                        <li><a href="#artistas" class="artistas" rel="scroll">&nbsp;</a></li>
-                        <li><a href="#shop" class="shop active" rel="scroll">&nbsp;</a></li>
-                        <li><a href="#contact" class="contact" rel="scroll">&nbsp;</a></li>
-                    </ul>
-                </header>
-                <div class="categorias-shop">
-                    <a href="#shop" onclick="javascript:paginaProductos('ropa', 1);" class="categoria-shop categoria-shop-ropa">
-                        Ropa
-                    </a>
-                    <a href="#shop" onclick="javascript:paginaProductos('discos', 1);" class="categoria-shop categoria-shop-discos active">
-                        Discos
-                    </a>
-                </div>
-                <div class="contenido-shop">
-                    <div class="loader"></div>
-                </div>    
-            </article>
-            <article id="contact">
-                <header class="header-contact">
-                    <ul class="menu-contact menu-seccion">
-                        <li><a href="#twitter-feed" class="home" rel="scroll">&nbsp;</a></li>
-                        <li><a href="#about" class="about" rel="scroll">&nbsp;</a></li>
-                        <li><a href="#news" class="news" rel="scroll">&nbsp;</a></li>
-                        <li><a href="#artistas" class="artistas" rel="scroll">&nbsp;</a></li>
-                        <li><a href="#shop" class="shop" rel="scroll">&nbsp;</a></li>
-                        <li><a href="#contact" class="contact active" rel="scroll">&nbsp;</a></li>
-                    </ul>
-                </header>
-                <div class="contacto">
-                    <div class="contenido">
-                        <figure class="logo">
-                            <img src="{{asset('images/keyarts/contact/logo_contacto.png')}}" alt="logo"/>
-                        </figure>
-                        <div class="contenido-contact">
-               {{contacto.texto | raw }}
-                            </div>
-                        </div>
-                        <div class="formulario">
-            {% include 'FrontendBundle:Default:contacto.html.twig' with {'form': form} %}
-                            </div>
-                        </div>
-                        <div class="logo-interactive-valley">
-                            <a href="http://interactivevalley.com" target="_blank">
-                                <figure><img src="{{asset('images/keyarts/contact/developed.png')}}" alt="Interactive Valley"></figure>
-                            </a>
-                        </div>
-                    </article>
-<a title="" id="toTo_button" style="display: none;">
-    <img src="{{asset('images/up.png')}}" alt="">
-</a>
+	{% render(controller("FrontendBundle:Default:lastTweets",{'username': 'luis_lauro'})) %}
+        </article>
 {% endblock %}
 {% block javascripts %}
   {{parent()}}
-<script src="{{asset('js/jquery.bxslider.min.js')}}"></script>
-<script src="{{asset('js/jquery.modal2.js')}}"></script>
-<script src="{{asset('js/sfrichpolis.js')}}"></script>
+<script src="{{asset('js/fancy/jquery.fancybox.js')}}?v=2.1.5"></script>
+<script src="{{asset('js/fancy/jquery.fancybox-media.js')}}?v=2.1.5"></script>
 <script>
     $(document).ready(function(){
-        $.configPrettyPhoto();
-        
-        setTimeout(function(){
-            paginaNoticias(1);
-        },200);
-        setTimeout(function(){
-            paginaArtistas();
-        },400);
-        setTimeout(function(){
-            paginaProductos("discos",1);
-        },600);
-        
-        $.iniciarCircle();
-    });
-
-jQuery.iniciarCircle=function(){
-        $('ul.tweets-lista li:first-child').slideUp("slow",function(){
-              $('ul.tweets-lista').append($(this).slideDown("fast"));
-         });
-         setTimeout(function(){
-              $.iniciarCircle();
-         },6000);
- }
-</script>
-<script>
-    $(function() {
-     var $menuSeccion=$(".menu-seccion");
-        
-    //$.scrollTo( 0 );
-    // Scroll to Function
-    function scrollingTo(id) {
-        if(id!="#twitter-feed"){
-            $('html,body').animate({scrollTop: ($(id).offset().top)}, 500, 'easeOutCubic');    
-        }else{
-            $('html,body').animate({scrollTop: ($(id).offset().top - 220)}, 500, 'easeOutCubic');
-        }
-        
-    }
-    
-    $('a[rel="scroll"]').on('click', function() {
-        var target = $(this).attr('href');
-        scrollingTo(target);
-        $menuSeccion.animate({'opacity':0},200,function(){
-            var menu = ".menu-" + target.replace("#","");
-            $(menu).animate({'opacity':1},"slow");
+        $("a.fancybox").fancybox();
+        $("a.fancybox-media").fancybox({
+            helpers : {
+                media: true
+            },
+            youtube : {
+                autoplay: 0
+            }
         });
+        $.iniciarCircle();
+        
+        
     });
-   
-   var hash = $(location).attr('hash');
-   if(hash.length){
-       setTimeout(function(){
-            scrollingTo(hash);
-            $menuSeccion.animate({'opacity':0},800,function(){
-                var menu = ".menu-" + hash.replace("#","");
-                $(menu).animate({'opacity':1},"slow");
-            });
-       },200);
-   }
-   
-
-});
+    jQuery.iniciarCircle=function(){
+        $('ul.tweets-lista li:first-child').slideUp("slow",function(){
+            $('ul.tweets-lista').append($(this).slideDown("fast"));
+        });
+        setTimeout(function(){
+            $.iniciarCircle();
+        },4000);
+     }
 </script>
+        <script>
+            $(document).ready(function() {
+                $.ajax({
+                    type: "GET",
+                    dataType: "jsonp",
+                    cache: false,
+                    url: "https://api.instagram.com/v1/users/774189325/media/recent/?access_token=774189325.7ff0c4c.f754257fbcde44b0b90c5dca972f30bb",
+                    success: function(data) {
+                        debugger;
+                        for (var i = 0; i < 6; i++) {
+                            //$(".instagram").append("<div class='instagram-placeholder'><a target='_blank' href='" + data.data[i].link +"'><img class='instagram-image' src='" + data.data[i].images.thumbnail.url +"' /></a></div>");
+                            $(".instagram").html("<div class='instagram-placeholder'><a target='_blank' href='" + data.data[i].link +"'><img class='instagram-image' src='" + data.data[i].images.standard_resolution.url +"' /></a></div>");  
+                        }   
+
+                    }
+                });
+            });
+        </script>
 {% endblock %}
+
+{% block signup %}
+   {% for config in configuraciones %}
+        {% if config.slug == 'signup' %}
+        <li><a href="{{config.texto}}" target="_blank">signup</a></li>
+        {% endif %}
+   {% endfor %}
+{% endblock %}        
+        
+{% block footer %}
+        <footer>
+            <div class="datos-footer">
+                {% for config in configuraciones %}
+                    {% if config.slug == 'pie-pagina' %}
+                        {{config.texto | raw }}
+                    {% endif %}
+                {% endfor %}
+            </div>
+            <div class="datos-footer">
+                {% for config in configuraciones %}
+                    {% if config.slug == 'contacto-info' %}
+                        {{config.texto | raw }}
+                    {% endif %}
+                {% endfor %}
+            </div>
+        </footer>
+{% endblock %}        

@@ -1,8 +1,10 @@
-<?php
+    <?php
 
 namespace Richpolis\PublicacionesBundle\Entity;
 
 use Doctrine\ORM\Mapping as ORM;
+use Symfony\Component\Validator\Constraints as Assert;
+use Richpolis\BackendBundle\Utils\Richsys as RpsStms;
 
 /**
  * Publicacion
@@ -25,32 +27,49 @@ class Publicacion
     /**
      * @var string
      *
-     * @ORM\Column(name="titulo", type="string", length=255 )
+     * @ORM\Column(name="titulo_es", type="string", length=255 )
+     * @Assert\NotBlank()
      */
-    private $titulo;
-
-    /**
-     * @var string
-     *
-     * @ORM\Column(name="descripcion", type="text" )
-     */
-    private $descripcion;  
-    
+    private $tituloEs;
     
     /**
      * @var string
      *
-     * @ORM\Column(name="twitter", type="string", length=255,nullable=true)
+     * @ORM\Column(name="titulo_en", type="string", length=255 )
+     * @Assert\NotBlank()
      */
-    private $twitter;
+    private $tituloEn;
 
     /**
      * @var string
      *
-     * @ORM\Column(name="facebook", type="string", length=255, nullable=true)
+     * @ORM\Column(name="descripcion_es", type="text" )
+     * @Assert\NotBlank()
      */
-    private $facebook;    
-
+    private $descripcionEs;
+    
+    /**
+     * @var string
+     *
+     * @ORM\Column(name="descripcion_en", type="text" )
+     * @Assert\NotBlank()
+     */
+    private $descripcionEn;
+    
+    /**
+     * @var string
+     *
+     * @ORM\Column(name="archivo", type="string", length=255, nullable=true )
+     */
+    private $archivo;
+    
+    /**
+     * @var string
+     *
+     * @ORM\Column(name="thumbnail", type="string", length=255, nullable=true )
+     */
+    private $thumbnail;
+    
     /**
      * @var integer
      *
@@ -72,20 +91,10 @@ class Publicacion
      */
     private $isActive;
     
-    
-    /**
-     * @ManyToMany(targetEntity="Richpolis\")
-     * @JoinTable(name="users_groups",
-     *      joinColumns={@JoinColumn(name="user_id", referencedColumnName="id")},
-     *      inverseJoinColumns={@JoinColumn(name="group_id", referencedColumnName="id")}
-     *      )
-     */
-    private $galeria;
-
     /**
      * @var \DateTime
      *
-     * @ORM\Column(name="created_at", type="datetime", nullable=false)
+     * @ORM\Column(name="created_at", type="datetime", nullable=true)
      */
     private $createdAt;
 
@@ -96,9 +105,18 @@ class Publicacion
      */
     private $updatedAt;
     
+    /**
+     * @var \CategoriasPublicacion
+     *
+     * @ORM\ManyToOne(targetEntity="CategoriasPublicacion", inversedBy="publicaciones" )
+     * @ORM\JoinColumns({
+     *   @ORM\JoinColumn(name="categoria_id", referencedColumnName="id")
+     * })
+     */
+    private $categoria;
+    
     public function __construct() {
-       $this->isActive        =   true;
-       $this->galeria = null;
+       $this->isActive = true;
     }
     
     public function __toString() {
@@ -122,9 +140,14 @@ class Publicacion
      * @param string $locale 
      * @return Publicacion
      */
-    public function setTitulo($titulo)
+    public function setTitulo($titulo,$locale)
     {
-        $this->titulo = $titulo;
+        if($locale == "es"){
+            $this->tituloEs = $titulo;
+        }else{
+            $this->tituloEn = $titulo;
+        }
+        
         return $this;
     }
 
@@ -133,9 +156,14 @@ class Publicacion
      *
      * @return string 
      */
-    public function getTitulo()
+    public function getTitulo($locale)
     {
-        return $this->titulo;
+        if($locale == "es"){
+            $titulo = $this->tituloEs;
+        }else{
+            $titulo = $this->tituloEn;
+        }
+        return $titulo;
     }
 
     /**
@@ -184,28 +212,6 @@ class Publicacion
         return $this->slug;
     }
     
-    /**
-     * Set categoria
-     *
-     * @param \Richpolis\PublicacionesBundle\Entity\CategoriasPublicacion $categoria
-     * @return Publicacion
-     */
-    public function setCategoria(\Richpolis\PublicacionesBundle\Entity\CategoriasPublicacion $categoria = null)
-    {
-        $this->categoria = $categoria;
-    
-        return $this;
-    }
-
-    /**
-     * Get categoria
-     *
-     * @return \Richpolis\PublicacionesBundle\Entity\CategoriasPublicacion 
-     */
-    public function getCategoria()
-    {
-        return $this->categoria;
-    }
     
     /**
      * Set isActive
@@ -275,6 +281,29 @@ class Publicacion
     {
         return $this->updatedAt;
     }
+
+    /**
+     * Set categoria
+     *
+     * @param \Richpolis\PublicacionesBundle\Entity\CategoriasPublicacion $categoria
+     * @return Publicacion
+     */
+    public function setCategoria(\Richpolis\PublicacionesBundle\Entity\CategoriasPublicacion $categoria = null)
+    {
+        $this->categoria = $categoria;
+    
+        return $this;
+    }
+
+    /**
+     * Get categoria
+     *
+     * @return \Richpolis\PublicacionesBundle\Entity\CategoriasPublicacion 
+     */
+    public function getCategoria()
+    {
+        return $this->categoria;
+    }
     
     /*
      * Slugable
@@ -285,7 +314,7 @@ class Publicacion
     */
     public function setSlugAtValue()
     {
-        $this->slug = \Richpolis\BackendBundle\Utils\Richsys::slugify($this->getTitulo());
+        $this->slug = RpsStms::slugify($this->getTituloEn());
     }
     
     /*
@@ -325,7 +354,7 @@ class Publicacion
     
     public function getTituloCorto($max=15){
         if($this->titulo)
-            return substr($this->getTitulo(), 0, $max);
+            return substr($this->getTituloEn(), 0, $max);
         else
             return "Sin titulo";
     }
@@ -364,10 +393,13 @@ class Publicacion
      *
      * @return Publicacion
      */
-    public function setDescripcion($descripcion)
+    public function setDescripcion($descripcion,$locale)
     {
-        $this->descripcion = $descripcion;
-
+        if($locale == "es"){
+            $this->descripcionEs = $descripcion;
+        }else{
+            $this->descripcionEn = $descripcion;
+        }
         return $this;
     }
 
@@ -376,58 +408,338 @@ class Publicacion
      *
      * @return string 
      */
-    public function getDescripcion()
+    public function getDescripcion($locale)
     {
-        return $this->descripcion;
+        if($locale == "es"){
+            $descripcion = $this->descripcionEs;
+        }else{
+            $descripcion = $this->descripcionEn;
+        }
+        return $descripcion;
+    }
+
+    /*
+     * Crea el thumbnail y lo guarda en un carpeta dentro del webPath thumbnails
+     * 
+     * @return void
+     */
+    public function crearThumbnail(){
+        $imagine= new \Imagine\Gd\Imagine();
+        $mode= \Imagine\Image\ImageInterface::THUMBNAIL_OUTBOUND;
+        $size=new \Imagine\Image\Box($this->getWidth(),$this->getHeight());
+        $this->thumbnail=$this->archivo;
+        
+        $imagine->open($this->getAbsolutePath())
+                ->thumbnail($size, $mode)
+                ->save($this->getAbosluteThumbnailPath());
+        
+    }
+    
+    /*** links videos ***/
+    
+    public $linkVideo;
+    
+    /**
+    * @ORM\PrePersist
+    * @ORM\PreUpdate
+    */
+    public function preSaveGaleria()
+    {
+      if (null !== $this->linkVideo) {  
+        $tipoArchivo= RpsStms::getTipoArchivo($this->linkVideo);
+        
+        if(!(null === $this->archivo)){
+            $this->removeUpload();
+        }
+        
+        if ($tipoArchivo == RpsStms::$TIPO_ARCHIVO_LINK) {
+          $infoVideo=  \Richpolis\BackendBundle\Utils\Richsys::getTitleAndImageVideoYoutube($this->linkVideo);
+          $this->setThumbnail($infoVideo['thumbnail']);
+          $this->setArchivo($infoVideo['urlVideo']);
+        }
+      }
+    }
+    
+    
+    public function getTipoArchivo(){
+        return RpsStms::getTipoArchivo($this->getArchivo());
+    }
+    
+    /*** uploads ***/
+    
+    public $file;
+    
+    /**
+    * @ORM\PrePersist
+    * @ORM\PreUpdate
+    */
+    public function preUpload()
+    {
+      if (null !== $this->file) {
+        // do whatever you want to generate a unique name
+        $this->archivo       =   uniqid().'.'.$this->file->guessExtension();
+        $this->thumbnail    =   $this->archivo;
+      }
     }
 
     /**
-     * Set twitter
-     *
-     * @param string $twitter
-     *
-     * @return Publicacion
-     */
-    public function setTwitter($twitter)
+    * @ORM\PostPersist
+    * @ORM\PostUpdate
+    */
+    public function upload()
     {
-        $this->twitter = $twitter;
+      if (null === $this->file) {
+        return;
+      }
 
-        return $this;
+      // if there is an error when moving the file, an exception will
+      // be automatically thrown by move(). This will properly prevent
+      // the entity from being persisted to the database on error
+      $this->file->move($this->getUploadRootDir(), $this->archivo);
+
+      $this->crearThumbnail();
+      
+      unset($this->file);
     }
 
     /**
-     * Get twitter
-     *
-     * @return string 
-     */
-    public function getTwitter()
+    * @ORM\PostRemove
+    */
+    public function removeUpload()
     {
-        return $this->twitter;
+      if ($file = $this->getAbsolutePath()) {
+        if(file_exists($file)){
+            unlink($file);
+        }
+      }
+      if($thumbnail=$this->getAbosluteThumbnailPath()){
+         if(file_exists($thumbnail)){
+            unlink($thumbnail);
+        }
+      }
+    }
+    
+    protected function getUploadDir()
+    {
+        return '/uploads/publicaciones';
     }
 
-    /**
-     * Set facebook
-     *
-     * @param string $facebook
-     *
-     * @return Publicacion
-     */
-    public function setFacebook($facebook)
+    protected function getUploadRootDir()
     {
-        $this->facebook = $facebook;
-
-        return $this;
+        return __DIR__.'/../../../../web'.$this->getUploadDir();
+    }
+    
+    protected function getThumbnailRootDir()
+    {
+        return __DIR__.'/../../../../web'.$this->getUploadDir().'/thumbnails';
+    }
+        
+    public function getWebPath()
+    {
+        return null === $this->archivo ? null : $this->getUploadDir().'/'.$this->archivo;
     }
 
-    /**
-     * Get facebook
-     *
-     * @return string 
-     */
-    public function getFacebook()
+    public function getThumbnailWebPath()
     {
-        return $this->facebook;
+        if($this->getIsImagen()){
+            if(!$this->thumbnail){
+                if(!file_exists($this->getAbosluteThumbnailPath()) && file_exists($this->getAbsolutePath())){
+                    $this->crearThumbnail();
+                }
+            }
+            return null === $this->thumbnail ? null : $this->getUploadDir().'/thumbnails/'.$this->thumbnail;
+        }else{
+            return $this->getThumbnail();
+        }
     }
+    
+    public function getAbsolutePath()
+    {
+        return null === $this->archivo ? null : $this->getUploadRootDir().'/'.$this->archivo;
+    }
+    
+    public function getAbosluteThumbnailPath(){
+        return null === $this->thumbnail ? null : $this->getUploadRootDir().'/thumbnails/'.$this->thumbnail;
+    }
+    
+    public function actualizaThumbnail()
+    {
+      if($thumbnail=$this->getAbosluteThumbnailPath()){
+         if(file_exists($thumbnail)){
+            unlink($thumbnail);
+        }
+      }
+      $this->crearThumbnail();
+    }
+    
+    public function getArchivoView(){
+        $opciones=array(
+            'tipo_archivo'  => $this->getTipoArchivo(),
+            'archivo'   =>  $this->getArchivo(),
+            'carpeta'   =>  'publicaciones',
+            'width'     =>  $this->getWidth(),
+            'height'    =>  $this->getHeight(),
+        );
+        
+        return RpsStms::getArchivoView($opciones);
+    }
+    
+    public function getWidth(){
+        return 493;
+    }
+    
+    public function getHeight(){
+        return 269;
+    }
+    
+    public function getIsImagen(){
+        return (RpsStms::getTipoArchivo($this->getArchivo())==RpsStms::$TIPO_ARCHIVO_IMAGEN);
+    }
+    
 
     
+
+    /**
+     * Set tituloEs
+     *
+     * @param string $tituloEs
+     *
+     * @return Publicacion
+     */
+    public function setTituloEs($tituloEs)
+    {
+        $this->tituloEs = $tituloEs;
+
+        return $this;
+    }
+
+    /**
+     * Get tituloEs
+     *
+     * @return string 
+     */
+    public function getTituloEs()
+    {
+        return $this->tituloEs;
+    }
+
+    /**
+     * Set tituloEn
+     *
+     * @param string $tituloEn
+     *
+     * @return Publicacion
+     */
+    public function setTituloEn($tituloEn)
+    {
+        $this->tituloEn = $tituloEn;
+
+        return $this;
+    }
+
+    /**
+     * Get tituloEn
+     *
+     * @return string 
+     */
+    public function getTituloEn()
+    {
+        return $this->tituloEn;
+    }
+
+    /**
+     * Set descripcionEs
+     *
+     * @param string $descripcionEs
+     *
+     * @return Publicacion
+     */
+    public function setDescripcionEs($descripcionEs)
+    {
+        $this->descripcionEs = $descripcionEs;
+
+        return $this;
+    }
+
+    /**
+     * Get descripcionEs
+     *
+     * @return string 
+     */
+    public function getDescripcionEs()
+    {
+        return $this->descripcionEs;
+    }
+
+    /**
+     * Set descripcionEn
+     *
+     * @param string $descripcionEn
+     *
+     * @return Publicacion
+     */
+    public function setDescripcionEn($descripcionEn)
+    {
+        $this->descripcionEn = $descripcionEn;
+
+        return $this;
+    }
+
+    /**
+     * Get descripcionEn
+     *
+     * @return string 
+     */
+    public function getDescripcionEn()
+    {
+        return $this->descripcionEn;
+    }
+
+    /**
+     * Set archivo
+     *
+     * @param string $archivo
+     *
+     * @return Publicacion
+     */
+    public function setArchivo($archivo)
+    {
+        $this->archivo = $archivo;
+
+        return $this;
+    }
+
+    /**
+     * Get archivo
+     *
+     * @return string 
+     */
+    public function getArchivo()
+    {
+        return $this->archivo;
+    }
+
+    /**
+     * Set thumbnail
+     *
+     * @param string $thumbnail
+     *
+     * @return Publicacion
+     */
+    public function setThumbnail($thumbnail)
+    {
+        $this->thumbnail = $thumbnail;
+
+        return $this;
+    }
+
+    /**
+     * Get thumbnail
+     *
+     * @return string 
+     */
+    public function getThumbnail()
+    {
+        return $this->thumbnail;
+    }
 }

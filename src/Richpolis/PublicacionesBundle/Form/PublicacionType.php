@@ -13,13 +13,22 @@ class PublicacionType extends AbstractType
     public function buildForm(FormBuilderInterface $builder, array $options)
     {
         $builder
-            ->add('titulo','text',array('label'=>'Titulo'))
-            ->add('descripcion','textarea', array(
+            ->add('tituloEs','text',array('label'=>'Titulo español'))
+            ->add('tituloEn','text',array('label'=>'Titulo ingles'))
+            ->add('descripcionEs','textarea', array(
+                    'label'=>'Descripcion español',
                     'attr' => array(
                         'class' => 'tinymce',
                         'data-theme' => 'advanced' // Skip it if you want to use default theme
-                    ),'label'=>'Descripcion'
+                    )
                 ))
+            ->add('descripcionEn','textarea', array(
+                    'label'=>'Descripcion ingles',
+                    'attr' => array(
+                        'class' => 'tinymce',
+                        'data-theme' => 'advanced' // Skip it if you want to use default theme
+                    )
+                ))    
             ->add('categoria','entity', array(
                 'class' => 'PublicacionesBundle:CategoriasPublicacion',
                 'query_builder' => function(CategoriasPublicacionRepository $er) {
@@ -30,10 +39,11 @@ class PublicacionType extends AbstractType
                 'label'     => 'Categoria',
                 'multiple'  => false
             ))
-            ->add('twitter','hidden')
-            ->add('facebook','hidden')
+            ->add('file','file',array('label'=>'Imagen','required'=>false))
+            ->add('linkVideo','url',array('label'=>'Link de video','required'=>false,'attr'=>array('placeholder'=>'Youtube o Vimeo')))            
+            ->add('archivo','hidden')
+            ->add('thumbnail','hidden')
             ->add('posicion','hidden')
-            ->add('galeria','hidden')
             ->add('slug','hidden')
             ->add('isActive',null,array('label'=>'Activo?','required'=>false))
         ;

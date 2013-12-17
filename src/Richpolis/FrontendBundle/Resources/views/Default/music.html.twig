@@ -1,0 +1,73 @@
+{% extends "FrontendBundle::layout.html.twig" %}
+
+{% block stylesheets %}
+ {{parent()}}
+<link rel="stylesheet" href="{{asset('css/jquery.bxslider.css')}}"/>
+<link rel="stylesheet" href="{{asset('css/jquery.modal.css')}}"/>
+<link rel="stylesheet" href="{{asset('css/paginador.css')}}"/>
+{% endblock %}
+
+{% set locale = app.request.locale %}
+
+{% block body %}
+    {% for disco in discos %}
+    <article class="centrado">
+        <div class="derecha">
+        	<figure>
+                <img src="{{disco.webPath}}" style="width:100%" alt="{{disco.disco}}">
+            </figure>
+            {% if disco.linkAppleStore | length > 0 %}
+        	<div class="apple-store">
+                    <a href="{{disco.linkAppleStore}}">itunes</a>
+        	</div>
+            {% endif %} 
+            {% if disco.linkSoundCloud | length > 0 %}    
+        	<div class="sound-cloud">
+                    <a href="{{disco.linkSoundCloud}}">sound cloud</a>
+        	</div>
+            {% endif %}
+        </div>
+        <div class="izquierda">
+        	<header>
+        		<h2>{{disco.disco}}</h2>
+        	</header>
+                {% if disco.descripcion(locale) | length > 20 %}
+                    {{ disco.descripcion(locale) | raw }}
+                {% endif %}
+        	<ol>
+                    {% for track in disco.tracks %}
+        		<li>{{track}}</li>
+        	    {% endfor %}
+        	</ol>
+                
+        </div>
+    </article>
+    {% endfor %}
+{% endblock %}
+
+{% block signup %}
+   {% for config in configuraciones %}
+        {% if config.slug == 'signup' %}
+        <li><a href="{{config.texto}}" target="_blank">signup</a></li>
+        {% endif %}
+   {% endfor %}
+{% endblock %}        
+        
+{% block footer %}
+        <footer>
+            <div class="datos-footer">
+                {% for config in configuraciones %}
+                    {% if config.slug == 'pie-pagina' %}
+                        {{config.texto | raw }}
+                    {% endif %}
+                {% endfor %}
+            </div>
+            <div class="datos-footer">
+                {% for config in configuraciones %}
+                    {% if config.slug == 'contacto-info' %}
+                        {{config.texto | raw }}
+                    {% endif %}
+                {% endfor %}
+            </div>
+        </footer>
+{% endblock %}        

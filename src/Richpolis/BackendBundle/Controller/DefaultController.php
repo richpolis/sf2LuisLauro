@@ -46,38 +46,6 @@ class DefaultController extends Controller
     }
     
     /**
-     * @Route("/galeria/artistas", name="backend_galerias_artistas")
-     */
-    public function galeriaArtistasAction()
-    {
-        return $this->forward('CategoriasGaleriaBundle:Categorias:galeriasArtistas');
-    }
-    
-    /**
-     * @Route("/galeria/productos/discos", name="backend_galerias_productos_discos")
-     */
-    public function galeriaProductosDiscosAction()
-    {
-        return $this->forward('CategoriasGaleriaBundle:Categorias:galeriasProductosDiscos');
-    }
-    
-    /**
-     * @Route("/galeria/productos/ropa", name="backend_galerias_productos_ropa")
-     */
-    public function galeriaProductosRopaAction()
-    {
-        return $this->forward('CategoriasGaleriaBundle:Categorias:galeriasProductosRopa');
-    }
-    
-    /**
-     * @Route("/configuraciones", name="backend_configuraciones")
-     */
-    public function configuracionesAction()
-    {
-        return $this->forward('BackendBundle:Configuraciones:index');
-    }
-    
-    /**
      * @Route("/publicacion/noticias", name="publicaciones_noticias")
      */
     public function publicacionesNoticiasAction()
@@ -86,27 +54,43 @@ class DefaultController extends Controller
     }
     
     /**
-     * @Route("/publicacion/artistas", name="publicaciones_artistas")
+     * @Route("/publicacion/blog", name="publicaciones_blog")
      */
-    public function publicacionesArtistasAction()
+    public function publicacionesBlogAction()
     {
-        return $this->forward('PublicacionesBundle:Publicacion:publicacionesArtistas');
+        return $this->forward('PublicacionesBundle:Publicacion:publicacionesBlog');
     }
     
     /**
-     * @Route("/publicacion/productos/discos", name="publicaciones_productos_discos")
+     * @Route("/publicacion/biografia", name="publicaciones_biografia")
      */
-    public function publicacionesProductosDiscosAction()
+    public function publicacionesBiografiaAction()
     {
-        return $this->forward('PublicacionesBundle:Publicacion:publicacionesProductosDiscos');
+        return $this->forward('PublicacionesBundle:Publicacion:publicacionesBiografia');
     }
     
     /**
-     * @Route("/publicacion/productos/ropa", name="publicaciones_productos_ropa")
+     * @Route("/administrar/discos", name="backend_discos")
      */
-    public function publicacionesProductosRopaAction()
+    public function administrarDiscosAction()
     {
-        return $this->forward('PublicacionesBundle:Publicacion:publicacionesProductosRopa');
+        return $this->forward('FrontendBundle:Discos:index');
+    }
+    
+    /**
+     * @Route("/administrar/tracks", name="backend_tracks")
+     */
+    public function administrarTracksAction()
+    {
+        return $this->forward('FrontendBundle:Tracks:select');
+    }
+    
+    /**
+     * @Route("/configuraciones", name="backend_configuraciones")
+     */
+    public function configuracionesAction()
+    {
+        return $this->forward('BackendBundle:Configuraciones:index');
     }
     
     /**

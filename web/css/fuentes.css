@@ -1,10 +1,10 @@
 @font-face {
-    font-family: 'florencesans_blackitalic';
-    src: url('/fonts/florsn34-webfont.eot');
-    src: url('/fonts/florsn34-webfont.eot?#iefix') format('embedded-opentype'),
-         url('/fonts/florsn34-webfont.woff') format('woff'),
-         url('/fonts/florsn34-webfont.ttf') format('truetype'),
-         url('/fonts/florsn34-webfont.svg#florencesans_blackitalic') format('svg');
+    font-family: 'novecento_sans_widebook';
+    src: url('/fonts/synthview_-_novecento_sans_wide_book-webfont.eot');
+    src: url('/fonts/synthview_-_novecento_sans_wide_book-webfont.eot?#iefix') format('embedded-opentype'),
+         url('/fonts/synthview_-_novecento_sans_wide_book-webfont.woff') format('woff'),
+         url('/fonts/synthview_-_novecento_sans_wide_book-webfont.ttf') format('truetype'),
+         url('/fonts/synthview_-_novecento_sans_wide_book-webfont.svg#novecento_sans_widebook') format('svg');
     font-weight: normal;
     font-style: normal;
 

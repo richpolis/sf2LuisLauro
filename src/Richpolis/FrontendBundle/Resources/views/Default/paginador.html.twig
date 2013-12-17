@@ -1,0 +1,21 @@
+<div class="paginate">
+	{% if data.previous is defined %}
+    <a class="bt-pag prev" href="{{ path(ruta, {'_locale': locale,'page': data.previous}) }}">&lt;</a>
+    {% endif %}
+    <div class="paginas">
+		{% for page in data.pagesInRange %}
+	        {% if page != data.current %}
+	                <a href="{{ path(ruta, {'_locale': locale,'page': page}) }}">{{ page }}</a>
+	        {% else %}
+	            <span class="current">
+	                <span>{{ page }}</span>
+	            </span>
+	        {% endif %}
+
+	    {% endfor %}
+
+    </div>
+    {% if data.next is defined %}
+    <a class="bt-pag next" href="{{ path(ruta, {'_locale': locale,'page': data.next})}}">&gt;</a>
+    {% endif %}
+</div>

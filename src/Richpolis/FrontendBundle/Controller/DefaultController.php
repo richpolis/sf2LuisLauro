@@ -10,8 +10,6 @@ use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Template;
 use Richpolis\BackendBundle\Entity\Contacto;
 use Richpolis\BackendBundle\Form\ContactoType;
-use Richpolis\BackendBundle\Entity\Pedido;
-use Richpolis\BackendBundle\Form\PedidoType;
 use Richpolis\CategoriasGaleriaBundle\Entity\Categorias;
 
 /**
@@ -21,87 +19,117 @@ use Richpolis\CategoriasGaleriaBundle\Entity\Categorias;
  */
 class DefaultController extends Controller {
     
+    
     /**
      * Lists all Frontend entities.
      *
-     * @Route("/", name="homepage")
+     * @Route("/")
+     */
+    public function entradaAction()
+    {
+        $locale = $this->getRequest()->getLocale();
+        return $this->redirect($this->generateUrl('homepage',array('_locale'=>$locale)));
+    }
+    
+    
+    /**
+     * Lists all Frontend entities.
+     *
+     * @Route("/{_locale}/", name="homepage",defaults={"_locale" = "en"}, requirements={"_locale" = "en|es"})
+     * @Template()
      */
     public function indexAction()
     {
         $em = $this->getDoctrine()->getManager();
-       
-        $contacto = new Contacto();
-        $form = $this->createForm(new ContactoType(), $contacto);
-        
-        $about = $em->getRepository('BackendBundle:Configuraciones')->findOneBySlug('about'); 
-        $contacto = $em->getRepository('BackendBundle:Configuraciones')->findOneBySlug('contacto'); 
-        
-        return $this->render("FrontendBundle:Default:index.html.twig",array(
-          "about"=>$about,
-          "contacto"=>$contacto,
-          "form"=>$form->createView()  
-        ));
-    }
 
-    /**
-     * Lists all news.
-     *
-     * @Route("/noticias", name="noticias")
-     * @Method({"GET"})
-     * @Template()
-     */
-    public function noticiasAction()
-    {
-        $em = $this->getDoctrine()->getManager();
+        $categoria = $em->getRepository('PublicacionesBundle:CategoriasPublicacion')
+                        ->findOneBySlug('noticias');
 
-        /*$query = $em->getRepository('CategoriasGaleriaBundle:Categorias')
-                            ->getQueryCategoriasPorTipoYActivas(Categorias::$GALERIA_NOTICIAS,true);*/
-        $query = $em->getRepository('CategoriasGaleriaBundle:Categorias')
-                            ->getQueryCategoriasGaleriaActivas(Categorias::$GALERIA_NOTICIAS,false);
-        
+        $query = $em->getRepository("PublicacionesBundle:Publicacion")
+                    ->getQueryPublicacionPorCategoriaActivas($categoria->getId());
         
         $paginator = $this->get('knp_paginator');
 
         $pagination = $paginator->paginate(
             $query,
-            $this->getRequest()->query->get('pageNoticias', 1),
-            2,
-            array('distinct' => false)
+            $this->getRequest()->query->get('page', 1),
+            3,
+            array('distinct' => true)
         );
 
         $data = $pagination->getPaginationData();
 
-        //var_dump($data);
+        $configuraciones = $em->getRepository('BackendBundle:Configuraciones')->findAll();
 
         return array(
             'pagination' => $pagination,
             'data'=>$data,
+            'configuraciones' =>$configuraciones
         );
     }
 
     /**
-     * Lista las imagenes de una noticia.
+     * Lists all Frontend entities.
      *
-     * @Route("/imagenes/noticias/{id}", name="imagenes_noticias")
+     * @Route("/{_locale}/bio", name="biografia",defaults={"_locale" = "en"}, requirements={"_locale" = "en|es"})
+     * @Template()
      */
-    public function imagenesNoticiasAction($id)
+    public function biografiaAction()
     {
         $em = $this->getDoctrine()->getManager();
 
-        $imagenes = $em->getRepository('CategoriasGaleriaBundle:Galerias')
-                        ->getGaleriaPorCategoriaYStatus($id,true);
+        $categoria = $em->getRepository('PublicacionesBundle:CategoriasPublicacion')
+                        ->findOneBySlug('biografia');
 
-        $arreglo = array();
-        for($cont=0;$cont<count($imagenes);$cont++){
-            $arreglo['imagenes'][$cont]=$imagenes[$cont]->getWebPath();
-            $arreglo['titulos'][$cont]=""; //$imagenes[$cont]->getTitulo();
-            $arreglo['descripciones'][$cont]=""; //$imagenes[$cont]->getDescripcion();
-        }
+        $registros = $em->getRepository("PublicacionesBundle:Publicacion")
+                    ->getPublicacionPorCategoriaActivas($categoria->getId(),false,'ASC');
         
-        $response = new Response(json_encode($arreglo));
-        $response->headers->set('Content-Type', 'application/json');
-        return $response;
+        $configuraciones = $em->getRepository('BackendBundle:Configuraciones')->findAll();
+        
+        return array(
+            'registros' => $registros,
+            'configuraciones' =>$configuraciones
+        );
     }
+
+    /**
+     * Lists all news.
+     *
+     * @Route("/{_locale}/blog", name="blog",defaults={"_locale" = "en"}, requirements={"_locale" = "en|es"})
+     * @Method({"GET"})
+     * @Template()
+     */
+    public function blogAction()
+    {
+        $em = $this->getDoctrine()->getManager();
+
+        $categoria = $em->getRepository('PublicacionesBundle:CategoriasPublicacion')
+                        ->findOneBySlug('blog');
+
+        $query = $em->getRepository("PublicacionesBundle:Publicacion")
+                    ->getQueryPublicacionPorCategoriaActivas($categoria->getId());
+        
+        $paginator = $this->get('knp_paginator');
+
+        $pagination = $paginator->paginate(
+            $query,
+            $this->getRequest()->query->get('page', 1),
+            3,
+            array('distinct' => true)
+        );
+
+        $data = $pagination->getPaginationData();
+
+        $configuraciones = $em->getRepository('BackendBundle:Configuraciones')->findAll();
+
+        return array(
+            'pagination' => $pagination,
+            'data'=>$data,
+            'configuraciones' => $configuraciones
+        );
+        
+    }
+
     
     /**
      * Lista los ultimos tweets.
@@ -132,94 +160,48 @@ class DefaultController extends Controller {
     }
     
     /**
+     * Lista de los ultimos medias del usuario.
+     *
+     * @Route("/instagram/media/{username}/", name="instagram_media")
+     */
+    public function instagramMediaAction($username)
+    {
+        $metadata = \Richpolis\BackendBundle\Utils\Richsys::getInstagramMedia($username);
+        $response = $this->render('FrontendBundle:Default:instagramMedia.html.twig', array(
+            'username' => $username,
+            'metadata'   => $metadata,
+        ));
+
+        return $response;
+    }
+    
+    /**
      * Lista todos los artistas.
      *
-     * @Route("/artistas", name="artistas")
+     * @Route("/{_locale}/music", name="music",defaults={"_locale" = "en"}, requirements={"_locale" = "en|es"})
      * @Template()
      */
-    public function artistasAction()
+    public function musicAction()
     {
         $em = $this->getDoctrine()->getManager();
 
-        $artistas = $em->getRepository('CategoriasGaleriaBundle:Categorias')
-                            ->getCategoriasPorTipoYActivas(Categorias::$GALERIA_ARTISTAS,false);
+
+        $discos = $em->getRepository("FrontendBundle:Discos")
+                    ->getDiscosAndTracks();
+        
+        $configuraciones = $em->getRepository('BackendBundle:Configuraciones')->findAll();
         
         return array(
-            'artistas' => $artistas,
+            'discos' => $discos,
+            'configuraciones' =>$configuraciones
         );
     }
     
-    /**
-     * Envia los datos de un artista.
-     *
-     * @Route("/artista/{id}", name="show_artista")
-     * @Method({"GET"})
-     */
-    public function getArtistaAction($id)
-    {
-        $em = $this->getDoctrine()->getManager();
-        
-        $artista = $em->getRepository('CategoriasGaleriaBundle:Categorias')
-                      ->getCategoriaConGaleriaPorId($id, true);
-        
-        return $this->render("FrontendBundle:Default:artista.html.twig",array(
-            'artista'=>$artista,
-        ));
-
-    }
     
-    /**
-     * Lista todos los productos.
-     *
-     * @Route("/productos/{tipo}", name="productos", defaults={"tipo"="discos"})
-     * @Template()
-     */
-    public function productosAction($tipo)
-    {
-        $em = $this->getDoctrine()->getManager();
-        
-        if($tipo=="discos"){
-            $tipoCategoria = Categorias::$GALERIA_PRODUCTOS_DISCOS;
-        }else{
-            $tipoCategoria = Categorias::$GALERIA_PRODUCTOS_ROPA;
-        }
-
-        $productos = $em->getRepository('CategoriasGaleriaBundle:Categorias')
-                            ->getCategoriasPorTipoYActivas($tipoCategoria,false);
-        
-        return array(
-            'productos' => $productos,
-        );
-    }
     
-    /**
-     * Envia los datos de un producto.
-     *
-     * @Route("/producto/{id}", name="show_producto")
-     * @Method({"GET"})
-     */
-    public function getProductoAction($id)
-    {
-        $em = $this->getDoctrine()->getManager();
-        
-        $producto = $em->getRepository('CategoriasGaleriaBundle:Categorias')
-                      ->getCategoriaConGaleriaPorId($id, true);
-        
-        $pedido = new Pedido();
-        $pedido->setProducto($id);
-        $pedido->setSubject("Para cotizacion");
-        $form = $this->createForm(new PedidoType(), $pedido);
-        
-        
-        return $this->render("FrontendBundle:Default:producto.html.twig",array(
-            'producto'=>$producto,
-            'form'=>$form->createView(),
-        ));
-
-    }
 
     /**
-     * @Route("/contacto", name="frontend_contacto")
+     * @Route("/{_locale}/contact", name="frontend_contacto",defaults={"_locale" = "en"}, requirements={"_locale" = "en|es"})
      * @Method({"GET", "POST"})
      */
     public function contactoAction() {
@@ -247,7 +229,7 @@ class DefaultController extends Controller {
                 // reenvíe el formulario si actualiza la página
                 $ok=true;
                 $error=false;
-                $mensaje="El mensaje ha sido enviado";
+                $mensaje="Gracias, mensaje enviado.";
                 $contacto = new Contacto();
                 $form = $this->createForm(new ContactoType(), $contacto);
             }else{
@@ -269,58 +251,7 @@ class DefaultController extends Controller {
         ));
     }
     
-    /**
-     * @Route("/pedido", name="frontend_pedido")
-     * @Method({"GET", "POST"})
-     */
-    public function pedidoAction() {
-        $pedido = new Pedido();
-        $form = $this->createForm(new PedidoType(), $pedido);
-        $request = $this->getRequest();
-        $em = $this->getDoctrine()->getManager();
-        if ($request->getMethod() == 'POST') {
-            $form->bind($request);
-
-            if ($form->isValid()) {
-                $datos=$form->getData();
-                $producto = $em->getRepository('CategoriasGaleriaBundle:Categorias')
-                               ->findOneBy(array('id'=>$datos->getProducto()));
-                $datos->setStringProducto($producto->getCategoria());
-                
-                $message = \Swift_Message::newInstance()
-                        ->setSubject($datos->getSubject())
-                        ->setFrom($this->container->getParameter('richpolis.emails.to_email'))
-                        ->setTo($datos->getEmail())
-                        ->setBody($this->renderView('BackendBundle:Default:pedidoEmail.html.twig', array('datos' => $datos)), 'text/html');
-                $this->get('mailer')->send($message);
-
-                $this->get('session')->setFlash('noticia', 'Gracias por enviar tu correo, nos comunicaremos a la brevedad posible!');
-
-                // Redirige - Esto es importante para prevenir que el usuario
-                // reenvíe el formulario si actualiza la página
-                $ok=true;
-                $error=false;
-                $mensaje="El mensaje ha sido enviado";
-                $pedido = new Pedido();
-                $form = $this->createForm(new PedidoType(), $pedido);
-            }else{
-                $ok=false;
-                $error=true;
-                $mensaje="El mensaje no se ha podido enviar";
-            }
-        }else{
-            $ok=false;
-            $error=false;
-            $mensaje="Violacion de acceso";
-        }
-        
-        return $this->render("FrontendBundle:Default:pedido.html.twig",array(
-              'form' => $form->createView(),
-              'ok'=>$ok,
-              'error'=>$error,
-              'mensaje'=>$mensaje,
-        ));
-    }
+   
     
 }
 

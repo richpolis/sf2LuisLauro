@@ -35,15 +35,14 @@
 <table class="table table-hover records_list">
     <thead>
         <tr>
-            <th>Orden</th>
-            {% if categoria_actual.stringtipocategoria == "Artistas" %}
-            <th>Artista</th>
-            {% elseif categoria_actual.stringtipocategoria == "Noticias"%}
+            <th>ID</th>
+            {% if categoria_actual.stringtipocategoria != "Biografia"%}
             <th>Titulo</th>
-            {% else %}
-            <th>Producto</th>
-            {% endif%}
             <th>slug</th>
+            {% else %}
+            <th>Español</th>
+            <th>Ingles</th>
+            {% endif%}
             <th>Activo</th>
             <th>Creado</th>
             <th>Actualizado</th>
@@ -53,9 +52,14 @@
     <tbody>
     {% for entity in pagination %}
         <tr class="list-registro">
-            <td class="list-registro-posicion"><a href="{{ path('publicacion_show', { 'id': entity.id }) }}">{{ entity.posicion }}</a></td>
-            <td class="list-registro-titulo">{{ entity.titulo }}</td>
+            <td class="list-registro-posicion"><a href="{{ path('publicacion_show', { 'id': entity.id }) }}">{{ entity.id }}</a></td>
+            {% if categoria_actual.stringtipocategoria != "Biografia"%}
+            <td class="list-registro-titulo">"{{ entity.tituloEn ~ ' / ' ~ entity.tituloEs }}"</td>
             <td class="list-registro-slug">{{ entity.slug }}</td>
+            {% else %}
+            <td class="list-registro-titulo">{{ entity.descripcionEn | raw }}</td>
+            <td class="list-registro-titulo">{{ entity.descripcionEs | raw }}</td>
+            {% endif %}
             <td>{{ entity.isactive | isActive | raw }}</td>
             <td>{% if entity.createdat %}{{ entity.createdat|date('d-m-Y H:i:s') }}{% endif%}</td>
             <td>{% if entity.updatedat %}{{ entity.updatedat|date('d-m-Y H:i:s') }}{% endif%}</td>
@@ -72,14 +76,14 @@
                         </a>
                     </li>
                     <li>
-                        <a class="btn btn-mini" href="{{ path('publicacion_up', { 'id': entity.id ,'page': page}) }}" title="Subir registro">
+                        <a class="btn btn-mini" href="{{ path('publicacion_down', { 'id': entity.id, 'page': page }) }}" title="Bajar registro">
                             <i class="icon-hand-up"></i>
                         </a>
                     </li>
                     <li>
-                        <a class="btn btn-mini" href="{{ path('publicacion_down', { 'id': entity.id, 'page': page }) }}" title="Bajar registro">
+                        <a class="btn btn-mini" href="{{ path('publicacion_up', { 'id': entity.id ,'page': page}) }}" title="Subir registro">
                             <i class="icon-hand-down"></i>
-                        </a>
+                        </a>    
                     </li>
                 </ul>
             </td>

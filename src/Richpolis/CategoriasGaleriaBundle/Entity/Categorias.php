@@ -34,7 +34,7 @@ class Categorias
     /**
      * @var string
      *
-     * @ORM\Column(name="descripcion", type="text", nullable=false)
+     * @ORM\Column(name="descripcion", type="text", nullable=true)
      * @Assert\NotBlank()
      */
     private $descripcion;
@@ -84,21 +84,21 @@ class Categorias
     /**
      * @var boolean
      *
-     * @ORM\Column(name="is_active", type="boolean", nullable=true)
+     * @ORM\Column(name="is_active", type="boolean", nullable=false)
      */
     private $isActive;
     
     /**
      * @var boolean
      *
-     * @ORM\Column(name="is_categoria", type="boolean")
+     * @ORM\Column(name="is_categoria", type="boolean",nullable=false)
      */
     private $isCategoria;
 
     /**
      * @var \DateTime
      *
-     * @ORM\Column(name="created_at", type="datetime", nullable=false)
+     * @ORM\Column(name="created_at", type="datetime", nullable=true)
      */
     private $createdAt;
 
@@ -115,15 +115,9 @@ class Categorias
     protected $galerias;
     
     static public $GALERIA_NOTICIAS=1;
-    static public $GALERIA_ARTISTAS=2;
-    static public $GALERIA_PRODUCTOS_ROPA=3;
-    static public $GALERIA_PRODUCTOS_DISCOS=4;
     
     static private $sCategorias=array(
         1=>'Noticias',
-        2=>'Artistas',
-        3=>'Productos: ropa',
-        4=>'Productos: discos',
     );
     
     public function __construct() {

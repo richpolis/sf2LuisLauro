@@ -9,12 +9,8 @@
 {% endblock %}    
 
 {% block body %}
-{% if entity.categoria.stringtipocategoria == "Noticias"%}
-<h1>Publicacion "{{ entity.titulo }}"</h1>
-{% elseif entity.categoria.stringtipocategoria == "Artistas" %}
-<h1>Artista "{{ entity.titulo }}"</h1>
-{% else %}
-<h1>Producto "{{ entity.titulo }}"</h1>
+{% if entity.categoria.stringtipocategoria != "Biografia"%}
+<h1>Publicacion "{{ entity.tituloEn ~ ' / ' ~ entity.tituloEs }}"</h1>
 {% endif %}
 
 
@@ -24,20 +20,20 @@
             <th>Id</th>
             <td>{{ entity.id }}</td>
         </tr>
-        {% if entity.categoria.stringtipocategoria == "Noticias"%}
-        <tr><th>Titulo</th><td>{{ entity.titulo }}</td></tr>
-        {% elseif entity.categoria.stringtipocategoria == "Artistas" %}
-        <tr><th>Artista</th><td>{{ entity.titulo }}</td></tr>
-        {% else %}
-        <tr><th>Producto</th><td>{{ entity.titulo }}</td></tr>
+        {% if entity.categoria.stringtipocategoria != "Biografia"%}
+        <tr><th>Titulo español</th><td>{{ entity.tituloEs }}</td></tr>
+        <tr><th>Titulo ingles</th><td>{{ entity.tituloEn }}</td></tr>
         {% endif %}
         <tr>
-            <th>Descripcion</th>
-            <td>{{ entity.descripcion | raw }}</td>
+            <th>Descripcion español</th>
+            <td>{{ entity.descripcionEs | raw }}</td>
         </tr>
-        {% if entity.categoria.stringtipocategoria == "Artistas" %}
-        <tr><th>Twitter</th><td>{{ entity.twitter }}</td></tr>
-        <tr><th>Facebook</th><td>{{ entity.facebook }}</td></tr>
+        <tr>
+            <th>Descripcion ingles</th>
+            <td>{{ entity.descripcionEn | raw }}</td>
+        </tr>
+        {% if entity.categoria.stringtipocategoria != "Biografia" %}
+        <tr><th>Archivo</th><td>{{ entity.archivoView | raw }}</td></tr>
         {% endif %}
         <tr>
             <th>Posicion</th>
@@ -71,7 +67,7 @@
             </button>
         </li>
         <li>
-        {% if galerias is not null %}    
+        {# if galerias is not null %}    
             <button class="btn btn-success" onclick="location.href='{{ path('publicacion_galerias_edit', { 'id': entity.id }) }}'">
                 Administrar Galeria
             </button>
@@ -79,7 +75,7 @@
             <button class="btn" onclick="location.href='{{ path('publicacion_galerias_create', { 'id': entity.id }) }}'">
                 Crear Galeria
             </button>
-        {% endif %}    
+        {% endif #}    
         </li>
         <li>&nbsp;</li>
         <li>

@@ -530,7 +530,25 @@ EOF;
 
     }
     
-     
+    static public function getInstagramMedia($usuario){
+            $clienteId="4a712af2a5be4c8091138bd233057640";
+            $url = sprintf('https://api.instagram.com/v1/users/3/media/recent/?client_id=%s', $clienteId);
+            $browser = new Browser();
+            try {
+                $response = $browser->get($url);
+            } catch (\RuntimeException $e) {
+                throw new \RuntimeException('Unable to retrieve the video information for :' . $url, null, $e);
+            }
+
+                $metadata = json_decode($response->getContent(), true);
+
+            if (!$metadata) {
+                throw new \RuntimeException('Unable to decode the video information for :' . $url);
+            }
+            
+            return $metadata;
+
+    }
     
     
     

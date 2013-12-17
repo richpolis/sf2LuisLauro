@@ -1,751 +1,288 @@
-article header {
-  margin-top: 50px;
-  position: relative;
-  width: 100%;
-}
-article header ul {
-  -webkit-box-sizing: border-box;
-  -moz-box-sizing: border-box;
-  box-sizing: border-box;
-  margin-top: 70px;
-  -webkit-transform: rotate(-4deg);
-  -moz-transform: rotate(-4deg);
-  -ms-transform: rotate(-4deg);
-  -o-transform: rotate(-4deg);
-  transform: rotate(-4deg);
-  text-align: right;
-  width: 100%;
-  padding-right: 20px;
-  position: absolute;
-  top: -25px;
-}
-article header ul li {
-  display: inline-block;
-  vertical-align: top;
-  text-transform: uppercase;
-  margin-left: 10px;
-  margin-top: 5px;
-  font-size: 0.8em;
-}
-article header ul li a {
-  display: block;
+a {
+  color: #0ff;
   text-decoration: none;
-}
-a.red-social-facebook,
-a.red-social-twitter {
-  display: inline-block;
-  vertical-align: top;
-  height: 35px;
-  width: 36px;
-  margin-right: 20px;
-  
-}
-a.red-social-twitter {
-  background: url("../images/keyarts/artists/artistas_socialmedia.png") no-repeat 0px 0px;
-  
-}
-a.red-social-facebook {
-  background: url("../images/keyarts/artists/artistas_socialmedia.png") no-repeat -49px 0px;
-}
-a.home {
-  background: url("../images/keyarts/home/menu.png") no-repeat 0px 0px;
-  width: 40px;
-  height: 10px;
-}
-a.home:hover,
-a.home.active {
-  background: url("../images/keyarts/home/menu.png") no-repeat 0px -10px;
-}
-a.about {
-  background: url("../images/keyarts/home/menu.png") no-repeat -55px 0px;
-  width: 80px;
-  height: 10px;
-}
-a.about:hover,
-a.about.active {
-  background: url("../images/keyarts/home/menu.png") no-repeat -55px -10px;
-}
-a.news {
-  background: url("../images/keyarts/home/menu.png") no-repeat -145px 0px;
-  width: 70px;
-  height: 10px;
-}
-a.news:hover,
-a.news.active {
-  background: url("../images/keyarts/home/menu.png") no-repeat -145px -10px;
-}
-a.artistas {
-  background: url("../images/keyarts/home/menu.png") no-repeat -225px 0px;
-  width: 70px;
-  height: 10px;
-}
-a.artistas:hover,
-a.artistas.active {
-  background: url("../images/keyarts/home/menu.png") no-repeat -225px -10px;
-}
-a.shop {
-  background: url("../images/keyarts/home/menu.png") no-repeat -305px 0px;
-  width: 50px;
-  height: 10px;
-}
-a.shop:hover,
-a.shop.active {
-  background: url("../images/keyarts/home/menu.png") no-repeat -305px -10px;
-}
-a.contact {
-  background: url("../images/keyarts/home/menu.png") no-repeat -369px 0px;
-  width: 80px;
-  height: 10px;
-}
-a.contact:hover,
-a.contact.active {
-  background: url("../images/keyarts/home/menu.png") no-repeat -369px -10px;
 }
 body {
-  background: #fff;
-  color: #000;
   font-size: 16px;
-  font-family: "Helvética", "Verdana", "Arial";
+  font-family: 'novecento_sans_widebook';
 }
-header.header-about {
-  background: url("../images/keyarts/about/seccion_acercade.png") no-repeat center center;
-  height: 78px;
+.container {
+  width: 960px;
+  margin: 5px auto;
 }
-header.header-news {
-  background: url("../images/keyarts/news/seccion_noticias.png") no-repeat center center;
-  height: 139px;
-}
-header.header-artistas {
-  background: url("../images/keyarts/artists/seccion_artistas.png") no-repeat center center;
-  height: 139px;
-}
-header.header-shop {
-  background: url("../images/keyarts/shop/seccion_tienda.png") no-repeat center center;
-  height: 139px;
-}
-header.header-contact {
-  background: url("../images/keyarts/contact/seccion_contacto.png") no-repeat 0px 0px;
-  height: 141px;
-}
-ul.lista-shop {
-  margin: 0 auto;
-  padding: 0;
-  width: 90%;
-}
-ul.lista-shop li {
-  display: inline-block;
-  vertical-align: top;
-  width: 229px;
-  margin: 15px 37px 10px;
-  overflow: hidden;
-}
-ul.lista-shop li h3 {
-  text-transform: capitalize;
-  font-size: 0.9em;
-  font-style: italic;
-  font-weight: normal;
-  font-weight: bold;
-}
-ul.lista-shop li figure {
-  background: url("../images/keyarts/shop/thumb_tienda.png") no-repeat center center;
-  -webkit-box-sizing: border-box;
-  -moz-box-sizing: border-box;
-  box-sizing: border-box;
-  height: 152px;
-  width: 229px;
-}
-ul.lista-shop li figure img {
-  margin: 4px;
-  height: 144px;
-  width: 221px;
-}
-#about figure.logo,
-#about p {
-  display: inline-block;
-  margin-top: 80px;
-  vertical-align: middle;
-}
-#about figure.logo {
-  width: 49%;
-  text-align: center;
-}
-#about p {
-  width: 49%;
-}
-#container {
-  border-top: 5px solid #000;
-  border-bottom: 5px solid #000;
-  margin: 0 auto;
-  width: 1024px;
-}
-#container header {
-  text-align: center;
-  position: relative;
-}
-#container header div.logo {
+.container > header {
+  border-bottom: 1px solid #c0c0c0;
   position: absolute;
   top: 0px;
-  left: 50%;
-  margin-left: -80px;
-  z-index: 1000;
+  width: 960px;
+  background: url("/images/keyarts/Menu/fondomenu.png") repeat-x;
 }
-#container header nav {
-  -webkit-box-sizing: border-box;
-  -moz-box-sizing: border-box;
-  box-sizing: border-box;
-  text-align: right;
-  height: 90px;
-  width: 100%;
+.container .logo,
+.container nav {
+  display: inline-block;
+  vertical-align: top;
 }
-#container header nav ul {
-  margin: 54px 0 0;
-  padding: 0;
-  -webkit-transform: rotate(-4deg);
-  -moz-transform: rotate(-4deg);
-  -ms-transform: rotate(-4deg);
-  -o-transform: rotate(-4deg);
-  transform: rotate(-4deg);
-  border-bottom: 2px solid #808080;
-  width: 50%;
+.container .logo {
+  width: 300px;
+}
+.container nav {
   position: absolute;
   right: 0px;
-  top: 0px;
 }
-#container header nav li {
+.container nav ul {
+  padding: 0;
+  margin: 0;
+}
+.container nav ul li {
+  list-style: none;
   display: inline-block;
   vertical-align: top;
-  text-transform: uppercase;
-  margin-left: 6px;
 }
-#container header nav li a {
+.container nav ul li a {
+  color: #808080;
+  text-transform: uppercase;
+  padding: 30px 40px;
+  display: block;
   text-decoration: none;
-  display: block;
 }
-#news {
-  position: relative;
+.container nav ul li a:hover,
+.container nav ul li a.active {
+  color: #0ff;
 }
-#news .ctl-news-left {
-  position: absolute;
-  top: 50%;
-  left: 0px;
-  margin-top: 60px;
-  cursor: pointer;
+.container nav ul li a:last-child {
+  padding-right: 0;
 }
-#news .ctl-news-right {
-  position: absolute;
-  top: 50%;
-  margin-top: 60px;
-  right: 0px;
-  cursor: pointer;
-}
-
-.boton-mas{
-    cursor: pointer;
-}
-
-.contacto {
-  margin: 0 auto 100px;
-  width: 90%;
-}
-.contacto .contenido,
-.contacto .formulario {
-  display: inline-block;
-  vertical-align: top;
-  margin-top: 30px;
-  width: 48%;
-}
-.contacto .contenido .logo {
-  text-align: center;
-  margin-bottom: 30px;
-}
-.contacto .contenido .contenido-contact {
-  text-align: justify;
-  font-family: 'florencesans_blackitalic';
-}
-.contacto .formulario form {
-  margin-left: 100px;
-}
-.contacto .formulario .input-formulario {
-  background: url("../images/keyarts/contact/form_line.png") no-repeat 0px 0px;
-  padding-top: 24px;
-  margin-bottom: 10px;
-  width: 100%;
-  min-height: 30px;
-  position: relative;
-}
-.contacto .formulario .input-formulario label,
-.contacto .formulario .input-formulario input,
-.contacto .formulario .input-formulario textarea {
-  display: inline-block;
-  vertical-align: top;
-  font-size: 1em;
-  font-style: normal;
-  padding: 5px;
-  border: none;
-  width: 290px;
-  font-family: 'florencesans_blackitalic';
-
-}
-
-.contacto .formulario .input-formulario textarea {
-    height: 100px;
-}    
-.contacto .formulario .input-formulario input {
-  text-transform: none;
-  float: right;
-  margin-right: 45px;
-}
-.contacto .formulario .input-formulario button {
-  background: none;
-  border: none;
-  margin-right: 50px;
-  float: right;
+article header h2 {
+  color: #c0c0c0;
+  padding: 10px 20px;
   text-transform: uppercase;
-  font-family: 'florencesans_blackitalic';
-}
-
-.contacto .formulario .input-formulario ul{
-  position: absolute;
-  right: -100px;
-  padding: 0;
-  list-style: none;
-  color: red;
-  text-align: left; 
-  width: 150px;
-  top: -10px;
-}
-
-.cerrar-contenido-producto{
-  width: 21px;
-  height: 21px;
-  background: url("../images/close_button.png") no-repeat center center;
-  cursor: pointer;
-  display: block;
-  position: absolute;
-  right: -20px;
-  top: -20px;
-}
-
-.cerrar-contenido-artista{
-  width: 18px;
-  height: 18px;
-  background: url("../images/close.png") no-repeat center center;
-  cursor: pointer;
-  display: block;
-  position: absolute;
-  right: 10px;
-  top: 7px; 
-}
-
-.contenido-news{
-    min-height: 800px;
-}
-
-.contenido-shop{
-    min-height: 800px;
-}
-
-.lista-artistas{
-    min-height: 800px;
-}
-
-.loader-richpolis{
-    display: none;
-    position: fixed;
-    top: 50%;
-    left: 50%;
-    margin-left: -128px;
-    z-index: 5000;
-}
-
-.contenido-ajax {
-  padding: 10px 0px;
-  margin: 30px auto;
-  width: 95%;
-  border-top: 1px solid #808080;
-  border-bottom: 1px solid #808080;
-  display: none;
-}
-.contenido-ajax .galeria-artistas,
-.contenido-ajax .contenido-artistas {
-  display: inline-block;
-  vertical-align: top;
-}
-.contenido-ajax .galeria-artistas {
-  width: 40%;
-  margin-top: 10px;
-  position: relative;
-}
-.contenido-ajax .galeria-artistas img {
-  width: 100%;
-}
-.contenido-ajax .galeria-artistas ul {
-  width: 100%;
-  padding: 0;
-  margin: 0;
-}
-.contenido-ajax .galeria-artistas li {
-  list-style: none;
-}
-.contenido-ajax .galeria-artistas .ctl-galeria-artistas-left {
-  position: absolute;
-  left: 0px;
-  top: 50%;
-  margin-top: -50px;
-}
-.contenido-ajax .galeria-artistas .ctl-galeria-artistas-left a {
-  display: block;
-  background: url("../images/keyarts/artists/foto_left_arrow.png") no-repeat center center;
-  height: 51px;
-  width: 37px;
-  z-index: 1000;
-}
-.contenido-ajax .galeria-artistas .ctl-galeria-artistas-right {
-  position: absolute;
-  right: 0px;
-  top: 50%;
-  margin-top: -50px;
-}
-.contenido-ajax .galeria-artistas .ctl-galeria-artistas-right a {
-  display: block;
-  background: url("../images/keyarts/artists/foto_right_arrow.png") no-repeat center center;
-  height: 51px;
-  width: 37px;
-  z-index: 1000;
-}
-.contenido-ajax .contenido-artistas {
-  width: 56%;
-  margin-left: 3%;
-}
-.contenido-ajax .contenido-artistas h3 {
-  text-transform: uppercase;
-  font-style: italic;
-  font-size: 2em;
-  margin-top: 10px;
-  position: relative;
-}
-.contenido-ajax .contenido-artistas p {
-  font-style: italic;
-}
-.contenido-ajax .redes-sociales-artistias {
-  width: 100%;
-  height: 50px;
-}
-.lista-artistas {
-  margin: 0px auto;
-  padding-left: 2px;
-  width: 90%;
-}
-.lista-artistas ul {
-  margin: 0px;
-  padding: 0px;
-}
-.lista-artistas li {
-  display: inline-block;
-  height: 213px;
-  margin: 10px 9px;
-  vertical-align: top;
-  width: 284px;
-}
-.lista-artistas li figure {
-  position: relative;
-  height: 213px;
-  width: 284px;
-}
-.lista-artistas li img {
-  width: 100%;
-  height: 100%;
-}
-.lista-artistas li figcaption {
-  background: url("../images/keyarts/artists/thumb_artistas_normal.png") no-repeat center center;
-  color: transparent;
-  height: 100%;
-  left: 0px;
-  top: 0px;
-  -webkit-transition: all 0.5s ease-in;
-  -moz-transition: all 0.5s ease-in;
-  -ms-transition: all 0.5s ease-in;
-  -o-transition: all 0.5s ease-in;
-  transition: all 0.5s ease-in;
-  position: absolute;
-  width: 100%;
-  z-index: 1000;
-  font-family: 'florencesans_blackitalic';
-}
-.lista-artistas li figcaption span {
-  margin: 20px;
-  display: block;
-}
-.lista-artistas li figcaption:hover {
-  background: url("../images/keyarts/artists/thumb_artistas_over.png") no-repeat center center;
-  color: #fff;
-}
-.knp_last_tweets {
-  margin: 120px auto 100px auto;
-  text-align: center;
-  width: 80%;
-  height: 300px;
-  overflow: hidden;
-}
-.knp_last_tweets ul {
-  margin: 0;
-  padding: 0;
-}
-.knp_last_tweets ul li {
-  border-bottom: 1px solid #000;
-  list-style: none;
-  width: 100%;
-  height: 100px;
+  margin: 5px 0px;
+  background: url("/images/keyarts/News/titulonews.png") no-repeat;
   -webkit-box-sizing: border-box;
   -moz-box-sizing: border-box;
   box-sizing: border-box;
-  padding-top: 10px;
-  padding-bottom: 10px;
+  height: 45px;
 }
-.knp_last_tweets ul li div.tweet-item-imagen,
-.knp_last_tweets ul li div.tweet-item-contenido {
-  display: inline-block;
-  vertical-align: middle;
-}
-.knp_last_tweets ul li span.tweet-item-tiempo {
+article#encabezado figure img {
+  margin: 40px auto 0;
   display: block;
-  text-align: right;
+  -webkit-box-sizing: border-box;
+  -moz-box-sizing: border-box;
+  box-sizing: border-box;
+  padding-left: 80px;
 }
-.knp_last_tweets ul li div.tweet-item-contenido {
-  width: 90%;
-  text-align: left;
-  margin-top: 5px;
+article.izquierda {
+  width: 500px;
+  float: left;
 }
-.knp_last_tweets ul li div.tweet-item-imagen {
-  padding-top: 15px;
-}
-.noticias {
+article.izquierda ul.lista-noticias {
   padding: 0;
-  margin: 50px auto;
-  width: 90%;
+  margin: 0;
+}
+article.izquierda ul.lista-noticias li.noticia {
+  border: 1px solid #c0c0c0;
+  list-style: none;
+  text-align: center;
+  padding: 40px 20px;
+  margin-bottom: 20px;
+}
+article.izquierda ul.lista-noticias li.noticia .titulo-noticia {
+  text-transform: uppercase;
+  text-align: left;
+  font-size: 2em;
+  margin: 10px;
+}
+article.izquierda ul.lista-noticias li.noticia .imagen-noticia img {
+  width: 100%;
+}
+article.izquierda ul.lista-noticias li.noticia .tiempo-noticia {
+  text-transform: uppercase;
+  text-align: left;
+  font-size: 1em;
+  width: 100%;
+  display: block;
+  margin: 10px;
+}
+article.izquierda ul.lista-noticias li.noticia .contenido-noticia {
+  text-transform: uppercase;
+  text-align: left;
+  font-size: 0.9em;
+  margin: 10px;
+}
+article.derecha {
+  float: right;
+  width: 400px;
+  margin-left: 55px;
+  margin-bottom: 20px;
+}
+article.centrado {
+  width: 100%;
+  border-bottom: 1px solid #c0c0c0;
+  margin-bottom: 0px;
+  margin-top: 60px;
+}
+article.centrado div.derecha,
+article.centrado div.izquierda {
+  display: inline-block;
+  vertical-align: top;
+}
+article.centrado div.derecha {
+  width: 400px;
+}
+article.centrado div.izquierda {
+  width: 520px;
+  margin-left: 30px;
 }
 
-.noticias li {
-  list-style: none;
+article.centrado div.izquierda ol {
+  font-size: 1.2em;
+}
+
+article.centrado div.izquierda ol li {
+  margin-bottom: 10px;
+  text-transform: capitalize;
+}
+
+article.centrado:first-child {
+  margin-top: 10px;
+  background-color: #f00;
+}
+article.centrado:last-child {
+  border-bottom: none;
+  margin-bottom: 10px;
+}
+article.centrado div.apple-store {
+  color: #fff;
+  padding: 10px 20px;
+  text-transform: uppercase;
+  margin: 5px 0px;
+  background: url("/images/keyarts/Music/botonitunes.png") repeat-x;
+  -webkit-box-sizing: border-box;
+  -moz-box-sizing: border-box;
+  box-sizing: border-box;
+  height: 45px;
+  margin-top: 30px;
+  margin-bottom: 20px;
+}
+article.centrado div.apple-store a {
+  display: block;
+  height: 100%;
+  width: 100%;
+  color: white;
+  font-size: 1.5em;
+  text-align: center;
+}
+article.centrado div.sound-cloud {
+  color: #fff;
+  padding: 10px 20px;
+  text-transform: uppercase;
+  margin: 5px 0px;
+  background: url("/images/keyarts/Music/botonsoundcloud.png") repeat-x;
+  -webkit-box-sizing: border-box;
+  -moz-box-sizing: border-box;
+  box-sizing: border-box;
+  height: 45px;
+  margin-top: 30px;
+  margin-bottom: 20px;
+}
+article.centrado div.sound-cloud a {
+  display: block;
+  height: 100%;
+  width: 100%;
+  color: white;
+  font-size: 1.5em;
+  text-align: center;
+}
+.container > footer {
+  height: 80px;
+  border-top: 1px solid #c0c0c0;
+  position: relative;
+}
+.container > footer .datos-footer {
+  text-transform: uppercase;
+  color: #c0c0c0;
+  font-size: 0.7em;
   margin-top: 20px;
 }
-.noticias div.titulo-noticia {
-  border-bottom: 1px solid #000;
-  margin: 10px 0px;
-  position: relative;
-  width: 100%;
-  font-size: 2em;
+.container > footer > a {
   text-transform: uppercase;
-  font-weight: bold;
-  font-family: 'florencesans_blackitalic';
-}
-.noticias div.titulo-noticia span {
+  color: #c0c0c0;
+  font-size: 0.7em;
   position: absolute;
   right: 0px;
-  font-size: 0.5em;
-  color: #808080;
-  text-transform: capitalize;
-  font-style: normal;
-  font-weight: normal;
-  bottom: 1px
-}
-.noticias figure.imagen-noticia,
-.noticias p,
-.noticias div.imagenes-noticia {
-  display: inline-block;
-  vertical-align: top;
-}
-.noticias figure.imagen-noticia {
-  border: 3px solid #fff;
-  -webkit-box-sizing: border-box;
-  -moz-box-sizing: border-box;
-  box-sizing: border-box;
-  -webkit-box-shadow: 0px 0px 2px #808080;
-  -moz-box-shadow: 0px 0px 2px #808080;
-  -ms-box-shadow: 0px 0px 2px #808080;
-  -o-box-shadow: 0px 0px 2px #808080;
-  box-shadow: 0px 0px 2px #808080;
-  width: 228px;
-}
-.noticias figure.imagen-noticia img {
-  width: 100%;
-}
-.noticias p {
-  -webkit-box-sizing: border-box;
-  -moz-box-sizing: border-box;
-  box-sizing: border-box;
-  width: 612px;
-  padding: 0px 20px;
-  font-size: 0.8em;
-  text-align: justify;
-  font-style: italic;
-}
-.noticias div.imagenes-noticia {
-  width: 50px;
-  vertical-align: top;
-}
-.categorias-shop {
-  border-top: 1px solid #808080;
-  border-bottom: 1px solid #808080;
-  color: #808080;
-  font-weight: bold;
-  margin: 30px auto;
-  text-align: center;
-  text-transform: uppercase;
-  width: 90%;
-}
-.categorias-shop a.categoria-shop {
-  color: #808080;
-  display: inline-block;
-  margin: 10px 0px;
-  -webkit-transition: color 0.5s ease;
-  -moz-transition: color 0.5s ease;
-  -ms-transition: color 0.5s ease;
-  -o-transition: color 0.5s ease;
-  transition: color 0.5s ease;
+  top: 20px;
   text-decoration: none;
+}
+.container > footer .datos-footer{
+  display: inline-block;
   vertical-align: top;
-  font-family: 'florencesans_blackitalic';
-}
-.categorias-shop a.categoria-shop:hover,
-.categorias-shop a.categoria-shop.active {
-  color: #000;
-}
-.categorias-shop a.categoria-shop:first-child {
-  margin-right: 20px;
-}
-#contact {
-  position: relative;
-}
-#contact .logo-interactive-valley {
-  bottom: -94px;
-  height: 21px;
-  right: 0px;
-  position: absolute;
-  width: 160px;
-}
-.item-shop,
-.item-artista {
-  cursor: pointer;
-}
-.contenido-producto {
-  width: 400px;
-  margin: 0 auto;
-}
-.contenido-producto h3 {
-  font-style: italic;
-  position: relative;
-}
-.contenido-producto hr {
-  color: transparent;
-}
-.contenido-producto .contenedor-galeria-producto {
-  position: relative;
-}
-.contenido-producto ul.galeria-producto {
-  margin: 0;
-  padding: 0;
-}
-.contenido-producto .ctl-galeria-producto-left {
-  position: absolute;
-  left: -50px;
-  top: 50%;
-  margin-top: -23px;
-}
-.contenido-producto .ctl-galeria-producto-left a {
-  background: url("../images/keyarts/shop/left_arrowwhite.png") no-repeat center center;
-  height: 46px;
-  display: block;
-  width: 32px;
-  z-index: 2000;
-}
-.contenido-producto .ctl-galeria-producto-right {
-  position: absolute;
-  right: -50px;
-  top: 50%;
-  margin-top: -23px;
-}
-.contenido-producto .ctl-galeria-producto-right a {
-  background: url("../images/keyarts/shop/right_arrowwhite.png") no-repeat center center;
-  height: 46px;
-  display: block;
-  width: 32px;
-  z-index: 2000;
-}
-.contenido-producto p {
-  font-size: 0.8em;
-  font-style: italic;
-}
-.contenido-producto input {
-  font-size: 0.8em;
-  font-weight: bold;
-  width: 200px;
-  border: none;
-  padding: 5px;
-}
-.contenido-producto .input-form-producto {
-  margin-top: 10px;
-  position: relative;
 }
 
-.contenido-producto .input-form-producto ul{
-  position: absolute;
-  right: -20px;
-  padding: 0;
-  list-style: none;
-  color: yellow;
-  text-align: left; 
-  width: 150px;
-  top: -10px;
+.container > footer .datos-footer:last-child{
+  float:right;
 }
 
-#toTo_button {
+.instagram-placeholder{
+    text-align: center;
+    width: 400px;
+}
+
+.instagram-placeholder a{
+    display: block;
+    width: 100%;
+}
+
+.instagram-placeholder img{
+    display: block;
+    width: 100%;
+}
+
+#lenguajes {
+  position: absolute;
+  bottom: -30px;
+  right: -10px;
+  width: 170px;
+}
+#lenguajes span {
+  display: inline-block;
+  vertical-align: top;
   width: 70px;
-  text-align: center;
-  padding: 5px;
-  position: fixed;
-  bottom: 10px;
-  right: 12px;
-  cursor: pointer;
-  color: #666;
-  text-decoration: none;
+  margin: 5px;
+  text-align: right;
 }
-
-.contenido-producto button {
-  background: none;
-  border: none;
-  margin-right: 200px;
-  float: right;
-  text-transform: uppercase;
-  color: white;
-  font-family: 'florencesans_blackitalic';
+#lenguajes span a {
+  color: #808080;
 }
-
-.menu-seccion{
-    opacity: 0;
+#lenguajes span a:hover {
+  color: #0ff;
 }
-
-.error-formulario{
-    color: red;
+ul.tweets-lista {
+  padding: 0;
+  margin: 0;
 }
-
-.ok-formulario{
-    color: green;
+ul.tweets-lista li.tweet-item {
+  list-style: none;
+  border-bottom: 1px solid #c0c0c0;
+  margin-bottom: 5px;
+  margin-top: 10px;
 }
-
-#twitter-feed{
-    position: relative;
+ul.tweets-lista li.tweet-item .tweet-item-contenedor div {
+  display: inline-block;
+  vertical-align: top;
 }
-
-.redes-sociales-twitter-feed{
-    width: 80%;
-    margin:  auto;
-    position: relative;
-    bottom: -80px;
-    -webkit-transform: rotate(-4deg);
-    -moz-transform: rotate(-4deg);
-    -ms-transform: rotate(-4deg);
-    -o-transform: rotate(-4deg);
-    transform: rotate(-4deg);
-    z-index: 2000;
+ul.tweets-lista li.tweet-item .tweet-item-imagen {
+  width: 60px;
+}
+ul.tweets-lista li.tweet-item .tweet-item-contenido {
+  width: 325px;
+  padding-left: 5px;
+  font-size: 0.8em;
+}
+ul.tweets-lista li.tweet-item .tweet-item-contenido span {
+  display: none;
+}
+ul.tweets-lista li.tweet-item .tweet-item-imagen,
+ul.tweets-lista li.tweet-item .tweet-item-contenido {
+  display: inline-block;
+  vertical-align: top;
 }
