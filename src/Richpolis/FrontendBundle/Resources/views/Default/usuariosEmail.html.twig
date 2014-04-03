@@ -1,0 +1,52 @@
+{% extends '::base.html.twig' %}
+
+{% block title %}Usuario registrado!{% endblock %}
+
+{% block body %}
+    <table>
+        <tr colspan="2">
+            <th>Mensaje desde LuisLauro.com</th>
+        </tr>	
+        <tr>
+            <td style="background-color: gray;color: white;">
+                Nombre:
+            <td>
+            <td>
+                {{datos.name}}
+            <td>
+        </tr>
+        <tr>
+            <td style="background-color: gray;color: white;">
+                Email:
+            <td>
+            <td>
+                {{datos.email}}
+            <td>
+        </tr>	
+        <tr>
+            <td style="background-color: gray;color: white;">
+                Telefono:
+            <td>
+            <td>
+                {{datos.telefono}}
+            <td>
+        </tr>
+        <tr>
+            <td style="background-color: gray;color: white;">
+                Dirección:
+            <td>
+            <td>
+                {{datos.direccion}}
+            <td>
+        </tr>
+        <tr>
+            <td style="background-color: gray;color: white;">
+                Estado:
+            <td>
+            <td>
+                {{datos.estado}}
+            <td>
+        </tr>
+
+    </table>
+{% endblock %}

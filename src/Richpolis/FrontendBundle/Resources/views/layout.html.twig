@@ -11,7 +11,7 @@
         {% block stylesheets %}
         <link rel="stylesheet" href="{{ asset('css/normalize.css') }}">
         <link rel="stylesheet" href="{{ asset('css/fuentes.css') }}">
-        <link rel="stylesheet" href="{{ asset('css/main.css') }}">
+        <link rel="stylesheet" href="{{ asset('css/main.css') }}?v=1">
         {% endblock %}
         <!-- HTML5 shim and Respond.js IE8 support of HTML5 elements and media queries -->
         <!--[if lt IE 9]>
@@ -77,7 +77,7 @@
                             <li><a {{music}} href="{{path('music',{'_locale': locale })}}">{% trans %}music{% endtrans %}</a></li>
                             <li><a {{blog}} href="{{path('blog',{'_locale': locale })}}">{% trans %}blog{% endtrans %}</a></li>
                             {% block signup %}
-                            <li><a href="#sigup">signup</a></li>
+                            <li><a class="singup" href="#sigup">signup</a></li>
                             {% endblock %}
                         </ul>
                     </nav>
@@ -97,7 +97,7 @@
             <section>
                <article id="encabezado">
                     <figure>
-                        <img src="{{asset('images/keyarts/News/fotofondo.png')}}" alt="">
+                        <img src="{{asset('images/keyarts/News/luislaurofotonueva.png')}}" alt="">
                     </figure>
                 </article> 
                 {% block body %}{% endblock %}

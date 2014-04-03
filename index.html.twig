@@ -2,30 +2,18 @@
 
 {% block stylesheets %}
  {{parent()}}
-<link rel="stylesheet" type="text/css" href="{{asset('css/paginador.css')}}"/>
+<link rel="stylesheet" href="{{asset('css/paginador.css')}}"/>
 <link rel="stylesheet" type="text/css" href="{{ asset('css/fancy/jquery.fancybox.css') }}?v=2.1.5" media="screen" />
-<link rel="stylesheet" type="text/css" href="{{ asset('css/jquery.modal.css') }}?v=2" />
 {% endblock %}
 
 {% set locale = app.request.locale %}
 
 {% block body %}
-<div class="cancionDelMes">
-        <h3>{% trans %}SONG OF THE MOND{% endtrans %}</h3>
-        <p>{% trans %}DOWNLOAD THE FREE SONG OF THIS MONTH!{% endtrans %}</p>
-        <p class="cancion">
-            <span class="nombreCancion">
-                {{cancionDelMes.configuracion}}
-            </span> 
-            <a class="btn btn-bg" href="{{path('cancion_del_mes')}}" target="_black">
-                {% trans %}download{% endtrans %}
-            </a>
-        </p>
-</div>
+
 <article class="izquierda">
     <header>
         <h2>{% trans %}news{% endtrans %}</h2>
-    </header>
+    </header>	
     <ul class="lista-noticias">
 	{% for noticia in pagination %}
             <li class="noticia">
@@ -69,13 +57,11 @@
             </header>
 	{% render(controller("FrontendBundle:Default:lastTweets",{'username': 'luis_lauro'})) %}
         </article>
-
 {% endblock %}
 {% block javascripts %}
   {{parent()}}
 <script src="{{asset('js/fancy/jquery.fancybox.js')}}?v=2.1.5"></script>
 <script src="{{asset('js/fancy/jquery.fancybox-media.js')}}?v=2.1.5"></script>
-<script src="{{asset('js/jquery.modal2.js')}}?v=1"></script>
 <script>
     $(document).ready(function(){
         $("a.fancybox").fancybox();
@@ -89,16 +75,6 @@
         });
         $.iniciarCircle();
         
-        {% if enviarUsuarios > 0 %}
-             setTimeout(function(){
-                 $().dialogModalRS('{{path('frontend_form_usuarios')}}');
-             },1000);
-        {% endif %}
-        
-        $(".signup").on('click',function(e){
-           e.preventDefault();
-           $().dialogModalRS('{{path('frontend_form_usuarios')}}');
-        });
         
     });
     jQuery.iniciarCircle=function(){
@@ -110,24 +86,23 @@
         },4000);
      }
 </script>
-<script>
-    $(document).ready(function() {
-        $.ajax({
-            type: "GET",
-            dataType: "jsonp",
-            cache: false,
-            url: "https://api.instagram.com/v1/users/35327525/media/recent/?access_token=35327525.7ff0c4c.e5d7cfaf8bdc4112a7a1ac6e5d3ee1d7",
-            success: function(data) {
-                for (var i = 0; i < 6; i++) {
-                    //$(".instagram").append("<div class='instagram-placeholder'><a target='_blank' href='" + data.data[i].link +"'><img class='instagram-image' src='" + data.data[i].images.thumbnail.url +"' /></a></div>");
-                    $(".instagram").html("<div class='instagram-placeholder'><a target='_blank' href='" + data.data[i].link +"'><img class='instagram-image' src='" + data.data[i].images.standard_resolution.url +"' /></a></div>");  
-                    break;
-                }   
+        <script>
+            $(document).ready(function() {
+                $.ajax({
+                    type: "GET",
+                    dataType: "jsonp",
+                    cache: false,
+                    url: "https://api.instagram.com/v1/users/35327525/media/recent/?access_token=35327525.7ff0c4c.e5d7cfaf8bdc4112a7a1ac6e5d3ee1d7",
+                    success: function(data) {
+                        
+                            //$(".instagram").append("<div class='instagram-placeholder'><a target='_blank' href='" + data.data[i].link +"'><img class='instagram-image' src='" + data.data[i].images.thumbnail.url +"' /></a></div>");
+                            $(".instagram").html("<div class='instagram-placeholder'><a target='_blank' href='" + data.data[0].link +"'><img class='instagram-image' src='" + data.data[0].images.standard_resolution.url +"' /></a></div>");  
+                           
 
-            }
-        });
-    });
-</script>
+                    }
+                });
+            });
+        </script>
 {% endblock %}
 
 {% block signup %}

@@ -3,6 +3,7 @@
 namespace Richpolis\BackendBundle\Controller;
 
 use Symfony\Component\HttpFoundation\Request;
+use Symfony\Component\HttpFoundation\Response;
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Method;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
@@ -12,7 +13,9 @@ use Richpolis\BackendBundle\Form\ConfiguracionesImagenType;
 use Richpolis\BackendBundle\Form\ConfiguracionesLinkVideoType;
 use Richpolis\BackendBundle\Form\ConfiguracionesTextType;
 use Richpolis\BackendBundle\Form\ConfiguracionesStringType;
+use Richpolis\BackendBundle\Form\ConfiguracionesType;
 
+use Richpolis\BackendBundle\Utils\qqFileUploader;
 
 /**
  * Configuraciones controller.
@@ -228,6 +231,48 @@ class ConfiguracionesController extends Controller
         ;
     }
     
+    /**
+     * upload registro a galeria.
+     *
+     * @Route("/upload/file", name="configuraciones_upload")
+     */
+    public function uploadAction(){
+        
+       // list of valid extensions, ex. array("jpeg", "xml", "bmp")
+       $allowedExtensions = array("jpeg","png","gif","jpg","mp3");
+       // max file size in bytes
+       $sizeLimit = 6 * 1024 * 1024;
+       $request=$this->get("request");
+       $uploader = new qqFileUploader($allowedExtensions, $sizeLimit,$request->server);
+       $uploads= $this->container->getParameter('richpolis_uploads');
+       $result = $uploader->handleUpload($uploads."/configuraciones/");
+       
+       // to pass data through iframe you will need to encode all html tags
+       /*****************************************************************/
+       //$file = $request->getParameter("qqfile");
+       $em = $this->getDoctrine()->getManager();
+       $anteriores = $em->getRepository('BackendBundle:Configuraciones')->getConfiguracionesPorTipo(Configuraciones::$FILE);
+       if(isset($result["success"])){
+           $registro = new Configuraciones();
+           $registro->setTexto($result["filename"]);
+           $registro->setConfiguracion($result["titulo"]);
+           $registro->setTipoConfiguracion(Configuraciones::$FILE);
+           $em->persist($registro);
+           $em->flush();
+           $urlEdit = $this->generateUrl('configuraciones_edit',array('id'=>$registro->getId()));
+           $result['urlEdit']=$urlEdit;
+           foreach($anteriores as $anterior){
+             $em->remove($anterior);
+           }
+           $em->flush();
+        }
+        
+        // create a JSON-response with a 200 status code
+        $response = new Response(json_encode($result));
+        $response->headers->set('Content-Type', 'application/json');
+        return $response;
+    }
+    
     private function createFormEspecializado($entity)
     {
         switch($entity->getTipoConfiguracion())
@@ -240,6 +285,8 @@ class ConfiguracionesController extends Controller
                 return $this->createForm(new ConfiguracionesTextType(), $entity);
             case Configuraciones::$TEXTO_CORTO:
                 return $this->createForm(new ConfiguracionesStringType(), $entity);    
+            default:
+                return $this->createForm(new ConfiguracionesType(), $entity);
         }
     }
 }

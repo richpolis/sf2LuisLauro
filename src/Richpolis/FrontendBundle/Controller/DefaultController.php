@@ -10,6 +10,8 @@ use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Template;
 use Richpolis\BackendBundle\Entity\Contacto;
 use Richpolis\BackendBundle\Form\ContactoType;
+use Richpolis\FrontendBundle\Entity\Usuario;
+use Richpolis\FrontendBundle\Form\UsuarioType;
 use Richpolis\CategoriasGaleriaBundle\Entity\Categorias;
 
 /**
@@ -19,7 +21,17 @@ use Richpolis\CategoriasGaleriaBundle\Entity\Categorias;
  */
 class DefaultController extends Controller {
     
+    protected function getFilters()
+    {
+        $filters=$this->get('session')->get('filters', array());
+        return $filters;
+    }
+
+    protected function setFilters($arreglo){
+        $this->get('session')->set('filters',$arreglo);
+    }
     
+
     /**
      * Lists all Frontend entities.
      *
@@ -38,7 +50,7 @@ class DefaultController extends Controller {
      * @Route("/{_locale}/", name="homepage",defaults={"_locale" = "en"}, requirements={"_locale" = "en|es"})
      * @Template()
      */
-    public function indexAction()
+    public function indexAction(Request $request)
     {
         $em = $this->getDoctrine()->getManager();
 
@@ -48,6 +60,8 @@ class DefaultController extends Controller {
         $query = $em->getRepository("PublicacionesBundle:Publicacion")
                     ->getQueryPublicacionPorCategoriaActivas($categoria->getId());
         
+        $filters = $this->getFilters();
+
         $paginator = $this->get('knp_paginator');
 
         $pagination = $paginator->paginate(
@@ -59,12 +73,38 @@ class DefaultController extends Controller {
 
         $data = $pagination->getPaginationData();
 
-        $configuraciones = $em->getRepository('BackendBundle:Configuraciones')->findAll();
+        $configuraciones = $em->getRepository('BackendBundle:Configuraciones')
+                              ->getConfiguracionesActivas();
+        
+        $cancionDelMes=null;
+        foreach($configuraciones as $configuracion){
+            if($configuracion->getTipoConfiguracion()==5){
+                $cancionDelMes=$configuracion;
+                break;
+            }
+        }
+
+        $locale = $request->getLocale();
+        $enviarUsuarios=0;
+        if(!isset($filters['formUsuarios'])){
+          foreach($configuraciones as $configuracion){
+              if($configuracion->getConfiguracion()=='usuarios-permitidos'){
+                  $enviarUsuarios = intval($configuracion->getTexto());
+                  $filters['formUsuarios']=true;
+                  $this->setFilters($filters);
+                  break;
+              }
+          }
+        }
+        
+
 
         return array(
             'pagination' => $pagination,
             'data'=>$data,
-            'configuraciones' =>$configuraciones
+            'configuraciones' =>$configuraciones,
+            'cancionDelMes' => $cancionDelMes,
+            'enviarUsuarios'=> $enviarUsuarios,
         );
     }
 
@@ -251,8 +291,100 @@ class DefaultController extends Controller {
         ));
     }
     
-   
+    /**
+     * @Route("/{_locale}/form/usuarios", name="frontend_form_usuarios",defaults={"_locale" = "en"}, requirements={"_locale" = "en|es"})
+     * @Method({"GET", "POST"})
+     * @Template("FrontendBundle:Default:formUsuarios.html.twig")
+     */
+    public function formUsuariosAction() {
+        $usuario = new Usuario();
+        $form = $this->createForm(new UsuarioType(), $usuario);
+        $request = $this->getRequest();
+        
+        if ($request->getMethod() == 'POST') {
+            $form->bind($request);
+
+            if ($form->isValid()) {
+                $datos=$form->getData();
+                
+                
+                $message = \Swift_Message::newInstance()
+                        ->setSubject('Usuario desde pagina')
+                        ->setFrom($datos->getEmail())
+                        ->setTo('alexisdlangel@gmail.com')
+                        //->setTo('richpolis@hotmail.com')
+                        ->setBody($this->renderView('FrontendBundle:Default:usuariosEmail.html.twig', array('datos' => $datos)), 'text/html');
+                $this->get('mailer')->send($message);
+
+                $this->get('session')->setFlash('noticia', 'Gracias por enviar tu correo, nos comunicaremos a la brevedad posible!');
+
+                // Redirige - Esto es importante para prevenir que el usuario
+                // reenvíe el formulario si actualiza la página
+                $ok=true;
+                $error=false;
+                $mensaje="Gracias, mensaje enviado.";
+                $usuario = new Usuario();
+                $form = $this->createForm(new UsuarioType(), $usuario);
+                
+                $em = $this->getDoctrine()->getManager();
+                
+                $conf=$em->getRepository('BackendBundle:Configuraciones')->findOneBy(array('slug'=>'usuarios-permitidos'));
+                $conf->setTexto(intval($conf->getTexto())-1);
+                $em->persist($conf);
+                $em->flush();
+                
+            }else{
+                $ok=false;
+                $error=true;
+                $mensaje="El mensaje no se ha podido enviar";
+            }
+        }else{
+            $ok=false;
+            $error=false;
+            $mensaje="Violacion de acceso";
+        }
+        
+        return array(
+              'form' => $form->createView(),
+              'ok'=>$ok,
+              'error'=>$error,
+              'mensaje'=>$mensaje,
+        );
+    }
     
+    /**
+     * Descargar cancion del mes.
+     *
+     * @Route("/cancion/del/mes", name="cancion_del_mes")
+     */
+    public function downloadCancionAction()
+    {
+        $em = $this->getDoctrine()->getManager();
+        $configuraciones = $em->getRepository('BackendBundle:Configuraciones')
+                              ->getConfiguracionesActivas();
+        $cancionDelMes=null;
+        foreach($configuraciones as $configuracion){
+            if($configuracion->getTipoConfiguracion()==5){
+                $cancionDelMes=$configuracion;
+                break;
+            }
+        }
+        $path = $this->get('kernel')->getRootDir(). "/../web/uploads/configuraciones/";
+        
+        if($cancionDelMes){
+            $filename=$cancionDelMes->getTexto();
+            $content = file_get_contents($path.$filename);
+            $response = new Response();
+            //set headers
+            $response->headers->set('Content-Type', 'mime/type');
+            $response->headers->set('Content-Disposition', 'attachment;filename="'.$cancionDelMes->getConfiguracion().'.mp3"');
+
+            $response->setContent($content);
+            return $response;
+        }else{
+            return new Response();
+        }
+    }
 }
 
 ?>

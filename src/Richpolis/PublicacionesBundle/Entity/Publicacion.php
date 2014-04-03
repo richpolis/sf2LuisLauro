@@ -1,4 +1,4 @@
-    <?php
+<?php
 
 namespace Richpolis\PublicacionesBundle\Entity;
 

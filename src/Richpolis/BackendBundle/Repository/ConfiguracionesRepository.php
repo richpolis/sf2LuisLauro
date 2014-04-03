@@ -24,10 +24,17 @@ class ConfiguracionesRepository extends EntityRepository
     
     public function getQueryConfiguracionesActivas($todas=false){
         $query=$this->createQueryBuilder('p')
-                    ->orderBy('p.configuracion', 'ASC');
+                    ->orderBy('p.id', 'DESC');
         return $query->getQuery();
     }
     
+    public function getConfiguracionesPorTipo($tipoConfiguracion){
+        $query=$this->createQueryBuilder('p')
+                    ->where('p.tipoConfiguracion=:tipoConfiguracion')
+                    ->setParameter('tipoConfiguracion', $tipoConfiguracion);
+        return $query->getQuery()->getResult();
+    }
+
     public function getConfiguracionesActivas($todas=false){
         $query=$this->getQueryConfiguracionesActivas($todas);
         return $query->getResult();

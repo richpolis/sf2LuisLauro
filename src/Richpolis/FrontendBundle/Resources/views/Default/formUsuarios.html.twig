@@ -1,0 +1,65 @@
+<div class="form-usuarios">
+    <figure>
+        <img src="{{asset('images/keyarts/logoluislauroblanco.png')}}" />
+        <span class="button-close">
+            <img src="{{asset('images/keyarts/close.png')}}" width="30"/>
+        </span>
+        <span class="buttons-languages">
+            <a class="ingles" href="#" data-url="{{path('frontend_form_usuarios',{'_locale':'en'})}}" style="cursor: pointer;">
+               english
+            </a>
+             /
+            <a class="espanol" href="#" data-url="{{path('frontend_form_usuarios',{'_locale':'es'})}}" style="cursor: pointer;">
+               español  
+            </a>
+        </span>
+    </figure>    
+
+    <h3>{%trans%}Be one of the firts 100<br>to register and obtein<br>special gifts!{%endtrans%}</h3>
+
+    <form id="formUsuarios" action="{{path('frontend_form_usuarios')}}" method="post">
+        <div class="grupo">  
+            <label for="name">{%trans%}name{%endtrans%}*</label>
+            {{ form_widget(form.name) }}<br>
+        </div>
+        <div class="grupo">
+            <label for="email">{%trans%}email{%endtrans%}*</label>
+            {{ form_widget(form.email) }}<br>
+        </div>
+        <div class="grupo">
+            <label for="tel">{%trans%}telephone{%endtrans%}</label>
+            {{ form_widget(form.telefono) }}<br>
+        </div>
+        <div class="grupo">
+            <label for="tel">{%trans%}address{%endtrans%}</label>
+            {{ form_widget(form.direccion) }}<br>
+        </div>
+        <div class="grupo">
+            <label for="tel">{%trans%}state{%endtrans%}</label>
+            {{ form_widget(form.estado) }}<br>
+        </div>
+        <button class="button-send">{%trans%}send{%endtrans%}</button>
+        {{ form_rest(form) }}
+    </form>
+</div>
+<script>
+    $(document).ready(function(){
+       $(".button-close").on('click',function(){
+          closeDialogModalRS(); 
+       });
+       $(".button-send").on('click',function(e){
+           e.preventDefault();
+          $(".button-send").after(' <img src="/images/preloader.gif"/>');
+          $.ajax({
+            type: "POST",
+            url: "{{path('frontend_form_usuarios')}}",
+            data: $("#formUsuarios").serialize(),
+            success: function(data) {
+                closeDialogModalRS(); 
+            }
+          }); 
+       });
+       activarBotonesLenguajes();
+    });
+    
+</script>

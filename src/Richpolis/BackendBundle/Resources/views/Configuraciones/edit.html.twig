@@ -21,11 +21,11 @@
 
 {% block body %}
 <h1>Editar configuracion "{{entity.configuracion}}"</h1>
-
-<form id="formPrincipal" action="{{ path('configuraciones_update', { 'id': entity.id }) }}" method="post" {{ form_enctype(edit_form) }}>
-    {{ form_widget(edit_form) }}
-</form>
-
+  <form id="formPrincipal" action="{{ path('configuraciones_update', { 'id': entity.id }) }}" method="post" {{ form_enctype(edit_form) }}>
+        {{ form_errors(edit_form) }}
+        {{ form_row(edit_form.configuracion) }}
+        {{ form_rest(edit_form) }}
+    </form>
     <p style="margin-top: 10px;">
     <ul class="record_actions nav nav-pills">
         <li>
@@ -40,11 +40,17 @@
         <li>&nbsp;</li>
         <li>
             <form action="{{ path('configuraciones_delete', { 'id': entity.id }) }}" method="post">
-                    {{ form_widget(delete_form) }}
-                    <button class="btn btn-danger" type="submit">Eliminar</button>
-                </form>
-            </li>
-        </ul>
+                {{ form_widget(delete_form) }}
+                <button class="btn btn-danger" type="submit">Eliminar</button>
+           </form>
+        </li>
+    </ul>
 
     </p>
+    
+
+{% endblock %}
+
+{% block javascript_adicional %}
+
 {% endblock %}

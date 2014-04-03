@@ -4,6 +4,7 @@ namespace Richpolis\BackendBundle\Entity;
 
 use Doctrine\ORM\Mapping as ORM;
 use Symfony\Component\Validator\Constraints as Assert;
+use Symfony\Component\HttpFoundation\File\UploadedFile;
 
 /**
  * Configuraciones
@@ -43,7 +44,6 @@ class Configuraciones
      * @var string
      *
      * @ORM\Column(name="texto", type="text")
-     * @Assert\NotBlank()
      */
     private $texto;
 
@@ -58,6 +58,7 @@ class Configuraciones
     static public $LINK_VIDEO=2;
     static public $TEXTO_LARGO=3;
     static public $TEXTO_CORTO=4;
+    static public $FILE = 5;
     
     
     
@@ -66,6 +67,7 @@ class Configuraciones
         2=>'Link_video',
         3=>'Texto largo',
         4=>'Texto corto',
+        5=>'Canción del mes',
     );
     
     public function getStringTipoConfiguracion(){
@@ -78,6 +80,11 @@ class Configuraciones
 
     static function getPreferedTipoConfiguracion(){
         return array(self::$TEXTO_CORTO);
+    }
+    
+    public function __construct() {
+        //ini_set('post_max_size', '64M');
+        //ini_set('upload_max_filesize', '64M');
     }
     
     /**
@@ -211,37 +218,77 @@ class Configuraciones
      * uploads file
      */
     
-    public $file;
+    /**
+     * @Assert\File(maxSize="60000000")
+     */
+    private $file;
+
+    /**
+     * Sets file.
+     *
+     * @param UploadedFile $file
+     */
+    public function setFile(UploadedFile $file = null)
+    {
+        $this->file = $file;
+        // check if we have an old image path
+        if (isset($this->texto)) {
+            // store the old name to delete after the update
+            $this->temp = $this->texto;
+            $this->texto = null;
+        } else {
+            $this->texto = 'initial';
+        }
+    }
+
+    /**
+     * Get file.
+     *
+     * @return UploadedFile
+     */
+    public function getFile()
+    {
+        return $this->file;
+    }
     
     /**
-    * @ORM\PrePersist
-    * @ORM\PreUpdate
-    */
+     * @ORM\PrePersist()
+     * @ORM\PreUpdate()
+     */
     public function preUpload()
     {
-      if (null !== $this->file) {
-        // do whatever you want to generate a unique name
-        $this->texto = uniqid().'.'.$this->file->guessExtension();
+      $mp=0;  
+      if (null !== $this->getFile()) {
+            // do whatever you want to generate a unique name
+            $filename = sha1(uniqid(mt_rand(), true));
+            $this->texto = $filename.'.'.$this->getFile()->guessExtension();
       }
     }
 
     /**
-    * @ORM\PostPersist
-    * @ORM\PostUpdate
-    */
+     * @ORM\PostPersist()
+     * @ORM\PostUpdate()
+     */
     public function upload()
     {
-      if (null === $this->file) {
-        return;
-      }
+        $mp=0;
+        if (null === $this->getFile()) {
+            return;
+        }
 
-      // if there is an error when moving the file, an exception will
-      // be automatically thrown by move(). This will properly prevent
-      // the entity from being persisted to the database on error
-      $this->file->move($this->getUploadRootDir(), $this->archivo);
+        // if there is an error when moving the file, an exception will
+        // be automatically thrown by move(). This will properly prevent
+        // the entity from being persisted to the database on error
+        $this->getFile()->move($this->getUploadRootDir(), $this->texto);
 
-      
-      unset($this->file);
+        // check if we have an old image
+        if (isset($this->temp)) {
+            // delete the old image
+            unlink($this->getUploadRootDir().'/'.$this->temp);
+            // clear the temp image path
+            $this->temp = null;
+        }
+        $this->file = null;
     }
 
     /**
@@ -249,7 +296,9 @@ class Configuraciones
     */
     public function removeUpload()
     {
-      if($this->getTipoConfiguracion()==self::$IMAGEN){  
+      $mp=0;  
+      if($this->getTipoConfiguracion()==self::$IMAGEN || 
+              $this->getTipoConfiguracion() == self::$FILE){  
         if ($file = $this->getAbsolutePath()) {
           if(file_exists($file)){
               unlink($file);
