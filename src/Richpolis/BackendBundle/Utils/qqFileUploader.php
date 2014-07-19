@@ -118,7 +118,7 @@ class qqFileUploader {
         if (!is_writable($uploadDirectory)) {
             chmod($uploadDirectory, 777);
 
-            //return array('error' => "Server error. Upload directory isn't writable.");
+            return array('error' => "Server error. Upload directory isn't writable.");
         }
 
         if (!$this->file) {
@@ -131,9 +131,9 @@ class qqFileUploader {
             return array('error' => 'File is empty');
         }
 
-        /*if ($size > $this->sizeLimit) {
+        if ($size > $this->sizeLimit) {
             return array('error' => 'File is too large');
-        }*/
+        }
 
         $pathinfo = pathinfo($this->file->getName());
         $filename = $pathinfo['filename'];

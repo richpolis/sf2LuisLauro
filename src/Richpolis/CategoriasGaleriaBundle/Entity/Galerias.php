@@ -548,7 +548,7 @@ class Galerias
     }
     
     public function getWidth(){
-       switch($this->getCategoria()->getTipoCategoria()){
+       /*switch($this->getCategoria()->getTipoCategoria()){
             case Categorias::$GALERIA_NOTICIAS: 
                 $resp= 222;
                 break;
@@ -560,10 +560,11 @@ class Galerias
                 break;
             
         }
-        return $resp;
+        return $resp;*/
+        return 120;
     }
     public function getHeight(){
-        switch($this->getCategoria()->getTipoCategoria()){
+        /*switch($this->getCategoria()->getTipoCategoria()){
             case Categorias::$GALERIA_NOTICIAS: 
                 $resp= 167;
                 break;
@@ -574,7 +575,8 @@ class Galerias
                 $resp= 144;
                 break;
         }
-        return $resp;
+        return $resp;*/
+        return 100;
     }
 
     public function getIsImagen(){
