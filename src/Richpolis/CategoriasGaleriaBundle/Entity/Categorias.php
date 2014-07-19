@@ -114,16 +114,22 @@ class Categorias
      */
     protected $galerias;
     
-    static public $GALERIA_NOTICIAS=1;
+    static public $GALERIA_PRINCIPAL=1;
+    static public $GALERIA_PRIVADA=2;
+    static public $GALERIA_VIDEOS_PRIVADA=3;
+    static public $GALERIA_MUSICA_PRIVADA=4;
     
     static private $sCategorias=array(
-        1=>'Noticias',
+        1=>'Galeria principal',
+        2=>'Galeria privada',
+        3=>'Galeria videos privada',
+        4=>'Galeria musica privada',
     );
     
     public function __construct() {
         $this->isActive = true;
         $this->isCategoria = true;
-        $this->tipoCategoria=self::$GALERIA_NOTICIAS;
+        $this->tipoCategoria=self::$GALERIA_PRINCIPAL;
         $this->galerias =new \Doctrine\Common\Collections\ArrayCollection();
     }
     
@@ -136,7 +142,7 @@ class Categorias
     }
 
     static function getPreferedTipoCategoria(){
-        return array(self::$GALERIA_NOTICIAS);
+        return array(self::$GALERIA_PRINCIPAL);
     }
 
     public function __toString()

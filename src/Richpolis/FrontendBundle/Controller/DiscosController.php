@@ -187,8 +187,8 @@ class DiscosController extends Controller
     /**
      * Deletes a Discos entity.
      *
-     * @Route("/{id}", name="discos_delete")
-     * @Method("DELETE")
+     * @Route("/{id}/delete", name="discos_delete")
+     * @Method("POST")
      */
     public function deleteAction(Request $request, $id)
     {

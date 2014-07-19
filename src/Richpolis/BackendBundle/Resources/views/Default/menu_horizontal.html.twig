@@ -8,6 +8,9 @@
     <li {% if pagina=="discos" %} class="active" {% endif %}>
         <a href="{{path('discos')}}">Discos</a>
     </li>
+    <li {% if pagina=="galerias" %} class="active" {% endif %}>
+        <a href="{{path('categorias')}}">Galerias</a>
+    </li>
     <li {% if pagina=="configuraciones" %} class="active" {% endif %}>
         <a href="{{path('backend_configuraciones')}}">Configuraciones</a>
     </li>

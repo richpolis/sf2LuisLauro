@@ -26,7 +26,7 @@ class CategoriasController extends Controller
         $filters=$this->get('session')->get('filters', array());
         
         if(!isset($filters['categorias']))
-            $filters['categorias']=Categorias::$GALERIA_NOTICIAS;
+            $filters['categorias']=Categorias::$GALERIA_PRINCIPAL;
         
         return $filters;
     }
@@ -44,7 +44,7 @@ class CategoriasController extends Controller
         $filters = $this->getFilters();
 
         if(!isset($filters['categorias']))
-            $filters['categorias']=Categorias::$GALERIA_NOTICIAS;
+            $filters['categorias']=Categorias::$GALERIA_PRINCIPAL;
         
         /*$query = $em->getRepository('CategoriasGaleriaBundle:Categorias')
                             ->getQueryCategoriasPorTipoYActivas($filters['categorias'],false);*/
@@ -180,7 +180,7 @@ class CategoriasController extends Controller
     public function galeriasNoticiasAction(){
         return $this->forward(
                 'CategoriasGaleriaBundle:Categorias:showCategoria', 
-                array('tipo'=>  Categorias::$GALERIA_NOTICIAS)
+                array('tipo'=>  Categorias::$GALERIA_PRINCIPAL)
                 );
     }
     
@@ -509,9 +509,9 @@ class CategoriasController extends Controller
     
     private function createFormEspecializado($entity)
     {
-        switch($entity->getTipoCategoria())
+        /*switch($entity->getTipoCategoria())
         {
-            case Categorias::$GALERIA_NOTICIAS:
+            case Categorias::$GALERIA_PRINCIPAL:
                 return $this->createForm(new CategoriasType(), $entity);
             case Categorias::$GALERIA_ARTISTAS:
                 return $this->createForm(new CategoriasArtistasType(), $entity);
@@ -520,7 +520,8 @@ class CategoriasController extends Controller
                 return $this->createForm(new CategoriasProductosType(), $entity);
             default:
                 return $this->createForm(new CategoriasType(), $entity);    
-        }
+        }*/
+        return $this->createForm(new CategoriasType(), $entity);    
     }
 }
 

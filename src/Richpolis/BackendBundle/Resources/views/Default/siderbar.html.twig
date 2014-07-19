@@ -16,6 +16,10 @@
     <li {% if pagina=="tracks" %} class="active" {% endif %}>
         <a href="{{path('backend_tracks')}}">Tracks</a>
     </li>
+    <li class="nav-header">Galerias</li>
+    <li {% if pagina=="galerias" %} class="active" {% endif %}>
+        <a href="{{path('backend_categorias')}}">Galerias</a>
+    </li>
     <li class="nav-header">Configuraciones</li>
     <li {% if pagina=="configuraciones" %} class="active" {% endif %}>
         <a href="{{path('backend_configuraciones')}}">Configuraciones</a>

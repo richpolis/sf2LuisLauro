@@ -119,3 +119,7 @@
 .bt-pag.fixed:hover:before{
     border-color:#444;
 }
+
+span.current{
+	font-weight:bold;
+}

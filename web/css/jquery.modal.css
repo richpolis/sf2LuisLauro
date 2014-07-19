@@ -73,15 +73,6 @@
 
 .form-usuarios .buttons-languages{
     position: absolute;
-    top: 30px;
+    top: 10px;
     right: 250px;
-}
-
-.form-usuarios .buttons-languages a{
-    color: #808080;
-    padding-left: 3px;
-    padding-right: 3px;
-}
-.form-usuarios .buttons-languages a:hover{
-    color: #0ff;
 }

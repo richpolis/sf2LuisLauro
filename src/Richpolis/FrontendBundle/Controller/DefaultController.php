@@ -307,14 +307,18 @@ class DefaultController extends Controller {
             if ($form->isValid()) {
                 $datos=$form->getData();
                 
-                
+                /**/
                 $message = \Swift_Message::newInstance()
                         ->setSubject('Usuario desde pagina')
                         ->setFrom($datos->getEmail())
                         ->setTo('alexisdlangel@gmail.com')
-                        //->setTo('richpolis@hotmail.com')
                         ->setBody($this->renderView('FrontendBundle:Default:usuariosEmail.html.twig', array('datos' => $datos)), 'text/html');
-                $this->get('mailer')->send($message);
+                try{
+                   $mailer = $this->get('mailer');
+                   $response = $mailer->send($message);
+                }catch(\Swift_TransportException $e){
+                   $response = $e->getMessage() ;
+                }
 
                 $this->get('session')->setFlash('noticia', 'Gracias por enviar tu correo, nos comunicaremos a la brevedad posible!');
 

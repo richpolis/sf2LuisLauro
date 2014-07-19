@@ -45,13 +45,13 @@
     {% endfor %}
 {% endblock %}
 
-{% block signup %}
+{# block signup %}
    {% for config in configuraciones %}
         {% if config.slug == 'signup' %}
         <li><a href="{{config.texto}}" target="_blank">signup</a></li>
         {% endif %}
    {% endfor %}
-{% endblock %}        
+{% endblock #}        
         
 {% block footer %}
         <footer>
