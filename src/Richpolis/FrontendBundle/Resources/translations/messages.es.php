@@ -4,6 +4,7 @@ return array(
     'news' => 'noticias',
     'blog' => 'blog',
     'bio' => 'biografía',
+    'gallery' => 'galeria',
     'music' => 'música',
     'latest instangram' => 'último instangram',
     'twitter feed' => 'twitter feed',

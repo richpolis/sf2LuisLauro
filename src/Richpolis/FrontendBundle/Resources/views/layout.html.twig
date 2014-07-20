@@ -52,6 +52,7 @@
         {% set blog = "" %}
         {% set bio = "" %}
         {% set music = "" %}
+        {% set gallery = "" %}
         
         {% if route == "homepage" %}
             {% set homepage = "class=active" %}
@@ -61,6 +62,8 @@
             {% set music = "class=active" %}
         {% elseif route == "biografia" %}
             {% set bio = "class=active" %}
+         {% elseif route == "galeria" %}
+            {% set gallery = "class=active" %}    
         {% endif %}
         
         <div class="container">
@@ -75,6 +78,7 @@
                             <li><a {{homepage}} href="{{path('homepage',{'_locale': locale })}}">{% trans %}news{% endtrans %}</a></li>
                             <li><a {{bio}} href="{{path('biografia',{'_locale': locale })}}">{% trans %}bio{% endtrans %}</a></li>
                             <li><a {{music}} href="{{path('music',{'_locale': locale })}}">{% trans %}music{% endtrans %}</a></li>
+                            <li><a {{gallery}} href="{{path('galeria',{'_locale': locale })}}">{% trans %}gallery{% endtrans %}</a></li>
                             <li><a {{blog}} href="{{path('blog',{'_locale': locale })}}">{% trans %}blog{% endtrans %}</a></li>
                             {% block signup %}
                             <!--li><a class="singup" href="#sigup">signup</a></li-->

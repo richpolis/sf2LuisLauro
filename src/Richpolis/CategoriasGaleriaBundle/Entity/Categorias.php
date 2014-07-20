@@ -113,6 +113,7 @@ class Categorias
     
     /**
      * @ORM\OneToMany(targetEntity="Galerias", mappedBy="categoria")
+     * @ORM\OrderBy({"posicion" = "ASC"})
      */
     protected $galerias;
     

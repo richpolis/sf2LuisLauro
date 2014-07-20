@@ -131,9 +131,9 @@ class qqFileUploader {
             return array('error' => 'File is empty');
         }
 
-        if ($size > $this->sizeLimit) {
+        /*if ($size > $this->sizeLimit) {
             return array('error' => 'File is too large');
-        }
+        }*/
 
         $pathinfo = pathinfo($this->file->getName());
         $filename = $pathinfo['filename'];

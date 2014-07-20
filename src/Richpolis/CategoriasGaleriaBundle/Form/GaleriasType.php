@@ -20,8 +20,8 @@ class GaleriasType extends AbstractType
                    'class' => 'tinymce',
                    'data-theme' => 'advanced' // Skip it if you want to use default theme
                  )))    
-            ->add('file','imagen',array('label'=>'Portada','image_path' => 'webPath'))
-            ->add('thumbnail','hidden')
+            ->add('file','imagen',array('label'=>'Portada','image_path' => 'webPath','required'=>false))
+            ->add('fileTmb','imagen',array('label'=>'Portada','image_path' => 'thumbnailWebPath','required'=>false))
             ->add('posicion','hidden')
             ->add('categoria','entity', array(
                 'class' => 'CategoriasGaleriaBundle:Categorias',
@@ -34,7 +34,8 @@ class GaleriasType extends AbstractType
                 'multiple'  => false
             ))
             ->add('tipoArchivo','hidden')
-           
+            ->add('archivo','hidden')            
+            ->add('thumbnail','hidden')
             ->add('isActive',null,array('label'=>'Activo?','required'=>false))
             
         ;

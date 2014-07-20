@@ -20,8 +20,8 @@ class GaleriasVideosType extends AbstractType
                    'class' => 'tinymce',
                    'data-theme' => 'advanced' // Skip it if you want to use default theme
                  )))    
-            ->add('archivo','file',array('label'=>'Video'))
-            ->add('thumbnail','imagen',array('label'=>'Portada','image_path' => 'thumbnailWebPath'))
+            ->add('file','file',array('label'=>'Video','required'=>false))
+            ->add('fileTmb','imagen',array('label'=>'Portada','image_path' => 'thumbnailWebPath','required'=>false))
             ->add('posicion','hidden')
             ->add('categoria','entity', array(
                 'class' => 'CategoriasGaleriaBundle:Categorias',
@@ -34,7 +34,8 @@ class GaleriasVideosType extends AbstractType
                 'multiple'  => false
             ))
             ->add('tipoArchivo','hidden')
-           
+            ->add('archivo','hidden')
+            ->add('thumbnail','hidden')            
             ->add('isActive',null,array('label'=>'Activo?','required'=>false))
             
         ;

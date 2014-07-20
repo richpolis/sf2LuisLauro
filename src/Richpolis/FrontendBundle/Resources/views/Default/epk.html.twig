@@ -1,0 +1,105 @@
+{% extends "FrontendBundle::layout.html.twig" %}
+
+{% block stylesheets %}
+ {{parent()}}
+<link rel="stylesheet" type="text/css" href="{{ asset('css/fancy/jquery.fancybox.css') }}?v=2.1.5" media="screen" />
+{% endblock %}
+
+{% set locale = app.request.locale %}
+
+{% block body %}
+<article class="izquierda">
+    <header>
+        <h2>{% trans %}songs{% endtrans %}</h2>
+    </header>   
+    <ul class="lista-musica">
+    {% for music in musica.galerias %}
+        <li class="item">
+            <audio controls>
+              <source src="{{music.webPath}}" type="audio/mpeg">
+              Your browser does not support the audio tag.
+            </audio>
+        </li>   
+    {% endfor %}
+    </ul>
+</article>
+<article class="derecha">
+    <header>
+        <h2>{% trans %}photos{% endtrans %}</h2>
+    </header>
+    {% for galeria in galerias.galerias %}
+        {% if loop.index < 4 %}
+        <li class="item">
+            <a href="{{galeria.webPath}}" class="fancybox" >
+             <img src="{{galeria.thumbnailWebPath}}" alt="{{galeria.titulo}}">
+            </a>
+        </li>
+        {% else %}
+            sin datos
+        {% endif %}
+    {% endfor %}
+</article>
+<article class="derecha">
+    <header>
+        <h2>{% trans %}videos{% endtrans %}</h2>
+    </header>
+    {% for video in videos.galerias %}
+        {% if loop.index < 4 %}
+        <li class="item">
+            <a href="{{video.webPath}}" class="fancybox frame" >
+             <img src="{{video.thumbnailWebPath}}" alt="{{video.titulo}}">
+            </a>
+        </li>
+        {% else %}
+            sin datos
+        {% endif %}
+    {% endfor %}
+</article>
+<article class="centrado">
+    <header>
+        <h2>{% trans %}bio{% endtrans %}</h2>
+    </header>
+    {% for registro in registros %}
+        {{ registro.descripcion(locale) | raw  }}
+    {% endfor %}
+</article>
+
+{% endblock %}
+
+{% block javascripts %}
+  {{parent()}}
+<script src="{{asset('js/fancy/jquery.fancybox.js')}}?v=2.1.5"></script>
+<script src="{{asset('js/fancy/jquery.fancybox-media.js')}}?v=2.1.5"></script>
+<script>
+    $(document).ready(function() {
+        $("a.fancybox").fancybox();
+        $("a.fancybox-media").fancybox({
+            helpers : {
+                media: true
+            },
+            youtube : {
+                autoplay: 0
+            }
+        });
+    });
+</script>
+{% endblock %}
+
+{% block footer %}
+        <footer>
+            <div class="datos-footer">
+                {% for config in configuraciones %}
+                    {% if config.slug == 'pie-pagina' %}
+                        {{config.texto | raw }}
+                    {% endif %}
+                {% endfor %}
+            </div>
+            <div class="datos-footer">
+                {% for config in configuraciones %}
+                    {% if config.slug == 'contacto-info' %}
+                        {{config.texto | raw }}
+                    {% endif %}
+                {% endfor %}
+            </div>
+        </footer>
+{% endblock %}        

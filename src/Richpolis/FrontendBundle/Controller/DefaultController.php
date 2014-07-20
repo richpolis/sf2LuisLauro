@@ -249,6 +249,44 @@ class DefaultController extends Controller {
         );
         
     }
+
+    /**
+     * Lista la galeria epk.
+     *
+     * @Route("/{_locale}/epk", name="epk",defaults={"_locale" = "en"}, requirements={"_locale" = "en|es"})
+     * @Method({"GET"})
+     * @Template()
+     */
+    public function epkAction()
+    {
+        $em = $this->getDoctrine()->getManager();
+        $biografia = $em->getRepository('PublicacionesBundle:CategoriasPublicacion')
+                        ->findOneBySlug('biografia');
+
+        $registros = $em->getRepository("PublicacionesBundle:Publicacion")
+                    ->getPublicacionPorCategoriaActivas($biografia->getId(),false,'ASC');
+        $categorias = $em->getRepository('CategoriasGaleriaBundle:Categorias')->findAll();
+        $configuraciones = $em->getRepository('BackendBundle:Configuraciones')->findAll();
+
+        foreach($categorias as $categoria){
+          if($categoria->getSlug()=="galeria-privada" && $categoria->getIsImagen()){
+            $galeriaPrivada = $categoria;
+          }elseif($categoria->getIsMusica()){
+            $musica = $categoria;
+          }elseif($categoria->getIsVideo()){
+            $videos = $categoria;
+          }
+        }
+
+        return array(
+            'registros' => $registros,
+            'galerias' => $galeriaPrivada,
+            'musica' => $musica,
+            'videos' => $videos,
+            'configuraciones' => $configuraciones
+        );
+        
+    }
     
 
     /**

@@ -42,7 +42,7 @@ class Galerias
     /**
      * @var string
      *
-     * @ORM\Column(name="archivo", type="string", length=255)
+     * @ORM\Column(name="archivo", type="string", length=255, nullable=false)
      * @Assert\NotBlank()
      */
     private $archivo;
@@ -50,7 +50,7 @@ class Galerias
     /**
      * @var string
      *
-     * @ORM\Column(name="thumbnail", type="string", length=255)
+     * @ORM\Column(name="thumbnail", type="string", length=255, nullable=true)
      */
     private $thumbnail;
 
@@ -545,8 +545,10 @@ class Galerias
     {
         if($this->getIsImagen()){
             return null === $this->archivo ? null : $this->getUploadDir().'/'.$this->archivo;
-        }else{
+        }elseif($this->getIsLink()){
             return $this->getArchivo();
+        }else{
+            return null === $this->archivo ? null : $this->getUploadDir().'/'.$this->archivo;
         }
     }
 
@@ -590,38 +592,38 @@ class Galerias
     
     public function getArchivoView(){
         $opciones=array(
-            'tipo_archivo'  => \Richpolis\BackendBundle\Utils\Richsys::getTipoArchivo($this->getArchivo()),
+            'tipo_archivo'  => RpsStms::getTipoArchivo($this->getArchivo()),
             'archivo'   =>  $this->getArchivo(),
             'carpeta'   =>  'galerias',
             'width'     =>  700,
             'height'    =>  370,
         );
         
-        return \Richpolis\BackendBundle\Utils\Richsys::getArchivoView($opciones);
+        return RpsStms::getArchivoView($opciones);
     }
     
     public function getArchivoArtistasView(){
         $opciones=array(
-            'tipo_archivo'  => \Richpolis\BackendBundle\Utils\Richsys::getTipoArchivo($this->getArchivo()),
+            'tipo_archivo'  => RpsStms::getTipoArchivo($this->getArchivo()),
             'archivo'   =>  $this->getArchivo(),
             'carpeta'   =>  'galerias',
             'width'     =>  365,
             'height'    =>  300,
         );
         
-        return \Richpolis\BackendBundle\Utils\Richsys::getArchivoView($opciones);
+        return RpsStms::getArchivoView($opciones);
     }
     
     public function getArchivoProductosView(){
         $opciones=array(
-            'tipo_archivo'  => \Richpolis\BackendBundle\Utils\Richsys::getTipoArchivo($this->getArchivo()),
+            'tipo_archivo'  => RpsStms::getTipoArchivo($this->getArchivo()),
             'archivo'   =>  $this->getArchivo(),
             'carpeta'   =>  'galerias',
             'width'     =>  510,
             'height'    =>  300,
         );
         
-        return \Richpolis\BackendBundle\Utils\Richsys::getArchivoView($opciones);
+        return RpsStms::getArchivoView($opciones);
     }
     
     public function getWidth(){
