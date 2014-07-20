@@ -266,7 +266,7 @@ $(function() {
 
 {% block siderbar %}  
 <ul class="nav nav-list">
-    <li class="nav-header">Publicaciones</li>
+    <li class="nav-header">Galerias</li>
     {% for key,value in tipos %}
     {% if key != entity.tipocategoria %}    
     <li class="tipo-categoria" tipo="{{key}}">
@@ -309,23 +309,9 @@ $(function() {
                 <tr>
                     <th>Id</th>
                     <td>{{ entity.id }}</td>
-                    {% if entity.stringtipocategoria == "Noticias" %}
-                    <th>Titulo</th>
-                    {% elseif entity.stringtipocategoria == "Artistas" %}
-                    <th>Artista</th>
-                    {% else %}
-                    <th>Producto</th>
-                    {% endif %}
+                    <th>Categoria</th>
                     <td>{{ entity.categoria }}</td>
                 </tr>
-                {% if entity.stringtipocategoria == "Artistas" %}
-                <tr>
-                    <th>Twitter</th>
-                    <td>{{ entity.twitter }}</td>
-                    <th>Facebook</th>
-                    <td>{{ entity.facebook }}</td>
-                </tr>
-                {% endif %}
                 <tr>
                     <th>Tipo</th>
                     <td>{{ entity.stringtipocategoria }}</td>
@@ -348,24 +334,41 @@ $(function() {
         </table>
     </div>
     <div class="tab-pane" id="galeria">
-       <div id="lista_imagenes" style=" min-height: 400px;">
-         {{ render(controller("CategoriasGaleriaBundle:Categorias:galeria",{'categoria': entity.id, 'isActive': true })) }}
-       </div>
-       <div id="upload" style="margin: 30px 150px;">
-           <!--a href="{{path('galerias_new',{'categoria': entity.id })}}">
-               Agregar archivos
-           </a-->
-       </div>
-       Extenciones disponibles:   "jpeg","png","gif","jpg"
-     <!--List Files-->
-     <ul id="files" ></ul>
-    <div class="clear"></div>
-   {# use_javascript("fileuploader.js") #}
-     <div id="upload" style="margin: 30px 150px;">
-           <a href="{{path('galerias_new',{'categoria': entity.id ,'tipoArchivo':2})}}">
-               Agregar videos
-           </a>
-       </div>       
+        <div id="lista_imagenes" style=" min-height: 400px;">
+            {{ render(controller("CategoriasGaleriaBundle:Categorias:galeria",{'categoria': entity.id, 'isActive': true })) }}
+        </div>
+        {% if entity.isImagen %}
+            <div id="upload" style="margin: 30px 150px;">
+                <!--a href="{{path('galerias_new',{'categoria': entity.id })}}">
+                   Agregar archivos
+                </a-->
+            </div>
+            Extenciones disponibles:   "jpeg","png","gif","jpg"
+            <!--List Files-->
+            <ul id="files" ></ul>
+            <div class="clear"></div>
+            {# use_javascript("fileuploader.js") #}
+            <div id="upload" style="margin: 30px 150px;">
+                <a href="{{path('galerias_new',{'categoria': entity.id, tipoArchivo: 3})}}">
+                    Agregar youtube o vimeo
+                </a>
+            </div>
+        {% elseif entity.isMusica %}
+            <div id="upload" style="margin: 30px 150px;">
+                <!--a href="{{path('galerias_new',{'categoria': entity.id })}}">
+                   Agregar archivos
+                </a-->
+            </div>
+            Extenciones disponibles:   "mp3"
+        {% elseif entity.isVideo %}
+            <div id="upload" style="margin: 30px 150px;">
+                <!--a href="{{path('galerias_new',{'categoria': entity.id })}}">
+                   Agregar archivos
+                </a-->
+            </div>
+            Extenciones disponibles:   "mp4","flv"
+        {% endif %}    
+               
   </div>
   <!--div class="tab-pane" id="aprobar_imagenes">
       <div id="lista_imagenes_aprobar" style=" min-height: 400px;">

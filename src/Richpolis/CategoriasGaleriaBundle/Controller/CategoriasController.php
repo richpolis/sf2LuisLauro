@@ -10,9 +10,8 @@ use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Template;
 use Richpolis\CategoriasGaleriaBundle\Entity\Categorias;
 use Richpolis\CategoriasGaleriaBundle\Form\CategoriasType;
-use Richpolis\CategoriasGaleriaBundle\Form\CategoriasArtistasType;
-use Richpolis\CategoriasGaleriaBundle\Form\CategoriasProductosType;
 
+use Richpolis\BackendBundle\Utils\Richsys as RpsStms;
 
 /**
  * Categorias controller.
@@ -25,9 +24,10 @@ class CategoriasController extends Controller
     {
         $filters=$this->get('session')->get('filters', array());
         
-        if(!isset($filters['categorias']))
-            $filters['categorias']=Categorias::$GALERIA_PRINCIPAL;
-        
+        if (!isset($filters['categorias'])) {
+            $filters['categorias'] = RpsStms::$TIPO_ARCHIVO_IMAGEN;
+        }
+
         return $filters;
     }
     
@@ -43,9 +43,10 @@ class CategoriasController extends Controller
 
         $filters = $this->getFilters();
 
-        if(!isset($filters['categorias']))
-            $filters['categorias']=Categorias::$GALERIA_PRINCIPAL;
-        
+        if (!isset($filters['categorias'])) {
+            $filters['categorias'] = RpsStms::$TIPO_ARCHIVO_IMAGEN;
+        }
+
         /*$query = $em->getRepository('CategoriasGaleriaBundle:Categorias')
                             ->getQueryCategoriasPorTipoYActivas($filters['categorias'],false);*/
         
@@ -173,50 +174,38 @@ class CategoriasController extends Controller
     }
     
     /**
-     * Mostrar categorias tipo noticias.
+     * Mostrar categorias tipo imagenes.
      *
-     * @Route("/noticias", name="categorias_tipo_noticias")
+     * @Route("/imagenes", name="categorias_tipo_imagenes")
      */
-    public function galeriasNoticiasAction(){
+    public function galeriasImagenesAction(){
         return $this->forward(
                 'CategoriasGaleriaBundle:Categorias:showCategoria', 
-                array('tipo'=>  Categorias::$GALERIA_PRINCIPAL)
+                array('tipo'=> RpsStms::$TIPO_ARCHIVO_IMAGEN)
                 );
     }
     
     /**
-     * Mostrar categorias tipo artistas.
+     * Mostrar categorias tipo musica.
      *
-     * @Route("/artistas", name="categorias_tipo_artistas")
+     * @Route("/musica", name="categorias_tipo_musica")
      */
-    public function galeriasArtistasAction(){
+    public function galeriasMusicaAction(){
         return $this->forward(
                 'CategoriasGaleriaBundle:Categorias:showCategoria', 
-                array('tipo'=>  Categorias::$GALERIA_ARTISTAS)
+                array('tipo'=>  RpsStms::$TIPO_ARCHIVO_MUSICA)
                 );
     }
     
     /**
-     * Mostrar categorias tipo productos discos.
+     * Mostrar categorias tipo videos.
      *
-     * @Route("/productos/discos", name="categorias_tipo_productos_discos")
+     * @Route("/videos", name="categorias_tipo_videos")
      */
-    public function galeriasProductosDiscosAction(){
+    public function galeriasVideosAction(){
         return $this->forward(
                 'CategoriasGaleriaBundle:Categorias:showCategoria', 
-                array('tipo'=>  Categorias::$GALERIA_PRODUCTOS_DISCOS)
-                );
-    }
-    
-    /**
-     * Mostrar categorias tipo productos ropa.
-     *
-     * @Route("/productos/ropa", name="categorias_tipo_productos_ropa")
-     */
-    public function galeriasProductosRopaAction(){
-        return $this->forward(
-                'CategoriasGaleriaBundle:Categorias:showCategoria', 
-                array('tipo'=>  Categorias::$GALERIA_PRODUCTOS_ROPA)
+                array('tipo'=>  RpsStms::$TIPO_ARCHIVO_VIDEO)
                 );
     }
 

@@ -12,12 +12,12 @@ class Richsys
     static public $TIPO_ARCHIVO_MUSICA=4;
     static public $TIPO_ARCHIVO_FLASH=5;
         
-    static private $sTipoArchivo=array(
-        'Imagen'    =>1 ,
-        'Video'     =>2 ,
-        'Link'      =>3 ,
-        'Musica'    =>4 ,
-        'Flash'     =>5 ,
+    static public $sTipoArchivo=array(
+        1=>'Imagen',
+        2=>'Video',
+        3=>'Link',
+        4=>'Musica',
+        5=>'Flash',
     );
     
     static public function slugify($text)
@@ -52,16 +52,16 @@ class Richsys
         $respuesta="";
         $tipoarchivo=$opciones['tipo_archivo'];
         switch($tipoarchivo){
-            case self::$sTipoArchivo['Imagen']:
+            case self::$TIPO_ARCHIVO_IMAGEN:
                 $respuesta=Richsys::getArchivoViewImagen($opciones);
                 break;
-            case self::$sTipoArchivo['Link']:
+            case self::$TIPO_ARCHIVO_LINK:
                 $respuesta=Richsys::getArchivoViewLinkVideo($opciones);
                 break;
-            case self::$sTipoArchivo['Video']:
+            case self::$TIPO_ARCHIVO_VIDEO:
                 $respuesta=Richsys::getArchivoViewVideo($opciones);
                 break;
-            case self::$sTipoArchivo['Musica']:
+            case self::$TIPO_ARCHIVO_MUSICA:
                 $respuesta= sprintf(<<<EOF
 <link href="/css/jplayer.blue.monday.css" rel="stylesheet" type="text/css" />
 <script type="text/javascript" src="/js/jquery.jplayer.min.js"></script>
@@ -129,7 +129,7 @@ EOF
                   
     );
                 break;
-            case self::$sTipoArchivo['Flash']:
+            case self::$TIPO_ARCHIVO_FLASH:
                 $respuesta=  Richsys::getArchivoViewFlash($opciones);
                 break;
         }

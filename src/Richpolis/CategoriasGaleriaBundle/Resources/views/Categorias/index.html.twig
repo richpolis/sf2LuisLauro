@@ -39,16 +39,9 @@
     <thead>
         <tr>
             <th>Id</th>
-            {% if tipos[tipo_categoria] == "Noticias"%}
-            <th>Titulo</th>
-            {% elseif tipos[tipo_categoria] == "Artistas" %}
-            <th>Artista</th>
-            {% else %}
-            <th>Producto</th>
-            {% endif %}
-            <th>Imagen</th>    
+            <th>Categoria</th>
+            <th>Portada</th>    
             <th>Tipo</th>
-            <!--th>Orden</th-->
             <th>Activa?</th>
             <th>Creada</th>
             <th>Actualizacion</th>
@@ -60,7 +53,13 @@
             <tr>
                 <td><a href="{{ path('categorias_show', { 'id': entity.id }) }}">{{ entity.id }}</a></td>
                 <td>{{ entity.categoria }}</td>
-                <td><img src="{{entity.portada }}" style="max-width:120px;" /></td>
+                <td>
+                    {% if entity.portada | length > 0 %}
+                        <img src="{{entity.portada }}" style="max-width:120px;" />
+                    {% else %}
+                        sin portada
+                    {% endif %}    
+                </td>
                 <td>{{ entity.stringtipocategoria }}</td>
                 <!--td>{{ entity.posicion }}</td-->
                 <td>{{ entity.isactive | isActive | raw }}</td>

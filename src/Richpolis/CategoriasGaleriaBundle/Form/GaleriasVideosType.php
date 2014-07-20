@@ -9,7 +9,7 @@ use Symfony\Component\OptionsResolver\OptionsResolverInterface;
 use Richpolis\CategoriasGaleriaBundle\Repository\CategoriasRepository;
 
 
-class GaleriasType extends AbstractType
+class GaleriasVideosType extends AbstractType
 {
     public function buildForm(FormBuilderInterface $builder, array $options)
     {
@@ -20,8 +20,8 @@ class GaleriasType extends AbstractType
                    'class' => 'tinymce',
                    'data-theme' => 'advanced' // Skip it if you want to use default theme
                  )))    
-            ->add('file','imagen',array('label'=>'Portada','image_path' => 'webPath'))
-            ->add('thumbnail','hidden')
+            ->add('archivo','file',array('label'=>'Video'))
+            ->add('thumbnail','imagen',array('label'=>'Portada','image_path' => 'thumbnailWebPath'))
             ->add('posicion','hidden')
             ->add('categoria','entity', array(
                 'class' => 'CategoriasGaleriaBundle:Categorias',
@@ -49,6 +49,6 @@ class GaleriasType extends AbstractType
 
     public function getName()
     {
-        return 'richpolis_categoriasgaleriabundle_galeriastype';
+        return 'richpolis_categoriasgaleriabundle_galeriasmusicatype';
     }
 }

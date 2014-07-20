@@ -13,6 +13,7 @@ use Richpolis\CategoriasGaleriaBundle\Entity\Categorias;
 use Richpolis\CategoriasGaleriaBundle\Form\GaleriasType;
 
 use Richpolis\BackendBundle\Utils\qqFileUploader;
+use Richpolis\BackendBundle\Utils\Richsys as RpsStms;
 
 /**
  * Galerias controller.
@@ -33,7 +34,7 @@ class GaleriasController extends Controller
         if(isset($filters['categorias'])){
             return $filters['categorias'];
         }else{
-            return Categorias::$GALERIA_NOTICIAS;
+            return RpsStms::$TIPO_ARCHIVO_IMAGEN;
         }
         
     }
@@ -76,7 +77,7 @@ class GaleriasController extends Controller
         return array(
             'entity'      => $entity,
             'delete_form' => $deleteForm->createView(),
-            'link_video' => Galerias::$LINK_VIDEO,
+            'link_video' => RpsStms::$TIPO_ARCHIVO_LINK,
         );
     }
 
@@ -92,7 +93,7 @@ class GaleriasController extends Controller
         
         $categoriaId=$this->getRequest()->query->get('categoria',$this->getCategoriaDefault());
         
-        $tipoArchivo=$this->getRequest()->query->get('tipoArchivo',  Galerias::$IMAGEN);
+        $tipoArchivo=$this->getRequest()->query->get('tipoArchivo', RpsStms::$TIPO_ARCHIVO_IMAGEN);
 
         $categoria=$this->getDoctrine()->getRepository('CategoriasGaleriaBundle:Categorias')
                                         ->find($categoriaId);
@@ -109,12 +110,7 @@ class GaleriasController extends Controller
         
         $entity->setTipoArchivo($tipoArchivo);
         
-        if($tipoArchivo==Galerias::$IMAGEN){
-            $form = $this->createForm(new GaleriasType(), $entity);
-        }else{
-            $entity->setIsActive(true);
-            $form = $this->createForm(new \Richpolis\CategoriasGaleriaBundle\Form\GaleriasLinkVideoType(),$entity);
-        }
+        $form = $this->createFormCustom($entity, $tipoArchivo);
 
         return array(
             'entity' => $entity,
@@ -133,11 +129,8 @@ class GaleriasController extends Controller
     public function createAction(Request $request)
     {
         $entity  = new Galerias();
-        if($request->get('tipoArchivo')==Galerias::$IMAGEN){
-            $form = $this->createForm(new GaleriasType(), $entity);
-        }else{
-            $form = $this->createForm(new \Richpolis\CategoriasGaleriaBundle\Form\GaleriasLinkVideoType(),$entity);
-        }
+        
+        $form = $this->createFormCustom($entity, $request->get('tipoArchivo'));
         
         $form->bind($request);
 
@@ -170,8 +163,8 @@ class GaleriasController extends Controller
         if (!$entity) {
             throw $this->createNotFoundException('Unable to find Galerias entity.');
         }
-        $categoria=$entity->getCategoria();
-        $editForm = $this->createForm(new GaleriasType(), $entity);
+        $categoria= $entity->getCategoria();
+        $editForm = $this->createFormCustom($entity, $entity->getTipoArchivo());
         $deleteForm = $this->createDeleteForm($id);
 
         return array(
@@ -200,7 +193,7 @@ class GaleriasController extends Controller
         }
 
         $deleteForm = $this->createDeleteForm($id);
-        $editForm = $this->createForm(new GaleriasType(), $entity);
+        $editForm = $this->createFormCustom($entity, $entity->getTipoArchivo());
         $editForm->bind($request);
 
         if ($editForm->isValid()) {
@@ -263,7 +256,7 @@ class GaleriasController extends Controller
     public function uploadAction($categoria_id){
         
        // list of valid extensions, ex. array("jpeg", "xml", "bmp")
-       $allowedExtensions = array("jpeg","png","gif","jpg");
+       $allowedExtensions = array("jpeg","png","gif","jpg","mp3","flv","mp4");
        // max file size in bytes
        $sizeLimit = 6 * 1024 * 1024;
        $request=$this->get("request");
@@ -283,12 +276,12 @@ class GaleriasController extends Controller
        if(isset($result["success"])){
            $registro = new Galerias();
            $registro->setArchivo($result["filename"]);
-           $registro->setThumbnail($result["filename"]);
+           //$registro->setThumbnail($result["filename"]);
            $registro->setTitulo($result["titulo"]);
            $registro->setIsActive(true);
            $registro->setPosicion($max+1);
            $registro->setCategoria($categoria);
-           $registro->setTipoArchivo(Galerias::$IMAGEN);
+           $registro->setTipoArchivo($categoria->getTipoCategoria());
            
            //unset($result["filename"],$result['original'],$result['titulo'],$result['contenido']);
            $em->persist($registro);
@@ -506,5 +499,27 @@ class GaleriasController extends Controller
             
             return $this->redirect($this->generateUrl('galerias'));
         }
+    }
+    
+    public function createFormCustom($entity,$tipoArchivo)
+    {
+        switch($tipoArchivo)
+        {
+            case RpsStms::$TIPO_ARCHIVO_IMAGEN:
+                $form = $this->createForm(new GaleriasType(), $entity);
+                break;
+            case RpsStms::$TIPO_ARCHIVO_LINK:
+                $form = $this->createForm(new \Richpolis\CategoriasGaleriaBundle\Form\GaleriasLinkVideoType(), $entity);
+                break;
+            case RpsStms::$TIPO_ARCHIVO_MUSICA:
+                $form = $this->createForm(new \Richpolis\CategoriasGaleriaBundle\Form\GaleriasMusicaType(), $entity);
+                break;
+            case RpsStms::$TIPO_ARCHIVO_VIDEO:
+                $form = $this->createForm(new \Richpolis\CategoriasGaleriaBundle\Form\GaleriasVideosType(), $entity);
+                break;
+            default:
+                $form = $this->createForm(new GaleriasType(), $entity);
+        }
+        return $form;
     }
 }

@@ -1,0 +1,13 @@
+{# src/Richpolis/CategoriasGaleriaBundle/Resources/views/Form/fields.html.twig #}
+{% extends 'form_div_layout.html.twig' %}
+
+{% block imagen_widget %}
+    {% spaceless %}
+    {{ block('form_widget') }}
+    <br/>
+    {% if image_url is not null %}
+        <img src="{{ asset(image_url) }}" style="max-width: 200px; max-height: 200px;"/>
+    {% endif %}
+    
+    {% endspaceless %}
+{% endblock %}

@@ -4,6 +4,8 @@ namespace Richpolis\CategoriasGaleriaBundle\Entity;
 
 use Doctrine\ORM\Mapping as ORM;
 use Symfony\Component\Validator\Constraints as Assert;
+use Symfony\Component\HttpFoundation\File\UploadedFile;
+use Richpolis\BackendBundle\Utils\Richsys as RpsStms;
 
 /**
  * Galerias
@@ -92,27 +94,16 @@ class Galerias
      */
     private $categoria;
     
-    static public $IMAGEN=1;
-    static public $LINK_VIDEO=2;
-    static public $OTRO=3;
-    
-    
-    static private $sTipoArchivos=array(
-        1=>'Imagen',
-        2=>'Link video',
-        3=>'Otro',
-    );
-
     public function getStringTipoArchivo(){
-        return self::$sTipoArchivos[$this->getTipoArchivo()];
+        return RpsStms::$sTipoArchivo[$this->getTipoArchivo()];
     }
 
     static function getArrayTipoArchivos(){
-        return self::$sTipoArchivos;
+        return RpsStms::$sTipoArchivos;
     }
 
     static function getPreferedTipoArchivo(){
-        return array(self::$IMAGEN);
+        return array(RpsStms::$TIPO_ARCHIVO_IMAGEN);
     }
     
     /**
@@ -344,7 +335,7 @@ class Galerias
     */
     public function setSlugAtValue()
     {
-        $this->slug = \Richpolis\BackendBundle\Utils\Richsys::slugify($this->getTitulo());
+        $this->slug = RpsStms::slugify($this->getTitulo());
     }
     
     /**
@@ -367,15 +358,16 @@ class Galerias
      * @return void
      */
     public function crearThumbnail(){
-        $imagine= new \Imagine\Gd\Imagine();
-        $mode= \Imagine\Image\ImageInterface::THUMBNAIL_OUTBOUND;
-        $size=new \Imagine\Image\Box($this->getWidth(),$this->getHeight());
-        $this->thumbnail=$this->archivo;
-        
-        $imagine->open($this->getAbsolutePath())
-                ->thumbnail($size, $mode)
-                ->save($this->getAbosluteThumbnailPath());
-        
+        if($this->getIsImagen()){
+            $imagine= new \Imagine\Gd\Imagine();
+            $mode= \Imagine\Image\ImageInterface::THUMBNAIL_OUTBOUND;
+            $size=new \Imagine\Image\Box($this->getWidth(),$this->getHeight());
+            $this->thumbnail=$this->archivo;
+
+            $imagine->open($this->getAbsolutePath())
+                    ->thumbnail($size, $mode)
+                    ->save($this->getAbosluteThumbnailPath());
+        }
     }
     
     
@@ -384,14 +376,14 @@ class Galerias
      * 
      */
     
-    /**
+   /**
     * @ORM\PrePersist
     * @ORM\PreUpdate
     */
     public function preSaveGaleria()
     {
-      if ($this->getTipoArchivo()==Galerias::$LINK_VIDEO) {
-        $infoVideo=  \Richpolis\BackendBundle\Utils\Richsys::getTitleAndImageVideoYoutube($this->getArchivo());
+      if ($this->getIsLink()) {
+        $infoVideo= RpsStms::getTitleAndImageVideoYoutube($this->getArchivo());
         $this->setThumbnail($infoVideo['thumbnail']);
         $this->setArchivo($infoVideo['urlVideo']);
         $this->setTitulo($infoVideo['title']);
@@ -405,15 +397,77 @@ class Galerias
     public $file;
     
     /**
-    ** @ORM\PrePersist
+     * Sets file.
+     *
+     * @param UploadedFile $file
+     */
+    public function setFile(UploadedFile $file = null)
+    {
+        $this->file = $file;
+        // check if we have an old image path
+        if (isset($this->archivo)) {
+            // store the old name to delete after the update
+            $this->temp = $this->archivo;
+            $this->archivo = null;
+        } else {
+            $this->archivo = 'initial';
+        }
+    }
+
+    /**
+     * Get file.
+     *
+     * @return UploadedFile
+     */
+    public function getFile()
+    {
+        return $this->file;
+    }
+    
+    public $fileTmb;
+    
+    /**
+     * Sets fileTmb.
+     *
+     * @param UploadedFile $fileTmb
+     */
+    public function setFileTmb(UploadedFile $fileTmb = null)
+    {
+        $this->fileTmb = $fileTmb;
+        // check if we have an old image path
+        if (isset($this->thumbnail)) {
+            // store the old name to delete after the update
+            $this->tempTmb = $this->thumbnail;
+            $this->thumbnail = null;
+        } else {
+            $this->thumbnail = 'initial';
+        }
+    }
+
+    /**
+     * Get fileTmb.
+     *
+     * @return UploadedFile
+     */
+    public function getFileTmb()
+    {
+        return $this->fileTmb;
+    }
+    
+   /**
+    * @ORM\PrePersist
     * @ORM\PreUpdate
     */
     public function preUpload()
     {
-      if (null !== $this->file) {
+      if (null !== $this->getFile()) {
         // do whatever you want to generate a unique name
-        $this->archivo       =   uniqid().'.'.$this->file->guessExtension();
-        $this->thumbnail    =   $this->archivo;
+        $this->archivo = uniqid().'.'.$this->getFile()->guessExtension();
+      }
+      
+      if (null !== $this->getFileTmb()) {
+        // do whatever you want to generate a unique name
+        $this->thumbnail = uniqid().'.'.$this->getFileTmb()->guessExtension();
       }
     }
 
@@ -423,18 +477,36 @@ class Galerias
     */
     public function upload()
     {
-      if (null === $this->file) {
-        return;
+      if (null !== $this->getFile()) {
+        // mover el archivo al path
+        $this->getFile()->move($this->getUploadRootDir(), $this->archivo);
+
+        // check if we have an old image
+        if (isset($this->temp)) {
+            // delete the old image
+            unlink($this->getUploadRootDir().'/'.$this->temp);
+            // clear the temp image path
+            $this->temp = null;
+        }
+        $this->file = null;
+
+        $this->crearThumbnail();
       }
-
-      // if there is an error when moving the file, an exception will
-      // be automatically thrown by move(). This will properly prevent
-      // the entity from being persisted to the database on error
-      $this->file->move($this->getUploadRootDir(), $this->archivo);
-
-      $this->crearThumbnail();
       
-      unset($this->file);
+      if (null !== $this->getFileTmb()) {
+        // subir la portada al path
+        $this->getFileTmb()->move($this->getThumbnailRootDir(), $this->thumbnail);
+
+        // check if we have an old image
+        if (isset($this->tempTmb)) {
+            // delete the old image
+            unlink($this->getThumbnailRootDir().'/'.$this->tempTmb);
+            // clear the temp image path
+            $this->tempTmb = null;
+        }
+        $this->fileTmb = null;
+      }
+      
     }
 
     /**
@@ -448,7 +520,7 @@ class Galerias
         }
       }
       if($thumbnail=$this->getAbosluteThumbnailPath()){
-         if(file_exists($thumbnail)){
+        if(file_exists($thumbnail)){
             unlink($thumbnail);
         }
       }
@@ -471,7 +543,7 @@ class Galerias
         
     public function getWebPath()
     {
-        if($this->getTipoArchivo()==Galerias::$IMAGEN){
+        if($this->getIsImagen()){
             return null === $this->archivo ? null : $this->getUploadDir().'/'.$this->archivo;
         }else{
             return $this->getArchivo();
@@ -480,16 +552,21 @@ class Galerias
 
     public function getThumbnailWebPath()
     {
-        if($this->getTipoArchivo()==Galerias::$IMAGEN){
+        if($this->getIsImagen()){
             if(!$this->thumbnail){
                 if(!file_exists($this->getAbosluteThumbnailPath()) && file_exists($this->getAbsolutePath())){
                     $this->crearThumbnail();
                 }
             }
-            return null === $this->thumbnail ? null : $this->getUploadDir().'/thumbnails/'.$this->thumbnail;
-        }else{
-            return $this->getThumbnail();
+            $ref= null;
+        }elseif($this->getIsLink()){
+            return $this->getThumbnail();  //adios, este no hay archivo
+        }elseif($this->getIsMusica()){
+            $ref = $this->getUploadDir().'/ico_musica.png';
+        }elseif($this->getIsVideo()){
+            $ref = $this->getUploadDir().'/ico_video.png';
         }
+        return null === $this->thumbnail ? $ref : $this->getUploadDir().'/thumbnails/'.$this->thumbnail;
     }
     
     public function getAbsolutePath()
@@ -580,7 +657,28 @@ class Galerias
     }
 
     public function getIsImagen(){
-        if($this->getTipoArchivo()==Galerias::$IMAGEN)
+        if($this->getTipoArchivo()==RpsStms::$TIPO_ARCHIVO_IMAGEN)
+            return true;
+        else
+            return false;
+    }
+    
+    public function getIsVideo(){
+        if($this->getTipoArchivo()==RpsStms::$TIPO_ARCHIVO_VIDEO)
+            return true;
+        else
+            return false;
+    }
+    
+    public function getIsMusica(){
+        if($this->getTipoArchivo()==RpsStms::$TIPO_ARCHIVO_MUSICA)
+            return true;
+        else
+            return false;
+    }
+    
+    public function getIsLink(){
+        if($this->getTipoArchivo()==RpsStms::$TIPO_ARCHIVO_LINK)
             return true;
         else
             return false;

@@ -142,26 +142,19 @@ class DefaultController extends Controller {
     public function blogAction()
     {
         $em = $this->getDoctrine()->getManager();
-
         $categoria = $em->getRepository('PublicacionesBundle:CategoriasPublicacion')
                         ->findOneBySlug('blog');
-
         $query = $em->getRepository("PublicacionesBundle:Publicacion")
                     ->getQueryPublicacionPorCategoriaActivas($categoria->getId());
-        
         $paginator = $this->get('knp_paginator');
-
         $pagination = $paginator->paginate(
             $query,
             $this->getRequest()->query->get('page', 1),
             3,
             array('distinct' => true)
         );
-
         $data = $pagination->getPaginationData();
-
         $configuraciones = $em->getRepository('BackendBundle:Configuraciones')->findAll();
-
         return array(
             'pagination' => $pagination,
             'data'=>$data,
@@ -237,7 +230,25 @@ class DefaultController extends Controller {
         );
     }
     
-    
+    /**
+     * Lista la galeria principal.
+     *
+     * @Route("/{_locale}/galeria", name="galeria",defaults={"_locale" = "en"}, requirements={"_locale" = "en|es"})
+     * @Method({"GET"})
+     * @Template()
+     */
+    public function galeriaAction()
+    {
+        $em = $this->getDoctrine()->getManager();
+        $categoria = $em->getRepository('CategoriasGaleriaBundle:Categorias')
+                        ->findOneBySlug('galeria-principal');
+        $configuraciones = $em->getRepository('BackendBundle:Configuraciones')->findAll();
+        return array(
+            'galeriaPrincipal' => $categoria,
+            'configuraciones' => $configuraciones
+        );
+        
+    }
     
 
     /**

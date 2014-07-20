@@ -4,6 +4,8 @@ namespace Richpolis\CategoriasGaleriaBundle\Entity;
 
 use Doctrine\ORM\Mapping as ORM;
 use Symfony\Component\Validator\Constraints as Assert;
+use Richpolis\BackendBundle\Utils\Richsys as RpsStms;
+
 
 /**
  * Categorias
@@ -114,35 +116,23 @@ class Categorias
      */
     protected $galerias;
     
-    static public $GALERIA_PRINCIPAL=1;
-    static public $GALERIA_PRIVADA=2;
-    static public $GALERIA_VIDEOS_PRIVADA=3;
-    static public $GALERIA_MUSICA_PRIVADA=4;
-    
-    static private $sCategorias=array(
-        1=>'Galeria principal',
-        2=>'Galeria privada',
-        3=>'Galeria videos privada',
-        4=>'Galeria musica privada',
-    );
-    
     public function __construct() {
         $this->isActive = true;
         $this->isCategoria = true;
-        $this->tipoCategoria=self::$GALERIA_PRINCIPAL;
+        $this->tipoCategoria=RpsStms::$TIPO_ARCHIVO_IMAGEN;
         $this->galerias =new \Doctrine\Common\Collections\ArrayCollection();
     }
     
     public function getStringTipoCategoria(){
-        return self::$sCategorias[$this->getTipoCategoria()];
+        return RpsStms::$sTipoArchivo[$this->getTipoCategoria()];
     }
 
     static function getArrayTipoCategorias(){
-        return self::$sCategorias;
+        return RpsStms::$sTipoArchivo;
     }
 
     static function getPreferedTipoCategoria(){
-        return array(self::$GALERIA_PRINCIPAL);
+        return array(RpsStms::$TIPO_ARCHIVO_IMAGEN);
     }
 
     public function __toString()
@@ -410,7 +400,7 @@ class Categorias
     */
     public function setSlugAtValue()
     {
-        $this->slug = \Richpolis\BackendBundle\Utils\Richsys::slugify($this->getCategoria());
+        $this->slug = RpsStms::slugify($this->getCategoria());
     }
     
     
@@ -511,5 +501,35 @@ class Categorias
     public function getPortada()
     {
         return $this->portada;
+    }
+    
+    
+    
+    public function getIsImagen(){
+        if($this->getTipoCategoria()==RpsStms::$TIPO_ARCHIVO_IMAGEN)
+            return true;
+        else
+            return false;
+    }
+    
+    public function getIsVideo(){
+        if($this->getTipoCategoria()==RpsStms::$TIPO_ARCHIVO_VIDEO)
+            return true;
+        else
+            return false;
+    }
+    
+    public function getIsMusica(){
+        if($this->getTipoCategoria()==RpsStms::$TIPO_ARCHIVO_MUSICA)
+            return true;
+        else
+            return false;
+    }
+    
+    public function getIsLink(){
+        if($this->getTipoCategoria()==RpsStms::$TIPO_ARCHIVO_LINK)
+            return true;
+        else
+            return false;
     }
 }
