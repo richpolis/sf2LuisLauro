@@ -19,7 +19,15 @@
               <source src="{{music.webPath}}" type="audio/mpeg">
               Your browser does not support the audio tag.
             </audio>
-        </li>   
+        </li>
+	{% else %}
+		{% for indice in range(1,5)%}
+			<li class="item">
+				<div class="clase-{{indice}}">
+					contenido con indice {{indice}}
+				</div>
+        	</li>
+		{% endfor %}
     {% endfor %}
     </ul>
 </article>
@@ -28,15 +36,21 @@
         <h2>{% trans %}photos{% endtrans %}</h2>
     </header>
     {% for galeria in galerias.galerias %}
-        {% if loop.index < 4 %}
+        {% if loop.index < 5 %}
         <li class="item">
             <a href="{{galeria.webPath}}" class="fancybox" >
              <img src="{{galeria.thumbnailWebPath}}" alt="{{galeria.titulo}}">
             </a>
         </li>
-        {% else %}
-            sin datos
         {% endif %}
+	{% else %}
+		{% for indice in range(1,4)%}
+			<li class="item">
+				<a href=""http://placehold.it/420x400"" class="fancybox" >
+				 <img src=""http://placehold.it/120x100"" alt="photo-{{indice}}">
+				</a>
+			</li>
+		{% endfor %}
     {% endfor %}
 </article>
 <article class="derecha">
@@ -44,17 +58,25 @@
         <h2>{% trans %}videos{% endtrans %}</h2>
     </header>
     {% for video in videos.galerias %}
-        {% if loop.index < 4 %}
+        {% if loop.index < 5 %}
         <li class="item">
             <a href="{{video.webPath}}" class="fancybox frame" >
              <img src="{{video.thumbnailWebPath}}" alt="{{video.titulo}}">
             </a>
         </li>
-        {% else %}
-            sin datos
         {% endif %}
+	{% else %}
+		{% for indice in range(1,4)%}
+			<li class="item">
+				<a href="#" class="fancybox frame" >
+				 <img src="http://placehold.it/220x200" alt="item-{{ indice }}">
+				</a>
+			</li>
+		{% endfor %}
     {% endfor %}
 </article>
+</section>
+<section>
 <article class="centrado">
     <header>
         <h2>{% trans %}bio{% endtrans %}</h2>
