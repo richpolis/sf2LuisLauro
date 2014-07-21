@@ -25,7 +25,7 @@ body {
 .container .logo {
   width: 300px;
 }
-.container nav {
+.container header nav {
   position: absolute;
   right: 0px;
 }
@@ -298,4 +298,30 @@ ul.tweets-lista li.tweet-item .tweet-item-contenido {
   text-transform: uppercase;
   margin: 5px 0px;
 
+}
+
+ul.lista-musica {
+    margin: 0;
+    padding: 0;
+    list-style:  none;
+}
+
+ul.lista-galeria-privada {
+    margin: 0;
+    padding: 0;
+    list-style:  none;
+    text-align:  center;
+}
+
+ul.lista-galeria-videos {
+    margin: 0;
+    padding: 0;
+    list-style:  none;
+}
+
+ul.lista-galeria-privada li.item,
+ul.lista-galeria-videos li.item
+{
+    display: inline-block;
+    vertical-align:  top;
 }

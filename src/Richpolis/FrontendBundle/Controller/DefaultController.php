@@ -233,7 +233,7 @@ class DefaultController extends Controller {
     /**
      * Lista la galeria principal.
      *
-     * @Route("/{_locale}/galeria", name="galeria",defaults={"_locale" = "en"}, requirements={"_locale" = "en|es"})
+     * @Route("/{_locale}/gallery", name="galeria",defaults={"_locale" = "en"}, requirements={"_locale" = "en|es"})
      * @Method({"GET"})
      * @Template()
      */
@@ -288,6 +288,23 @@ class DefaultController extends Controller {
         
     }
     
+    
+    /**
+     * Reproducir video.
+     *
+     * @Route("/producir/video/{id}", name="reproducir_video")
+     * @Template()
+     */
+    public function reproducirVideoAction($id)
+    {
+        $em = $this->getDoctrine()->getManager();
+        $video = $em->getRepository('CategoriasGaleriaBundle:Galerias')->find($id);
+        if(!$video){
+            throw $this->createNotFoundException('El video solicitado no existe.');
+        }
+        
+        return array('video'=>$video);
+    }
 
     /**
      * @Route("/{_locale}/contact", name="frontend_contacto",defaults={"_locale" = "en"}, requirements={"_locale" = "en|es"})

@@ -1,0 +1,32 @@
+{% extends "::base.html.twig" %}
+
+{% block title %}
+    {{video.titulo}}
+{% endblock %}    
+
+{% block stylesheets %}
+   <link rel="stylesheet" href="{{asset('css/mediaelementplayer.min.css')}}" /> 
+{% endblock %}
+
+{% block body %}
+<video width="640" height="360" src="{{video.webPath}}" type="video/mp4" 
+	id="player1" poster="{{video.thumbnailWebPath}}" 
+	controls="controls" preload="none">
+</video>    
+{% endblock %}
+
+{% block javascripts %}
+    <script src="{{asset('js/jquery-1.9.1.min.js')}}"></script>
+    <script src="{{asset('js/mediaelement-and-player.min.js')}}"></script>
+    <script>
+
+    $('video').mediaelementplayer({
+            mode: 'shim',
+            success: function(player, node) {
+                    $('#' + node.id + '-mode').html('mode: ' + player.pluginType);
+            }
+    });
+
+</script>
+{% endblock %}
+      
