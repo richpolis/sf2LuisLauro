@@ -3,7 +3,7 @@
 {% block stylesheets %}
     {{parent()}}
     <link rel="stylesheet" type="text/css" href="{{ asset('css/fancy/jquery.fancybox.css') }}?v=2.1.5" media="screen" />
-    <link rel="stylesheet" href="{{ asset('/css/mediaelement/mediaelementplayer.css') }}"/>
+    <link rel="stylesheet" href="{{ asset('/css/mediaelement/mejs-audio.css') }}"/>
 {% endblock %}
 
 {% set locale = app.request.locale %}
@@ -18,7 +18,7 @@
                 <li class="item">
                     <div class="audio-player">
                         <h2>{{music.titulo}}</h2>
-                        <audio id="player-{{loop.index}}" controls>
+                        <audio id="audio-player" controls>
                           <source src="{{music.webPath}}" type="audio/mp3">
                           Your browser does not support the audio tag.
                         </audio>
@@ -102,9 +102,18 @@
             });
         });
     </script>
-	<script src="{{asset('js/mediaelement/mediaelement-and-player.min.js')}}"></script>
+	<script src="{{asset('js/mediaelement/mediaelement-and-player-13.1.min.js')}}"></script>
 	<script>
-		$('audio').mediaelementplayer();
+		$('audio').mediaelementplayer({
+            alwaysShowControls: true,
+            features: ['playpause','progress','volume'],
+            audioVolume: 'horizontal',
+            audioWidth: 450,
+            audioHeight: 70,
+            iPadUseNativeControls: true,
+            iPhoneUseNativeControls: true,
+            AndroidUseNativeControls: true
+          });
 	</script>
 {% endblock %}
 

@@ -306,6 +306,10 @@ ul.lista-musica {
     list-style:  none;
 }
 
+ul.lista-musica li.item{
+  margin-bottom: 10px;
+}
+
 ul.lista-galeria-privada {
     margin: 0;
     padding: 0;
