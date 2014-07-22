@@ -685,4 +685,8 @@ class Galerias
         else
             return false;
     }
+
+    public function getTipoMimeAudioVideo(){
+        return RpsStms::getTipoMimeAudioVideo($this->getArchivo());
+    }
 }

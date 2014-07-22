@@ -5,19 +5,24 @@
 {% endblock %}    
 
 {% block stylesheets %}
-   <link rel="stylesheet" href="{{asset('css/mediaelementplayer.min.css')}}" /> 
+   <link rel="stylesheet" href="{{ asset('/css/mediaelement/mediaelementplayer.css') }}"/> 
 {% endblock %}
 
 {% block body %}
-<video width="640" height="360" src="{{video.webPath}}" type="video/mp4" 
-	id="player1" poster="{{video.thumbnailWebPath}}" 
-	controls="controls" preload="none">
+<video width="640" height="360"	id="player1" poster="{{video.thumbnailWebPath}}" controls="controls" preload="none">
+    <source type="video/mp4" src="{{video.webPath}}" />
+    <object width="640" height="360" type="application/x-shockwave-flash" data="flashmediaelement.swf">
+        <param name="movie" value="{{ asset('/js/mediaelement/flashmediaelement.swf') }}" />
+        <param name="flashvars" value="controls=true&file={{video.webPath}}" />
+        <!-- Image as a last resort -->
+        <img src="{{video.thumbnailWebPath}}" width="640" height="360" title="No video playback capabilities" />
+    </object>
 </video>    
 {% endblock %}
 
 {% block javascripts %}
     <script src="{{asset('js/jquery-1.9.1.min.js')}}"></script>
-    <script src="{{asset('js/mediaelement-and-player.min.js')}}"></script>
+    <script src="{{asset('js/mediaelement/mediaelement-and-player.min.js')}}"></script>
     <script>
 
     $('video').mediaelementplayer({

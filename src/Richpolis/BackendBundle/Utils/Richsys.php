@@ -271,6 +271,25 @@ EOF;
         }
         return $resp;
     }
+
+    static public function getTipoMimeVideoAudio($archivo){
+        $archivo=explode(".", $archivo);
+        $resp="image/jpeg";
+        switch ($archivo[1]){
+            case "mp4":
+            case "m4v":
+            case "webm":
+            case "ogv":
+            $resp="video/".$archivo[1];
+              break;
+            case "mp3":
+            case "ogg":
+            case "wav":
+              $resp="audio/".$archivo[1];
+              break;
+        }
+        return $resp;
+    }
     
     static public function getTipoArchivo($archivo){
         $archivo=explode(".", $archivo);
