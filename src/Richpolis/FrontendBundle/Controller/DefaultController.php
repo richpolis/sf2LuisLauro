@@ -267,6 +267,10 @@ class DefaultController extends Controller {
                     ->getPublicacionPorCategoriaActivas($biografia->getId(),false,'ASC');
         $categorias = $em->getRepository('CategoriasGaleriaBundle:Categorias')->findAll();
         $configuraciones = $em->getRepository('BackendBundle:Configuraciones')->findAll();
+		
+		$musica = array();
+		$videos = array();
+		$galeriaPrivada = array();
 
         foreach($categorias as $categoria){
           if($categoria->getSlug()=="galeria-privada" && $categoria->getIsImagen()){

@@ -256,7 +256,7 @@ class GaleriasController extends Controller
     public function uploadAction($categoria_id){
         
        // list of valid extensions, ex. array("jpeg", "xml", "bmp")
-       $allowedExtensions = array("jpeg","png","gif","jpg","mp3","flv","mp4");
+       $allowedExtensions = array("jpeg","png","gif","jpg","mp3","flv","mp4","m4v");
        // max file size in bytes
        $sizeLimit = 6 * 1024 * 1024;
        $request=$this->get("request");

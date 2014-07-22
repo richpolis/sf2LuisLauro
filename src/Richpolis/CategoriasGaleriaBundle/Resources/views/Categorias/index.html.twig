@@ -6,12 +6,14 @@
 
 {% block siderbar %}  
 <ul class="nav nav-list">
-    <li class="nav-header">Categorias</li>
+    <li class="nav-header">Galerias</li>
     {% for key,value in tipos %}
-    {% if key != tipo_categoria %}    
-    <li class="tipo-categoria" tipo="{{key}}">
-        <a href="{{path('categorias_por_tipo',{'tipo': key })}}">{{value}}</a>
-    </li>
+    {% if key != tipo_categoria %}
+		{% if value == "Imagen" or value == "Video" or value == "Musica" %}
+		<li class="tipo-categoria" tipo="{{key}}">
+			<a href="{{path('categorias_por_tipo',{'tipo': key })}}">{{value}}</a>
+		</li>
+		{% endif %}
     {% else %}
     <li class="tipo-categoria active" tipo="{{key}}">
         <a href="#">{{value}}</a>
