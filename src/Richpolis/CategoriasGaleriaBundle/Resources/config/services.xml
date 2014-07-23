@@ -3,9 +3,17 @@
     xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
     xsi:schemaLocation="http://symfony.com/schema/dic/services http://symfony.com/schema/dic/services/services-1.0.xsd">
     <services>
-        <service id="richpolis_galerias_bundle.image_type_extension"
+        <service id="richpolis_galerias_bundle.image_type"
             class="Richpolis\CategoriasGaleriaBundle\Form\Type\ImagenType">
             <tag name="form.type" alias="imagen" />
+        </service>
+        <service id="richpolis_galerias_bundle.video_type"
+            class="Richpolis\CategoriasGaleriaBundle\Form\Type\VideoType">
+            <tag name="form.type" alias="video" />
+        </service>
+        <service id="richpolis_galerias_bundle.audio_type"
+            class="Richpolis\CategoriasGaleriaBundle\Form\Type\AudioType">
+            <tag name="form.type" alias="audio" />
         </service>
     </services>
 </container>

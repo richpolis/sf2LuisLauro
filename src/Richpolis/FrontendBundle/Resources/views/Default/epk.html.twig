@@ -9,6 +9,17 @@
 {% set locale = app.request.locale %}
 
 {% block body %}
+    <div class="redes-sociales">
+        <a href="http://facebook.com/luislauromusic" target="_blank">
+            <span class="facebook"></span>
+        </a>
+        <a href="http://instagram.com/luis_lauro" target="_blank">
+            <span class="instagram"></span>
+        </a>
+        <a href="http://twitter.com/luis_lauro" target="_blank">
+            <span class="twitter"></span>
+        </a>
+    </div>
     <article class="izquierda">
         <header>
             <h2>{% trans %}songs{% endtrans %}</h2>
@@ -38,8 +49,9 @@
                 {% for galeria in galerias.galerias %}
                     {% if loop.index < 5 %}
                         <li class="item">
-                            <a href="{{galeria.webPath}}" class="fancybox" >
+                            <a href="{{galeria.webPath}}" class="fancybox image-wrap" >
                                 <img src="{{galeria.webPath | apply_filter('galeria_privada')}}" alt="{{galeria.titulo}}">
+                                <span class="boton-lupa"></span>
                             </a>
                         </li>
                     {% endif %}
@@ -54,8 +66,9 @@
                 {% for video in videos.galerias %}
                     {% if loop.index < 5 %}
                         <li class="item">
-                            <a href="{{path('reproducir_video',{id: video.id})}}" class="ifancybox">
+                            <a href="{{path('reproducir_video',{id: video.id})}}" class="ifancybox video-wrap">
                                 <img src="{{video.thumbnailWebPath | apply_filter('galeria_privada')}}" alt="{{video.titulo}}">
+                                <span class="boton-play"></span>
                             </a>
                         </li>
                     {% endif %}

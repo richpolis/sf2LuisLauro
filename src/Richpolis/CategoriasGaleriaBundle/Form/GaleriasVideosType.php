@@ -20,7 +20,7 @@ class GaleriasVideosType extends AbstractType
                    'class' => 'tinymce',
                    'data-theme' => 'advanced' // Skip it if you want to use default theme
                  )))    
-            ->add('file','file',array('label'=>'Video','required'=>false))
+            ->add('file','video',array('label'=>'Video','required'=>false,'video_path'=>'webPath','thumbnail_path'=>'thumbnailWebPath','mime_type_video'=>'tipoMimeAudioVideo'))
             ->add('fileTmb','imagen',array('label'=>'Portada','image_path' => 'thumbnailWebPath','required'=>false))
             ->add('posicion','hidden')
             ->add('categoria','entity', array(

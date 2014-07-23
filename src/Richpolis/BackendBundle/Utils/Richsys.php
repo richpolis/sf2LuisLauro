@@ -272,7 +272,7 @@ EOF;
         return $resp;
     }
 
-    static public function getTipoMimeVideoAudio($archivo){
+    static public function getTipoMimeAudioVideo($archivo){
         $archivo=explode(".", $archivo);
         $resp="image/jpeg";
         switch ($archivo[1]){

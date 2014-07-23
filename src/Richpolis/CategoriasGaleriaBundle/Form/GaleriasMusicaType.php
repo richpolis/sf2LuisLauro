@@ -20,8 +20,7 @@ class GaleriasMusicaType extends AbstractType
                    'class' => 'tinymce',
                    'data-theme' => 'advanced' // Skip it if you want to use default theme
                  )))    
-            ->add('file','file',array('label'=>'Musica','required'=>false))
-            ->add('fileTmb','imagen',array('label'=>'Portada','image_path' => 'thumbnailWebPath','required'=>false))
+            ->add('file','audio',array('label'=>'Musica','required'=>false,'audio_path'=>'webPath','mime_type_audio'=>'tipoMimeAudioVideo'))
             ->add('posicion','hidden')
             ->add('categoria','entity', array(
                 'class' => 'CategoriasGaleriaBundle:Categorias',
@@ -35,6 +34,7 @@ class GaleriasMusicaType extends AbstractType
             ))
             ->add('tipoArchivo','hidden')
             ->add('thumbnail','hidden')
+            ->add('fileTmb','hidden')
             ->add('archivo','hidden')            
             ->add('isActive',null,array('label'=>'Activo?','required'=>false))
             
