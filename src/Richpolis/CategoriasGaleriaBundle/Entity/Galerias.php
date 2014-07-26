@@ -106,6 +106,10 @@ class Galerias
         return array(RpsStms::$TIPO_ARCHIVO_IMAGEN);
     }
     
+    public function __construct() {
+        $this->isActive = true;
+    }
+    
     /**
      * Get id
      *
@@ -554,6 +558,7 @@ class Galerias
 
     public function getThumbnailWebPath()
     {
+        $ref = null;
         if($this->getIsImagen()){
             if(!$this->thumbnail){
                 if(!file_exists($this->getAbosluteThumbnailPath()) && file_exists($this->getAbsolutePath())){

@@ -1,0 +1,126 @@
+{% extends "FrontendBundle::layout.html.twig" %}
+
+{% block stylesheets %}
+    {{parent()}}
+    <link rel="stylesheet" type="text/css" href="{{ asset('css/fancy/jquery.fancybox.css') }}?v=2.1.5" media="screen" />
+    <link rel="stylesheet" type="text/css" href="{{ asset('css/gamma/gamma.css') }}"/>
+    <script src="{{ asset('js/modernizr-2.6.2.min.js') }}"></script>
+    <noscript><link rel="stylesheet" type="text/css" href="{{ asset('css/gamma/noJS.css') }}"/></noscript>
+{% endblock %}
+
+{% set locale = app.request.locale %}
+
+{% block body %}
+    <article>
+        <div class="gamma-container gamma-loading" id="gamma-container">
+            <ul class="gamma-gallery">
+                {% for galeria in galeriaPrincipal.galerias %}
+                <li class=>
+                    <div data-alt="img{{loop.index}}" data-description="<h3>{{galeria.titulo}}</h3>" data-max-width="1800" data-max-height="1350">
+                        <div data-src="{{ galeria.webPath | apply_filter('galeria_xxxlarge') }}" data-min-width="1300"></div>
+                        <div data-src="{{ galeria.webPath | apply_filter('galeria_xxlarge') }}" data-min-width="1000"></div>
+                        <div data-src="{{ galeria.webPath | apply_filter('galeria_xlarge') }}" data-min-width="700"></div>
+                        <div data-src="{{ galeria.webPath | apply_filter('galeria_large') }}" data-min-width="300"></div>
+                        <div data-src="{{ galeria.webPath | apply_filter('galeria_medium') }}" data-min-width="200"></div>
+                        <div data-src="{{ galeria.webPath | apply_filter('galeria_small') }}" data-min-width="140"></div>
+                        <div data-src="{{ galeria.webPath | apply_filter('galeria_small') }}"></div>
+                        <noscript>
+                        <img src="{{ galeria.webPath | apply_filter('galeria_small')}}" alt="img{{loop.index}}"/>
+                        </noscript>
+                    </div>
+                </li>
+                {% endfor %}
+                
+            </ul>
+
+            <div class="gamma-overlay"></div>
+
+            <div id="loadmore" class="loadmore">Example for loading more items...</div>
+
+        </div>
+    </article>
+{% endblock %}
+
+{% block javascripts %}
+    {{parent()}}
+		<script src="{{ asset('/js/gamma/jquery.masonry.min.js') }}"></script>
+		<script src="{{ asset('/js/gamma/jquery.history.js') }}"></script>
+		<script src="{{ asset('/js/gamma/js-url.min.js') }}"></script>
+		<script src="{{ asset('/js/gamma/jquerypp.custom.js') }}"></script>
+		<script src="{{ asset('/js/gamma/gamma.js') }}"></script>
+		<script type="text/javascript">
+			
+			$(function() {
+
+				var GammaSettings = {
+						// order is important!
+						viewport : [ {
+							width : 1200,
+							columns : 5
+						}, {
+							width : 900,
+							columns : 4
+						}, {
+							width : 500,
+							columns : 3
+						}, { 
+							width : 320,
+							columns : 2
+						}, { 
+							width : 0,
+							columns : 2
+						} ]
+				};
+
+				Gamma.init( GammaSettings, fncallback );
+
+
+				// Example how to add more items (just a dummy):
+
+				var page = 0,
+					items = ['<li><div data-alt="img28" data-description="<h3>Desire</h3>" data-max-width="1800" data-max-height="1350"><div data-src="images/xxxlarge/28.jpg" data-min-width="1300"></div><div data-src="images/xxlarge/28.jpg" data-min-width="1000"></div><div data-src="images/xlarge/28.jpg" data-min-width="700"></div><div data-src="images/large/28.jpg" data-min-width="300"></div><div data-src="images/medium/28.jpg" data-min-width="200"></div><div data-src="images/small/28.jpg" data-min-width="140"></div><div data-src="images/xsmall/28.jpg"></div><noscript><img src="images/xsmall/28.jpg" alt="img28"/></noscript></div></li><li><div data-alt="img29" data-description="<h3>Leisure</h3>" data-max-width="1800" data-max-height="2400"><div data-src="images/xxxlarge/29.jpg" data-min-width="1300"></div><div data-src="images/xxlarge/29.jpg" data-min-width="1000"></div><div data-src="images/xlarge/29.jpg" data-min-width="700"></div><div data-src="images/large/29.jpg" data-min-width="300"></div><div data-src="images/medium/29.jpg" data-min-width="200"></div><div data-src="images/small/29.jpg" data-min-width="140"></div><div data-src="images/xsmall/29.jpg"></div><noscript><img src="images/xsmall/29.jpg" alt="img29"/></noscript></div></li><li><div data-alt="img30" data-description="<h3>Softness</h3>" data-max-width="1800" data-max-height="1350"><div data-src="images/xxxlarge/30.jpg" data-min-width="1300"></div><div data-src="images/xxlarge/30.jpg" data-min-width="1000"></div><div data-src="images/xlarge/30.jpg" data-min-width="700"></div><div data-src="images/large/30.jpg" data-min-width="300"></div><div data-src="images/medium/30.jpg" data-min-width="200"></div><div data-src="images/small/30.jpg" data-min-width="140"></div><div data-src="images/xsmall/30.jpg"></div><noscript><img src="images/xsmall/30.jpg" alt="img30"/></noscript></div></li><li><div data-alt="img20" data-description="<h3>Epiphany</h3>" data-max-width="1800" data-max-height="1350"><div data-src="images/xxxlarge/20.jpg" data-min-width="1300"></div><div data-src="images/xxlarge/20.jpg" data-min-width="1000"></div><div data-src="images/xlarge/20.jpg" data-min-width="700"></div><div data-src="images/large/20.jpg" data-min-width="300"></div><div data-src="images/medium/20.jpg" data-min-width="200"></div><div data-src="images/small/20.jpg" data-min-width="140"></div><div data-src="images/xsmall/20.jpg"></div><noscript><img src="images/xsmall/20.jpg" alt="img20"/></noscript></div></li><li><div data-alt="img21" data-description="<h3>Felicity</h3>" data-max-width="1800" data-max-height="2400"><div data-src="images/xxxlarge/21.jpg" data-min-width="1300"></div><div data-src="images/xxlarge/21.jpg" data-min-width="1000"></div><div data-src="images/xlarge/21.jpg" data-min-width="700"></div><div data-src="images/large/21.jpg" data-min-width="300"></div><div data-src="images/medium/21.jpg" data-min-width="200"></div><div data-src="images/small/21.jpg" data-min-width="140"></div><div data-src="images/xsmall/21.jpg"></div><noscript><img src="images/xsmall/21.jpg" alt="img21"/></noscript></div></li>']
+
+				function fncallback() {
+
+					$( '#loadmore' ).show().on( 'click', function() {
+
+						++page;
+						var newitems = items[page-1]
+						if( page <= 1 ) {
+							
+							Gamma.add( $( newitems ) );
+
+						}
+						if( page === 1 ) {
+
+							$( this ).remove();
+
+						}
+
+					} );
+
+				}
+
+			});
+
+		</script>
+{% endblock %}
+
+{% block footer %}
+    <footer>
+        <div class="datos-footer">
+            {% for config in configuraciones %}
+                {% if config.slug == 'pie-pagina' %}
+                    {{config.texto | raw }}
+                {% endif %}
+            {% endfor %}
+        </div>
+        <div class="datos-footer">
+            {% for config in configuraciones %}
+                {% if config.slug == 'contacto-info' %}
+                    {{config.texto | raw }}
+                {% endif %}
+            {% endfor %}
+        </div>
+    </footer>
+{% endblock %}        

@@ -22,10 +22,11 @@ use Richpolis\BackendBundle\Utils\Richsys as RpsStms;
  */
 class GaleriasController extends Controller
 {
+    protected $categorias = array();
+    
     protected function getFilters()
     {
         $filters=$this->get('session')->get('filters', array());
-      
         return $filters;
     }
     
@@ -34,7 +35,19 @@ class GaleriasController extends Controller
         if(isset($filters['categorias'])){
             return $filters['categorias'];
         }else{
-            return RpsStms::$TIPO_ARCHIVO_IMAGEN;
+            if($this->getRequest()->query->has('categoria')){
+                return $this->getRequest()->query->get('categoria');
+            }else{
+                $this->categorias = $this->getDoctrine()
+                        ->getRepository('CategoriasGaleriaBundle:Categorias')
+                        ->findBy(array(),array('position' => 'ASC'));
+                if( count($this->categorias) > 0 ){
+                    return $this->categorias[0];
+                }else{
+                    return null;
+                }
+                
+            }
         }
         
     }
@@ -144,7 +157,8 @@ class GaleriasController extends Controller
         
         return array(
             'entity' => $entity,
-            'form'   => $form->createView(),
+            'categoria'=>$entity->getCategoria(),
+            'form'=> $form->createView(),
         );
     }
 

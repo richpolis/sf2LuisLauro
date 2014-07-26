@@ -19,7 +19,7 @@
 {% block body %}
 <h1>Galerias</h1>
 
-<form action="{{ path('galerias_create') }}" method="post" {{ form_enctype(form) }}>
+<form action="{{ path('galerias_create') }}?tipoArchivo={{entity.tipoArchivo}}" method="post" {{ form_enctype(form) }}>
     {{ form_widget(form) }}
     <p style="margin-top: 10px;">
         <ul class="record_actions">

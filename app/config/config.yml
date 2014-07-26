@@ -108,8 +108,8 @@ avalanche_imagine:
             type:    relative_resize
             options: { widen: 700, mode: outbound, cache_type: public, cache_expires: '2 weeks' }
         galeria_medium:
-            type:    relative_resize
-            options: { widen: 300, mode: outbound, cache_type: public, cache_expires: '2 weeks' }
+            type:    thumbnail
+            options: { size: [300, 300], mode: outbound, cache_type: public, cache_expires: '2 weeks' }
         galeria_small:
             type:    relative_resize
             options: { widen: 200, mode: outbound, cache_type: public, cache_expires: '2 weeks' }

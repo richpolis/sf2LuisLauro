@@ -144,7 +144,6 @@ function isHidden() {
 }
 
 var Gamma = (function() {
-
 	var $window = $( window ),
 		$body = $( 'body' ),
 		$document = $( document ),
@@ -464,6 +463,7 @@ var Gamma = (function() {
 			}
 
 			// set the widths (%) for each of the <li>
+			console.log("operacion Width: " + Math.floor( containerW / Gamma.columns ) * 100 / containerW + '%' );
 			Gamma.items.css( 'width', Math.floor( containerW / Gamma.columns ) * 100 / containerW + '%' );
 
 		},
@@ -475,6 +475,7 @@ var Gamma = (function() {
 				Gamma.gallery.masonry( {
 					itemSelector : 'li',
 					columnWidth : function( containerWidth ) {
+						console.log("containerWidth: " + containerWidth + "\n Gamma columns: " + Gamma.columns);
 						return containerWidth / Gamma.columns;
 					}
 				} );
@@ -604,7 +605,7 @@ var Gamma = (function() {
 		}
 		// resize and chooses (if necessary) a new source for the image in the single view
 		_svResizeImage = function( callback ) {
-
+			debugger;
 			// need to know which source to load for the image.
 			// also need to know the final size and position.
 			var finalConfig = _getFinalImgConfig( {
@@ -629,7 +630,7 @@ var Gamma = (function() {
 				};
 
 			_applyAnimation( Gamma.svImage, finalStyle, Gamma.settings.svImageTransitionSpeedResize, Gamma.supportTransitions, function() {
-
+				debugger;
 				if( Gamma.supportTransitions ) {
 					$( this ).off( transEndEventName );
 				}
@@ -936,7 +937,7 @@ var Gamma = (function() {
 		},
 		// given the wrapper's width and height, calculates the final width, height, left and top for the image to fit inside
 		_getFinalSizePosition = function( imageSize, wrapperSize ) {
-
+			debugger;
 			// image size
 			var imgW = imageSize.width,
 				imgH = imageSize.height,
